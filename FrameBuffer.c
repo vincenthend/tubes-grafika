@@ -17,6 +17,7 @@ FrameBuffer initFB(){
     if(fb.fbfd == -1){
         //Fail
         printf("Error, have you run it as admin?\n");
+        exit(1);
     }
     
     if(ioctl(fb.fbfd, FBIOGET_FSCREENINFO, &fb.finfo) == -1){
