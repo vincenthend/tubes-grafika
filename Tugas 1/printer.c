@@ -36,15 +36,16 @@ void initializeDictionary(char* font) {
 
 void bufferChar(FrameBuffer* fb, char c, int char_width, int char_height, int x, int y, int scale, int r, int g, int b, int a) {
     int i, j;
-    int scale_x_offset = 0, scale_y_offset = 0;
+    int scale_x_offset, scale_y_offset;
     char* dict = cdict[(int) c];
     for (i = 0; i < char_height; i++) {
         for (j = 0; j < char_width; j++) {
-            if(dict[i+(j*char_width)] == '1') {
-                printf("Index %d %d\n", i, j);
-                addPixelToBuffer(fb, (x)+i, (y)+j, r, g, b, a);
+            printf("%c", dict[i*char_width+j]);
+            if(dict[i*char_width+j] == '1') {
+                addPixelToBuffer(fb, (x)+j, (y)+i, r, g, b, a);
             }
         }
+        printf("\n");
     }
 }
 
@@ -59,6 +60,7 @@ void bufferString(FrameBuffer* fb, char* s, int char_width, int char_height, int
         bufferChar(fb, c, char_width, char_height, char_x, char_y, scale, r, g, b, a);
         char_x += char_width + spacing;
         if (char_x > fb->screen_width - char_width) {
+            char_x = x;
             char_y += char_height + 10;
         }
     }

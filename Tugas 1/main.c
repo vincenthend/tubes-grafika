@@ -5,6 +5,15 @@
 #include "framebuffer.h"
 #include "printer.h"
 
+/** 
+ * TODO:
+ * 1. Scaling
+ * 2. alignString
+ * 
+ * BUG:
+ * 1. First character in every string seems to be cut in half (missing the top part)
+*/
+
 FrameBuffer fb;
 char* cdict [255];
 
@@ -19,8 +28,8 @@ int main(){
     scanf("%s", font);
     initializeDictionary(font);
     
-    bufferString(&fb, "a", 9, 11, 200, 200, 1, 3, 255, 255, 255, 0);
-    
+    bufferString(&fb, "youdafgajsfgioewutqpojdklagalkfadjkfladuigpoewgklqjgkljad", 9, 11, 1500, 300, 1, 3, 255, 255, 255, 0);
+
     updateFrame(&fb);
     
     return 0;
