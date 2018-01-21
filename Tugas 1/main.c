@@ -10,8 +10,14 @@ char* cdict [255];
 
 int main(){
     int x, y, i;
+    printf("Initializing framebuffer\n");
     fb = initialize();
-    initializeDictionary();
+    printf("Framebuffer initialized\n");
+
+    char* font;
+    printf("Font type: ");
+    scanf("%s", font);
+    initializeDictionary(font);
     
     bufferString(&fb, "a", 9, 11, 200, 200, 1, 3, 255, 255, 255, 0);
     

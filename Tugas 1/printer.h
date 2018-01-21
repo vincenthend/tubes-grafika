@@ -5,7 +5,7 @@
 
 extern char* cdict[255];
 
-void initializeDictionary();
+void initializeDictionary(char* font);
 
 void bufferChar(FrameBuffer* fb, char c, int char_width, int char_height, int x, int y, int scale, int r, int g, int b, int a);
 
