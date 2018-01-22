@@ -23,12 +23,16 @@ int main(){
     fb = initialize();
     printf("Framebuffer initialized\n");
 
-    char* font;
-    printf("Font type: ");
-    scanf("%s", font);
-    initializeDictionary(font);
+    // char* font;
+    // printf("Font type: ");
+    // scanf("%s", font);
+    initializeDictionary("archaic");
+
+    char* in;
+    printf("Input: ");
+    scanf("%s", in);
     
-    bufferString(&fb, "youdafgajsfgioewutqpojdklagalkfadjkfladuigpoewgklqjgkljad", 9, 11, 1500, 300, 1, 3, 255, 255, 255, 0);
+    bufferString(&fb, in, 9, 11, 1500, 300, 1, 3, 255, 255, 255, 0);
 
     updateFrame(&fb);
     

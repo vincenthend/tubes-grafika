@@ -40,12 +40,10 @@ void bufferChar(FrameBuffer* fb, char c, int char_width, int char_height, int x,
     char* dict = cdict[(int) c];
     for (i = 0; i < char_height; i++) {
         for (j = 0; j < char_width; j++) {
-            printf("%c", dict[i*char_width+j]);
             if(dict[i*char_width+j] == '1') {
                 addPixelToBuffer(fb, (x)+j, (y)+i, r, g, b, a);
             }
         }
-        printf("\n");
     }
 }
 
