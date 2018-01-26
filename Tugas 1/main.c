@@ -5,6 +5,8 @@
 #include "framebuffer.h"
 #include "drawer.h"
 #include "printer.h"
+#include "font.h"
+#include "color.h"
 
 /** 
  * TODO:
@@ -24,25 +26,24 @@ int main(){
     fb = initialize();
     printf("Framebuffer initialized\n");
 
-    // // char* font;
-    // // printf("Font type: ");
-    // // scanf("%s", font);
-    // initializeDictionary("archaic");
+    Font f;
+    Color c;
 
-    // char in[1000];
-    // printf("Input: ");
-    // scanf("%999[0-9a-zA-Z ]", in);
-    // printf("%s",in);
-    // bufferString(&fb, in, 9, 11, 1500, 300, 1, 3, 255, 255, 255, 0);
+    char* font;
+    openFont("archaic", &f);
+    c.r = 255;
+    c.g = 255;
+    c.b = 255;
+    c.a = 0;
 
-    drawLine(&fb, 400, 600, 400, 800, 255, 255, 255, 0);
-    drawCircle(&fb, 400, 600, 200, 255, 255, 255, 0);
+    char in[1000];
+    printf("Input: ");
+    scanf("%999[0-9a-zA-Z ]", in);
+    printString(&fb, in, f, 500, 500, c);
 
-    for (i=1; i<=200; i++) {
-        drawCircle(&fb, 800, 600, i, 255, 255, 255, 0);
-    }
+    //drawLine(&fb, 400, 600, 400, 800, 255, 255, 255, 0);
+    //drawCircle(&fb, 400, 600, 200, 255, 255, 255, 0);
 
     updateFrame(&fb);
-    
     return 0;
 }

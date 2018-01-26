@@ -65,10 +65,5 @@ void setBackground(FrameBuffer* fb, int r, int g, int b, int a) {
 }
 
 void clearScreen(FrameBuffer* fb) {
-    int i, j;
-    for (i = 0; i < fb->screen_width; i++) {
-        for (j=0; j< fb->screen_height; j++) {
-            addPixelToBuffer(fb, i, j, 0, 0, 0, 0);
-        }
-    }
+    setBackground(fb, 0, 0, 0, 0);
 }
