@@ -11,8 +11,6 @@ void drawLine(FrameBuffer* fb, int x0, int y0, int x1, int y1, int r, int g,
               int b, int a) {
     char steep = abs(y1 - y0) > abs(x1 - x0);
 
-    int temp;
-
     // Check if the line is steep (m>1)
     // Swap x and y if true
     if (steep) {
