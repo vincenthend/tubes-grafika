@@ -2,7 +2,7 @@
 #define _PRINTER_H
 
 #include "color.h"
-#include "font.h"
+#include "graphics.h"
 #include "framebuffer.h"
 
 extern char* cdict[255];

@@ -84,3 +84,25 @@ void drawSquare(FrameBuffer* fb, int x0, int y0, int x1, int y1, Color c){
     drawLine(fb, x1, y1, x1, y0, c);
     drawLine(fb, x1, y0, x0, y0, c);
 }
+
+void drawMonoImage(FrameBuffer* fb, Image img, int x, int y, Color col){
+    int i, j;
+    char* data = img.data;
+    for (i = 0; i < img.height; i++) {
+        for (j = 0; j < img.width; j++) {
+            if (data[i * img.width + j] == '1') {
+                addPixelToBuffer(fb, (x) + j, (y) + i, col.r, col.g, col.b,
+                                 col.a);
+            }
+        }
+    }
+}
+
+void fillSquareArea(FrameBuffer* fb, int x0, int y0, int x1, int y1, Color c){
+    int x, y;
+    for(x=x0; x<=x1; x++){
+        for(y=y0; y<=y1; y++){
+            addPixelToBuffer(fb, x, y, c.r, c.g, c.b, c.a);
+        }
+    }
+}

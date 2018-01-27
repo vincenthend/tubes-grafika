@@ -1,5 +1,5 @@
-#ifndef _FONT_H
-#define _FONT_H
+#ifndef _GRAPHICS_H
+#define _GRAPHICS_H
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -11,6 +11,14 @@ typedef struct {
     int width;
 } Font;
 
+typedef struct{
+    char* data;
+    int height;
+    int width;
+} Image;
+
 void openFont(char* font, Font* f);
+
+void openImage(char* image, Image* i);
 
 #endif
