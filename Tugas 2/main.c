@@ -64,7 +64,7 @@ int main(){
         
         x--;
         if(x < topLeftX) {
-            x = nyanX;                        
+            x = nyanX;               
         }
         if(x%50>25){
             y = nyanY+2;
@@ -73,6 +73,8 @@ int main(){
             y = nyanY;
         }
         usleep(10000);
+
+        // drawThickLine(&fb, 400, 400, 600, 800, 10, white);
     }
 
     updateFrame(&fb);
