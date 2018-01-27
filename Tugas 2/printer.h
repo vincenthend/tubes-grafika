@@ -1,9 +1,9 @@
 #ifndef _PRINTER_H
 #define _PRINTER_H
 
-#include "framebuffer.h"
 #include "color.h"
 #include "font.h"
+#include "framebuffer.h"
 
 extern char* cdict[255];
 

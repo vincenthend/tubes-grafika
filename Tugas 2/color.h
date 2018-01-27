@@ -1,6 +1,8 @@
 #ifndef _COLOR_H
 #define _COLOR_H
 
+#include <stdlib.h>
+
 typedef struct {
     int r;
     int g;
@@ -8,6 +10,5 @@ typedef struct {
     int a;
 } Color;
 
-//setColor(ColorPos* cp, char* c);
-
+void initColor(Color* c, char* color);
 #endif

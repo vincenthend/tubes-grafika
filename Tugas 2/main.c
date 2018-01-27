@@ -9,9 +9,6 @@
 #include "color.h"
 
 /** 
- * TODO:
- * 1. Scaling
- * 2. alignString
  * 
  * BUG:
  * 1. Characters missing the bottom part
@@ -26,23 +23,10 @@ int main(){
     fb = initialize();
     printf("Framebuffer initialized\n");
 
-    Font f;
     Color c;
+    initColor(&c, "FFFFFF");
 
-    char* font;
-    openFont("archaic", &f);
-    c.r = 255;
-    c.g = 255;
-    c.b = 255;
-    c.a = 0;
-
-    char in[1000];
-    printf("Input: ");
-    scanf("%999[0-9a-zA-Z ]", in);
-    printString(&fb, in, f, 500, 500, c);
-
-    //drawLine(&fb, 400, 600, 400, 800, 255, 255, 255, 0);
-    //drawCircle(&fb, 400, 600, 200, 255, 255, 255, 0);
+    drawSquare(&fb, fb.screen_width-500, fb.screen_height-300,fb.screen_width-10, fb.screen_height-10, c);
 
     updateFrame(&fb);
     return 0;

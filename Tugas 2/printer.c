@@ -5,13 +5,14 @@
  */
 void printChar(FrameBuffer* fb, char c, Font f, int x, int y, Color col) {
     int i, j;
-    char* dict = f.dict[(int) c];
+    char* dict = f.dict[(int)c];
     for (i = 0; i < f.height; i++) {
         for (j = 0; j < f.width; j++) {
-            if(dict[i*f.width+j] == '1') {
-                addPixelToBuffer(fb, (x)+j, (y)+i, col.r, col.g, col.b, col.a);
+            if (dict[i * f.width + j] == '1') {
+                addPixelToBuffer(fb, (x) + j, (y) + i, col.r, col.g, col.b,
+                                 col.a);
             }
-            printf("%c",dict[i*f.width+j]);
+            printf("%c", dict[i * f.width + j]);
         }
         printf("\n");
     }

@@ -2,9 +2,12 @@
 #define _DRAWER_H
 
 #include "framebuffer.h"
+#include "color.h"
 
-void drawLine(FrameBuffer* fb, int x0, int y0, int x1, int y1, int r, int g, int b, int a);
+void drawLine(FrameBuffer* fb, int x0, int y0, int x1, int y1, Color c);
 
-void drawCircle (FrameBuffer* fb, int x0, int y0, int radius, int r, int g, int b, int a);
+void drawCircle(FrameBuffer* fb, int x0, int y0, int radius, Color c);
+
+void drawSquare(FrameBuffer* fb, int x0, int y0, int x1, int y1, Color c);
 
 #endif
