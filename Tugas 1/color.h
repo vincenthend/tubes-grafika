@@ -8,6 +8,4 @@ typedef struct {
     int a;
 } Color;
 
-//setColor(ColorPos* cp, char* c);
-
 #endif

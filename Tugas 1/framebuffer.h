@@ -22,9 +22,9 @@ typedef struct {
 
 FrameBuffer initialize();
 
-void addPixelToBuffer(FrameBuffer* fb, int x, int y, int r, int g, int b, int a);
+void addPixelToBuffer(FrameBuffer* fb, int x, int y, int r, int g, int b,
+                      int a);
 
 void updateFrame(FrameBuffer* fb);
-
 
 #endif

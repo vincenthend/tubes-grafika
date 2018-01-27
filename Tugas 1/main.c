@@ -2,11 +2,11 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "framebuffer.h"
-#include "drawer.h"
-#include "printer.h"
-#include "font.h"
 #include "color.h"
+#include "drawer.h"
+#include "font.h"
+#include "framebuffer.h"
+#include "printer.h"
 
 /** 
  * TODO:
@@ -18,10 +18,9 @@
 */
 
 FrameBuffer fb;
-char* cdict [255];
+char* cdict[255];
 
-int main(){
-    int x, y, i;
+int main() {
     printf("Initializing framebuffer\n");
     fb = initialize();
     printf("Framebuffer initialized\n");
@@ -29,7 +28,6 @@ int main(){
     Font f;
     Color c;
 
-    char* font;
     openFont("archaic", &f);
     c.r = 255;
     c.g = 255;
