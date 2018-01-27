@@ -10,7 +10,22 @@
 #include "color.h"
 
 FrameBuffer fb;
-char* cdict [255];
+void drawRainbow(FrameBuffer* fb, int x , int y){
+    Color red, orange, yellow, green, blue, purple;
+    initColor(&red, "FF0000");
+    initColor(&orange, "FF7700");
+    initColor(&yellow, "FFFF00");
+    initColor(&green, "009900");
+    initColor(&blue, "000099");
+    initColor(&purple, "990099");
+
+    fillSquareArea(fb, x-8, y+4, x+20, y+6, red);
+    fillSquareArea(fb, x-8, y+7, x+20, y+9, orange);
+    fillSquareArea(fb, x-8, y+10, x+20, y+12, yellow);
+    fillSquareArea(fb, x-8, y+13, x+20, y+15, green);
+    fillSquareArea(fb, x-8, y+16, x+20, y+18, blue);
+    fillSquareArea(fb, x-8, y+19, x+20, y+21, purple);
+}
 
 int main(){
     int nyanX, nyanY, topLeftX, topLeftY, botRightX, botRightY;
@@ -18,12 +33,14 @@ int main(){
     fb = initialize();
 
     //Initialization
-    Color c, black;
-    Image nyanCat;
+    Color white, black, background;
+    Image nyanCat, nyanCat_a;
 
-    initColor(&c, "FFFFFF");    
+    initColor(&white, "FFFFFF");
     initColor(&black, "000000");
+    initColor(&background, "0c58d3");
     openImage("nyancat", &nyanCat);
+    openImage("nyancat_a", &nyanCat_a);
     topLeftX = fb.screen_width - 810;
     topLeftY = fb.screen_height - 410;
     botRightX = fb.screen_width - 10;
@@ -35,16 +52,27 @@ int main(){
 
     //Loop
     while(1){
-        drawSquare(&fb, topLeftX, topLeftY,botRightX, botRightY, c);
-        drawMonoImage(&fb, nyanCat, x, y, c);       
-
+        fillSquareArea(&fb, topLeftX, topLeftY,botRightX, botRightY, background);
+        drawSquare(&fb, topLeftX, topLeftY,botRightX, botRightY, white);
+        drawRainbow(&fb, nyanCat.width+x, y);
+        if(x%50>25){
+            drawMonoImage(&fb, nyanCat, x, y, white);
+        }
+        else{
+            drawMonoImage(&fb, nyanCat_a, x, y, white);
+        }
+        
         x--;
         if(x < topLeftX) {
-            fillSquareArea(&fb, x, y, nyanCat.width+x, nyanCat.height+y, black);
             x = nyanX;                        
-        }   
+        }
+        if(x%50>25){
+            y = nyanY+2;
+        }
+        else{
+            y = nyanY;
+        }
         usleep(10000);
-        fillSquareArea(&fb, x, y, nyanCat.width+x, nyanCat.height+y, black);
     }
 
     updateFrame(&fb);
