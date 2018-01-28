@@ -33,19 +33,21 @@ int main(){
     fb = initialize();
 
     //Initialization
-    Color white, black, background;
+    Color white, black, grey, pink, background;
     Image nyanCat, nyanCat_a;
 
     initColor(&white, "FFFFFF");
     initColor(&black, "000000");
-    initColor(&background, "0c58d3");
+    initColor(&grey, "77797A");
+    initColor(&pink, "FF8AD1");
+    initColor(&background, "0C58D3");
     openImage("nyancat", &nyanCat);
     openImage("nyancat_a", &nyanCat_a);
     topLeftX = fb.screen_width - 810;
     topLeftY = fb.screen_height - 410;
     botRightX = fb.screen_width - 10;
     botRightY = fb.screen_height - 10;
-    nyanX = botRightX - 50;
+    nyanX = botRightX - 60;
     nyanY = botRightY - 350;
     x = nyanX;
     y = nyanY;
@@ -56,10 +58,10 @@ int main(){
         drawSquare(&fb, topLeftX, topLeftY,botRightX, botRightY, white);
         drawRainbow(&fb, nyanCat.width+x, y);
         if(x%50>25){
-            drawMonoImage(&fb, nyanCat, x, y, white);
+            drawNyanImage(&fb, nyanCat, x, y, black, pink, grey);
         }
         else{
-            drawMonoImage(&fb, nyanCat_a, x, y, white);
+            drawNyanImage(&fb, nyanCat_a, x, y, black, pink, grey);
         }
         
         x--;

@@ -183,3 +183,22 @@ void fillSquareArea(FrameBuffer* fb, int x0, int y0, int x1, int y1, Color c){
         }
     }
 }
+
+void drawNyanImage(FrameBuffer* fb, Image img, int x, int y, Color lineColor, Color clothColor, Color skinColor) {
+    int i, j;
+    char* data = img.data;
+    for (i = 0; i < img.height; i++) {
+        for (j = 0; j < img.width; j++) {
+            if (data[i * img.width + j] == '1') {
+                addPixelToBuffer(fb, (x) + j, (y) + i, lineColor.r, lineColor.g, lineColor.b,
+                                 lineColor.a);
+            } else if (data[i * img.width + j] == '2') {
+                addPixelToBuffer(fb, (x) + j, (y) + i, clothColor.r, clothColor.g, clothColor.b,
+                                 clothColor.a);
+            } else if (data[i * img.width + j] == '3') {
+                addPixelToBuffer(fb, (x) + j, (y) + i, skinColor.r, skinColor.g, skinColor.b,
+                                 skinColor.a);
+            }
+        }
+    }
+}
