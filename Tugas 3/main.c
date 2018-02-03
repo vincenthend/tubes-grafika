@@ -6,6 +6,7 @@
 #include "framebuffer.h"
 #include "drawer.h"
 #include "printer.h"
+#include "rasterizer.h"
 #include "graphics.h"
 #include "color.h"
 

@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "drawer.h": "c",
+        "framebuffer.h": "c",
+        "font.h": "c"
+    }
+}
