@@ -1,4 +1,3 @@
-#include "rasterizer.h"
 #include "rasterizer_extended.c"
 
 void initPolygon(Polygon *p, int n) {
@@ -90,7 +89,8 @@ void fillShape(FrameBuffer *fb, Shape *s, Color c) {
 }
 
 void fillChar(FrameBuffer *fb, char ch, RasterFont *rf, Vertex offset, Color c) {
-    fillShape(fb, offsetShape(rf->dict[int(ch)], offset), c);
+    //offsetShape apa ya?
+    fillShape(fb, offsetShape(*(rf->dict[(int) (ch)]), offset), c);
 }
 
 void fillString(FrameBuffer *fb, char *s, RasterFont *rf, Vertex offset, Color c) {
@@ -99,7 +99,8 @@ void fillString(FrameBuffer *fb, char *s, RasterFont *rf, Vertex offset, Color c
 
     int i;
     for (i = 0; i < len; ++i) {
-        fillChar(fb, rf->dict[i], offset, c);
+        //Ini yang gw ubah --AGUS s[i]
+        fillChar(fb, s[i], rf->dict[i], offset, c);
 
         // Manage offset
         if (offset.x + 2 * rf->width >= fb->screen_width) {

@@ -2,9 +2,7 @@
 #define _RASTERIZER_H
 
 #include "color.h"
-#include "drawer.h"
 #include "framebuffer.h"
-#include "graphics.h"
 
 #define MAX_VERTICES 25
 
@@ -22,6 +20,12 @@ typedef struct {
     Polygon *polygons;
     int count;
 } Shape;
+
+typedef struct {
+    Shape *dict[256];
+    int height;
+    int width;
+} RasterFont;
 
 void initPolygon(Polygon *p, int n);
 
