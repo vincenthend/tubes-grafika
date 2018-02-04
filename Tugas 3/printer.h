@@ -5,8 +5,6 @@
 #include "framebuffer.h"
 #include "graphics.h"
 
-extern char *cdict[255];
-
 void printChar(FrameBuffer *fb, char c, Font f, int x, int y, Color col);
 
 void printString(FrameBuffer *fb, char *s, Font f, int x, int y, Color col);

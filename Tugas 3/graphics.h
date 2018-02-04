@@ -17,8 +17,16 @@ typedef struct {
     int width;
 } Image;
 
+typedef struct {
+    char *dict[256];
+    int height;
+    int width;
+} RasterFont;
+
 void openFont(char *font, Font *f);
 
 void openImage(char *image, Image *i);
+
+void openRasterFont(char *raster_font, RasterFont *f);
 
 #endif

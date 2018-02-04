@@ -83,10 +83,6 @@ void fillShape(FrameBuffer *fb, Shape *s, Color c) {
     updateFrame(fb);
 }
 
-void initializeFontShape() {
-    raster_cdict['a']
-}
-
 void fillChar(FrameBuffer *fb, char ch, int x, int y, Color c) {
 
 }

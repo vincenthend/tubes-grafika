@@ -23,8 +23,6 @@ typedef struct {
     int count;
 } Shape;
 
-extern Shape* raster_cdict[256];
-
 void initPolygon(Polygon *p, int n);
 
 void initShape(Shape *s, int n);
