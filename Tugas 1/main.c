@@ -18,7 +18,6 @@ FrameBuffer fb;
 char *cdict[255];
 
 int main() {
-    int x, y, i;
     printf("Initializing framebuffer\n");
     fb = initialize();
     printf("Framebuffer initialized\n");
@@ -26,7 +25,6 @@ int main() {
     Font f;
     Color c;
 
-    char *font;
     openFont("archaic", &f);
     c.r = 255;
     c.g = 255;

@@ -29,14 +29,11 @@ void drawRainbow(FrameBuffer *fb, int x, int y) {
 }
 
 int main() {
-    int nyanX, nyanY, topLeftX, topLeftY, botRightX, botRightY;
-    int x, y;
     fb = initialize();
 
     //Initialization
     Color white, black, grey, pink, background;
     Color orange, yellow, green;
-    Image nyanCat, nyanCat_a;
 
     initColor(&orange, "ff7800");
     initColor(&yellow, "FFFF00");

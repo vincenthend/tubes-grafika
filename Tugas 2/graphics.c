@@ -34,8 +34,6 @@ void openFont(char *font, Font *f) {
 }
 
 void openImage(char *image, Image *img) {
-    int i;
-
     char image_filename[30];
     strcpy(image_filename, "image/");
     strcat(image_filename, image);

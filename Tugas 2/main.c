@@ -70,7 +70,6 @@ int main() {
 
     int line3x0 = lineInitX, line3y0 = lineInitY;
     int line3x1 = lineInitX + 10, line3y1 = lineInitY - 10;
-    int timer = 0;
 
     int laser2 = 0;
     int laser3 = 0;
