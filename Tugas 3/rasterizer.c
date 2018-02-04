@@ -13,7 +13,7 @@ void initShape(Shape *s, int n) {
 // int findMinX(Vertices vertices[], int vertex_count) {
 //     int i;
 //     int yMin = vertices[0]->v.y;
-//     for (i=0; i<vertex_count; i++) {
+//     for (i = 0; i < vertex_count; i++) {
 //         if (vertices[i]->v.y < yMin) {
 //             yMin = vertices[i]->v.y;
 //         }
@@ -24,7 +24,7 @@ void initShape(Shape *s, int n) {
 // int findMaxY(Vertices vertices[], int vertex_count) {
 //     int i;
 //     int yMax = vertices[0]->v.y;
-//     for (i=0; i<vertex_count; i++) {
+//     for (i = 0; i < vertex_count; i++) {
 //         if (vertices[i]->v.y > yMax) {
 //             yMax = vertices[i]->v.y;
 //         }
