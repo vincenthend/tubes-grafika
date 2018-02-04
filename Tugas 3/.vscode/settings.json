@@ -6,6 +6,8 @@
         "array": "c",
         "*.tcc": "c",
         "bitset": "cpp",
-        "chrono": "cpp"
+        "chrono": "cpp",
+        "initializer_list": "c",
+        "valarray": "c"
     }
 }
