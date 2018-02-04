@@ -1,4 +1,5 @@
 #include "rasterizer.h"
+#include "rasterizer_extended.c"
 
 void initPolygon(Polygon *p, int n) {
     p->vertices = (Vertex *)malloc(n * sizeof(Vertex));
@@ -9,27 +10,6 @@ void initShape(Shape *s, int n) {
     s->polygons = (Polygon *)malloc(n * sizeof(Polygon));
     s->count = n;
 }
-
-// int findMinX(Vertices vertices[], int vertex_count) {
-//     int i;
-//     int yMin = vertices[0]->v.y;
-//     for (i = 0; i < vertex_count; i++) {
-//         if (vertices[i]->v.y < yMin) {
-//             yMin = vertices[i]->v.y;
-//         }
-//     }
-//     return yMin;
-// }
-
-// int findMaxY(Vertices vertices[], int vertex_count) {
-//     int i;
-//     int yMax = vertices[0]->v.y;
-//     for (i = 0; i < vertex_count; i++) {
-//         if (vertices[i]->v.y > yMax) {
-//             yMax = vertices[i]->v.y;
-//         }
-//     }
-// }
 
 void drawPolygon(FrameBuffer *fb, const Polygon *p, Color c) {
     int i;
@@ -52,6 +32,36 @@ void boundaryFill(FrameBuffer *fb, int x, int y, Color c) {
     }
 }
 
+void scanlineFill(FrameBuffer *fb, Shape *s, Color c) {
+    int minX = findMinXInShape(s->polygons, s->count);
+    int maxX = findMaxXInShape(s->polygons, s->count);
+    int minY = findMinYInShape(s->polygons, s->count);
+    int maxY = findMaxYInShape(s->polygons, s->count);
+
+    int y;
+    int colorize = 1;
+    for (y = minY; y <= maxY; y++) {
+        Color curr = getColor(fb, minX, y);
+        if (!isSameColor(curr, c)) {
+            colorize = 0;
+        }
+
+        int x;
+        for (x = minX; x <= maxX; x++) {
+            curr = getColor(fb, x, y);
+            if (isSameColor(curr, c)) {
+                colorize = !colorize;
+
+                continue;
+            }
+
+            if (colorize) {
+                addPixelToBuffer(fb, x, y, c.r, c.g, c.b, c.a);
+            }
+        }
+    }
+}
+
 /**
  * Follow https://www.cosc.brocku.ca/Offerings/3P98/course/lectures/2d/
  * Scan converting solid polygons
@@ -70,5 +80,9 @@ void fillShape(FrameBuffer *fb, Shape *s, Color c) {
 
     // Boundary fill
     boundaryFill(fb, v.x, v.y, c);
+
+    // Scanline fill
+    // scanlineFill(fb, s, c);
+
     updateFrame(fb);
 }

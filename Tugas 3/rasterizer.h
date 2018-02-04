@@ -34,4 +34,20 @@ void drawPolygon(FrameBuffer *fb, const Polygon *p, Color c);
  */
 void fillShape(FrameBuffer *fb, Shape *s, Color c);
 
+int findMinXInShape(Polygon *polygons, int polygon_count);
+
+int findMaxXInShape(Polygon *polygons, int polygon_count);
+
+int findMinYInShape(Polygon *polygons, int polygon_count);
+
+int findMaxYInShape(Polygon *polygons, int polygon_count);
+
+int findMinXInPolygon(Vertex *vertices, int vertex_count);
+
+int findMaxXInPolygon(Vertex *vertices, int vertex_count);
+
+int findMinYInPolygon(Vertex *vertices, int vertex_count);
+
+int findMaxYInPolygon(Vertex *vertices, int vertex_count);
+
 #endif
