@@ -62,6 +62,13 @@ void openRasterFont(char *raster_font, RasterFont *rf) {
     int i;
 
     // TODO: Put some malloc here for Shapes and Polygons
+    for(int i = 'a'; i <= 'z'; i++) {
+        initShape((*rf).dict[i], 10);
+        for(int j = 0; j < 10; j++) {
+            initPolygon(&((*rf).dict[i]->polygons[j]), 20);
+        }
+    }
+
 
     char rf_filename[30];
     strcpy(rf_filename, "fonts/");
@@ -79,7 +86,7 @@ void openRasterFont(char *raster_font, RasterFont *rf) {
         int x, y;
         // Next line would be character
         int current_char = 'a';
-        while (fscanf(rf_file, "%s", &ch_dump) == 1) {
+        while (fscanf(rf_file, "%s", ch_dump) == 1) {
             // Let the party begin
             // Check for -1,-1 which means new polygon
             // Check for -9,-9 which means new char
@@ -88,11 +95,14 @@ void openRasterFont(char *raster_font, RasterFont *rf) {
             int vertice_index = 0;
             while (fscanf(rf_file, "%d,%d", &x, &y) == 1) {
                 if ((x == -999 && y == -999) || (x == -9 && y == -9)) {
+                    (*rf).dict[current_char]->polygons[poly_index].count = vertice_index;
+                    (*rf).dict[current_char].count = poly_index;
                     current_char++;
                     break;
                 }
                 else {
                     if (x == -1 && y == -1) {
+                        (*rf).dict[current_char]->polygons[poly_index].count = vertice_index;
                         poly_index++;
                     }
                     else {
@@ -106,8 +116,5 @@ void openRasterFont(char *raster_font, RasterFont *rf) {
         }
         fclose(rf_file);
     }
-    else {
-        printf("Font does not exist\n");
-        exit(5);
-    }
+
 }
