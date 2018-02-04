@@ -5,10 +5,10 @@
 #include "font.h"
 #include "framebuffer.h"
 
-extern char* cdict[255];
+extern char *cdict[255];
 
-void printChar(FrameBuffer* fb, char c, Font f, int x, int y, Color col);
+void printChar(FrameBuffer *fb, char c, Font f, int x, int y, Color col);
 
-void printString(FrameBuffer* fb, char* s, Font f, int x, int y, Color col);
+void printString(FrameBuffer *fb, char *s, Font f, int x, int y, Color col);
 
 #endif

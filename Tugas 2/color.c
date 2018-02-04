@@ -1,6 +1,6 @@
 #include "color.h"
 
-void initColor(Color* c, char* color) {
+void initColor(Color *c, char *color) {
     int hexcol = strtol(color, NULL, 16);
 
     (*c).r = hexcol >> 16;

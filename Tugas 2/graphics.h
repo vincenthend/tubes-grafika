@@ -6,19 +6,19 @@
 #include <string.h>
 
 typedef struct {
-    char* dict[256];
+    char *dict[256];
     int height;
     int width;
 } Font;
 
-typedef struct{
-    char* data;
+typedef struct {
+    char *data;
     int height;
     int width;
 } Image;
 
-void openFont(char* font, Font* f);
+void openFont(char *font, Font *f);
 
-void openImage(char* image, Image* i);
+void openImage(char *image, Image *i);
 
 #endif

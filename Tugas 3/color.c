@@ -1,6 +1,6 @@
 #include "color.h"
 
-void initColor(Color* c, char* color) {
+void initColor(Color *c, char *color) {
     int hexcol = strtol(color, NULL, 16);
 
     (*c).r = hexcol >> 16;
@@ -10,6 +10,5 @@ void initColor(Color* c, char* color) {
 }
 
 char compareColor(Color c1, Color c2) {
-    return (c1.r == c2.r && c1.g == c2.g &&
-            c1.b == c2.b && c1.a == c2.a);
+    return (c1.r == c2.r && c1.g == c2.g && c1.b == c2.b && c1.a == c2.a);
 }

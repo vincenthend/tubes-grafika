@@ -3,9 +3,9 @@
 /**
  * Menuliskan karakter pada x dan y tertentu
  */
-void printChar(FrameBuffer* fb, char c, Font f, int x, int y, Color col) {
+void printChar(FrameBuffer *fb, char c, Font f, int x, int y, Color col) {
     int i, j;
-    char* dict = f.dict[(int)c];
+    char *dict = f.dict[(int)c];
     for (i = 0; i < f.height; i++) {
         for (j = 0; j < f.width; j++) {
             if (dict[i * f.width + j] == '1') {
@@ -21,7 +21,7 @@ void printChar(FrameBuffer* fb, char c, Font f, int x, int y, Color col) {
 /**
  * Menuliskan string pada x dan y tertentu
  */
-void printString(FrameBuffer* fb, char* s, Font f, int x, int y, Color col) {
+void printString(FrameBuffer *fb, char *s, Font f, int x, int y, Color col) {
     int char_index = 0;
     int string_length = strlen(s);
     char c;

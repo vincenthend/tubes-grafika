@@ -1,13 +1,13 @@
 #include "drawer.h"
 
-void swap(int* a, int* b) {
+void swap(int *a, int *b) {
     int temp;
     temp = *a;
     *a = *b;
     *b = temp;
 }
 
-void drawLine(FrameBuffer* fb, int x0, int y0, int x1, int y1, int r, int g,
+void drawLine(FrameBuffer *fb, int x0, int y0, int x1, int y1, int r, int g,
               int b, int a) {
     char steep = abs(y1 - y0) > abs(x1 - x0);
 
@@ -53,7 +53,7 @@ void drawLine(FrameBuffer* fb, int x0, int y0, int x1, int y1, int r, int g,
     }
 }
 
-void drawCircle(FrameBuffer* fb, int x0, int y0, int radius, int r, int g,
+void drawCircle(FrameBuffer *fb, int x0, int y0, int radius, int r, int g,
                 int b, int a) {
     int x = radius;
     int y = 0;

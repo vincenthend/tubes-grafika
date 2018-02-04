@@ -25,8 +25,8 @@ FrameBuffer initialize() {
     // fb.screen_size = fb.screen_width * fb.screen_height * fb.screen_density / 8;
     fb.screen_size = fb.finfo.smem_len;
 
-    fb.buffer = (char*)mmap(0, fb.screen_size, PROT_READ | PROT_WRITE,
-                            MAP_SHARED, fb.fbfd, 0);
+    fb.buffer = (char *)mmap(0, fb.screen_size, PROT_READ | PROT_WRITE,
+                             MAP_SHARED, fb.fbfd, 0);
     if ((int)fb.buffer == -1) {
         perror("Error: failed to map framebuffer device to memory");
         exit(4);
@@ -39,9 +39,9 @@ FrameBuffer initialize() {
     return fb;
 }
 
-void addPixelToBuffer(FrameBuffer* fb, int x, int y, int r, int g, int b,
+void addPixelToBuffer(FrameBuffer *fb, int x, int y, int r, int g, int b,
                       int a) {
-    char* buffer = fb->buffer;
+    char *buffer = fb->buffer;
     long int location =
         (x + fb->vinfo.xoffset) * (fb->vinfo.bits_per_pixel / 8) +
         (y + fb->vinfo.yoffset) * (fb->finfo.line_length);
@@ -56,13 +56,13 @@ void addPixelToBuffer(FrameBuffer* fb, int x, int y, int r, int g, int b,
     }
 }
 
-void updateFrame(FrameBuffer* fb) {
+void updateFrame(FrameBuffer *fb) {
     munmap(fb->buffer, fb->screen_size);
     close(fb->fbfd);
     printf("Frame updated\n");
 }
 
-void setBackground(FrameBuffer* fb, int r, int g, int b, int a) {
+void setBackground(FrameBuffer *fb, int r, int g, int b, int a) {
     int i, j;
     for (i = 0; i < fb->screen_width; i++) {
         for (j = 0; j < fb->screen_height; j++) {
@@ -71,11 +71,11 @@ void setBackground(FrameBuffer* fb, int r, int g, int b, int a) {
     }
 }
 
-void clearScreen(FrameBuffer* fb) {
+void clearScreen(FrameBuffer *fb) {
     setBackground(fb, 0, 0, 0, 0);
 }
 
-Color getColor(const FrameBuffer* fb, int x, int y) {
+Color getColor(const FrameBuffer *fb, int x, int y) {
     long int location =
         (x + fb->vinfo.xoffset) * (fb->vinfo.bits_per_pixel / 8) +
         (y + fb->vinfo.yoffset) * (fb->finfo.line_length);

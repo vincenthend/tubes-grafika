@@ -1,9 +1,9 @@
 #include "font.h"
 
-void openFont(char* font, Font* f) {
+void openFont(char *font, Font *f) {
     int i;
     for (i = 0; i < 256; i++) {
-        (*f).dict[i] = (char*)malloc(100);
+        (*f).dict[i] = (char *)malloc(100);
     }
 
     int cidx = 'a';
@@ -12,7 +12,7 @@ void openFont(char* font, Font* f) {
     strcat(font_filename, font);
     strcat(font_filename, ".txt");
 
-    FILE* font_file;
+    FILE *font_file;
     font_file = fopen(font_filename, "r");
     if (font_file) {
         fscanf(font_file, "%d", &((*f).width));

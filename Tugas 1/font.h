@@ -6,11 +6,11 @@
 #include <string.h>
 
 typedef struct {
-    char* dict[256];
+    char *dict[256];
     int height;
     int width;
 } Font;
 
-void openFont(char* font, Font* f);
+void openFont(char *font, Font *f);
 
 #endif

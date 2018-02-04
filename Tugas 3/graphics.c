@@ -1,9 +1,9 @@
 #include "graphics.h"
 
-void openFont(char* font, Font* f) {
+void openFont(char *font, Font *f) {
     int i;
     for (i = 0; i < 256; i++) {
-        (*f).dict[i] = (char*)malloc(100);
+        (*f).dict[i] = (char *)malloc(100);
     }
 
     int cidx = 'a';
@@ -12,7 +12,7 @@ void openFont(char* font, Font* f) {
     strcat(image_filename, font);
     strcat(image_filename, ".txt");
 
-    FILE* image_file;
+    FILE *image_file;
     image_file = fopen(image_filename, "r");
     if (image_file) {
         fscanf(image_file, "%d", &((*f).width));
@@ -33,7 +33,7 @@ void openFont(char* font, Font* f) {
     }
 }
 
-void openImage(char* image, Image* img){
+void openImage(char *image, Image *img) {
     int i;
 
     char image_filename[30];
@@ -41,13 +41,13 @@ void openImage(char* image, Image* img){
     strcat(image_filename, image);
     strcat(image_filename, ".txt");
 
-    FILE* image_file;
+    FILE *image_file;
     image_file = fopen(image_filename, "r");
     if (image_file) {
         fscanf(image_file, "%d", &((*img).width));
         fscanf(image_file, "%d", &((*img).height));
-        (*img).data = (char*)malloc((*img).width*(*img).height+2);
-        
+        (*img).data = (char *)malloc((*img).width * (*img).height + 2);
+
         if (fscanf(image_file, "%s", (*img).data) == 1) {
             printf("Successfully loaded image %s\n", image);
         } else {

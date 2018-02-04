@@ -2,14 +2,14 @@
 
 #include <math.h>
 
-void swap(int* a, int* b) {
+void swap(int *a, int *b) {
     int temp;
     temp = *a;
     *a = *b;
     *b = temp;
 }
 
-void drawLine(FrameBuffer* fb, int x0, int y0, int x1, int y1, Color c) {
+void drawLine(FrameBuffer *fb, int x0, int y0, int x1, int y1, Color c) {
     char steep = abs(y1 - y0) > abs(x1 - x0);
 
     // Check if the line is steep (m>1)
@@ -54,7 +54,8 @@ void drawLine(FrameBuffer* fb, int x0, int y0, int x1, int y1, Color c) {
     }
 }
 
-void drawThickLine(FrameBuffer *fb, int x0, int y0, int x1, int y1, int width, Color c) {
+void drawThickLine(FrameBuffer *fb, int x0, int y0, int x1, int y1, int width,
+                   Color c) {
     char steep = abs(y1 - y0) > abs(x1 - x0);
 
     // Check if the line is steep (m>1)
@@ -99,7 +100,7 @@ void drawThickLine(FrameBuffer *fb, int x0, int y0, int x1, int y1, int width, C
     }
 }
 
-void drawCircle(FrameBuffer* fb, int x0, int y0, int radius, Color c) {
+void drawCircle(FrameBuffer *fb, int x0, int y0, int radius, Color c) {
     int x = radius;
     int y = 0;
     int radiusError = 1 - x;
@@ -125,10 +126,10 @@ void drawCircle(FrameBuffer* fb, int x0, int y0, int radius, Color c) {
     }
 }
 
-void drawFilledCircle(FrameBuffer* fb, int x0, int y0, int radius, Color c) {
+void drawFilledCircle(FrameBuffer *fb, int x0, int y0, int radius, Color c) {
     int current_radius;
 
-    for (current_radius=1; current_radius<=radius; current_radius++) {
+    for (current_radius = 1; current_radius <= radius; current_radius++) {
         int x = radius;
         int y = 0;
         int radiusError = 1 - x;
@@ -151,20 +152,20 @@ void drawFilledCircle(FrameBuffer* fb, int x0, int y0, int radius, Color c) {
                 x--;
                 radiusError += 2 * (y - x + 1);
             }
-        }    
+        }
     }
 }
 
-void drawSquare(FrameBuffer* fb, int x0, int y0, int x1, int y1, Color c){
+void drawSquare(FrameBuffer *fb, int x0, int y0, int x1, int y1, Color c) {
     drawLine(fb, x0, y0, x0, y1, c);
     drawLine(fb, x0, y1, x1, y1, c);
     drawLine(fb, x1, y1, x1, y0, c);
     drawLine(fb, x1, y0, x0, y0, c);
 }
 
-void drawMonoImage(FrameBuffer* fb, Image img, int x, int y, Color col){
+void drawMonoImage(FrameBuffer *fb, Image img, int x, int y, Color col) {
     int i, j;
-    char* data = img.data;
+    char *data = img.data;
     for (i = 0; i < img.height; i++) {
         for (j = 0; j < img.width; j++) {
             if (data[i * img.width + j] == '1') {
@@ -175,29 +176,30 @@ void drawMonoImage(FrameBuffer* fb, Image img, int x, int y, Color col){
     }
 }
 
-void fillSquareArea(FrameBuffer* fb, int x0, int y0, int x1, int y1, Color c){
+void fillSquareArea(FrameBuffer *fb, int x0, int y0, int x1, int y1, Color c) {
     int x, y;
-    for(x=x0; x<=x1; x++){
-        for(y=y0; y<=y1; y++){
+    for (x = x0; x <= x1; x++) {
+        for (y = y0; y <= y1; y++) {
             addPixelToBuffer(fb, x, y, c.r, c.g, c.b, c.a);
         }
     }
 }
 
-void drawNyanImage(FrameBuffer* fb, Image img, int x, int y, Color lineColor, Color clothColor, Color skinColor) {
+void drawNyanImage(FrameBuffer *fb, Image img, int x, int y, Color lineColor,
+                   Color clothColor, Color skinColor) {
     int i, j;
-    char* data = img.data;
+    char *data = img.data;
     for (i = 0; i < img.height; i++) {
         for (j = 0; j < img.width; j++) {
             if (data[i * img.width + j] == '1') {
-                addPixelToBuffer(fb, (x) + j, (y) + i, lineColor.r, lineColor.g, lineColor.b,
-                                 lineColor.a);
+                addPixelToBuffer(fb, (x) + j, (y) + i, lineColor.r, lineColor.g,
+                                 lineColor.b, lineColor.a);
             } else if (data[i * img.width + j] == '2') {
-                addPixelToBuffer(fb, (x) + j, (y) + i, clothColor.r, clothColor.g, clothColor.b,
-                                 clothColor.a);
+                addPixelToBuffer(fb, (x) + j, (y) + i, clothColor.r,
+                                 clothColor.g, clothColor.b, clothColor.a);
             } else if (data[i * img.width + j] == '3') {
-                addPixelToBuffer(fb, (x) + j, (y) + i, skinColor.r, skinColor.g, skinColor.b,
-                                 skinColor.a);
+                addPixelToBuffer(fb, (x) + j, (y) + i, skinColor.r, skinColor.g,
+                                 skinColor.b, skinColor.a);
             }
         }
     }

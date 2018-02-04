@@ -17,14 +17,14 @@ typedef struct {
     int screen_height;
     int screen_density;
     int screen_size;
-    char* buffer;
+    char *buffer;
 } FrameBuffer;
 
 FrameBuffer initialize();
 
-void addPixelToBuffer(FrameBuffer* fb, int x, int y, int r, int g, int b,
+void addPixelToBuffer(FrameBuffer *fb, int x, int y, int r, int g, int b,
                       int a);
 
-void updateFrame(FrameBuffer* fb);
+void updateFrame(FrameBuffer *fb);
 
 #endif

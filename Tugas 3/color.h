@@ -10,7 +10,7 @@ typedef struct {
     int a;
 } Color;
 
-void initColor(Color* c, char* color);
+void initColor(Color *c, char *color);
 
 char compareColor(Color c1, Color c2);
 #endif
