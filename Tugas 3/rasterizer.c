@@ -83,8 +83,12 @@ void fillShape(FrameBuffer *fb, Shape *s, Color c) {
     updateFrame(fb);
 }
 
-void fillChar(FrameBuffer *fb, char ch, int x, int y, Color c) {
+void fillChar(FrameBuffer *fb, char ch, RasterFont *rf, int x, int y, Color c) {
+    Vertex offset;
+    offset.x = x;
+    offset.y = y;
 
+    fillShape(fb, offsetShape(rf->dict[int(ch)], offset), c);
 }
 
 void fillString(FrameBuffer *fb, char *s, int x, int y, Color c) {
