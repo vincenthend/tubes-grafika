@@ -22,7 +22,8 @@ FrameBuffer initialize() {
     fb.screen_width = fb.vinfo.xres;
     fb.screen_height = fb.vinfo.yres;
     fb.screen_density = fb.vinfo.bits_per_pixel;
-    fb.screen_size = fb.screen_width * fb.screen_height * fb.screen_density / 8;
+    // fb.screen_size = fb.screen_width * fb.screen_height * fb.screen_density / 8;
+    fb.screen_size = fb.finfo.smem_len;
 
     fb.buffer = (char*)mmap(0, fb.screen_size, PROT_READ | PROT_WRITE,
                             MAP_SHARED, fb.fbfd, 0);
@@ -30,6 +31,10 @@ FrameBuffer initialize() {
         perror("Error: failed to map framebuffer device to memory");
         exit(4);
     }
+
+    // for (i = 0; i < fb.finfo.smem_len; i++) {
+    //     printf("%d\n", *(fb.buffer + i));
+    // }
 
     return fb;
 }
@@ -68,4 +73,17 @@ void setBackground(FrameBuffer* fb, int r, int g, int b, int a) {
 
 void clearScreen(FrameBuffer* fb) {
     setBackground(fb, 0, 0, 0, 0);
+}
+
+Color getColor(const FrameBuffer* fb, int x, int y) {
+    long int location =
+        (x + fb->vinfo.xoffset) * (fb->vinfo.bits_per_pixel / 8) +
+        (y + fb->vinfo.yoffset) * (fb->finfo.line_length);
+
+    Color c;
+    c.r = (*(fb->buffer + location + 2) + 256) % 256;
+    c.g = (*(fb->buffer + location + 1) + 256) % 256;
+    c.b = (*(fb->buffer + location) + 256) % 256;
+    c.a = (*(fb->buffer + location + 3) + 256) % 256;
+    return c;
 }

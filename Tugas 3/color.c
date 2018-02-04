@@ -8,3 +8,8 @@ void initColor(Color* c, char* color) {
     (*c).b = (hexcol - (hexcol >> 8 << 8));
     (*c).a = 0;
 }
+
+char compareColor(Color c1, Color c2) {
+    return (c1.r == c2.r && c1.g == c2.g &&
+            c1.b == c2.b && c1.a == c2.a);
+}

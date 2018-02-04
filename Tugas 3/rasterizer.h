@@ -19,7 +19,10 @@ typedef struct {
 
 /**
  * A simple polygon is a polygon without any intersecting sides.
+ * Assumption: polygon is a convex hull
  */
-void simplePolygonFill(Vertex* vertices, Color c);
+void simplePolygonFill(FrameBuffer* fb, Vertex* vertices, int vertex_count, Color c);
+
+
 
 #endif

@@ -8,6 +8,7 @@
 #include <sys/ioctl.h>
 #include <sys/mman.h>
 #include <unistd.h>
+#include "color.h"
 
 typedef struct {
     int fbfd;
@@ -26,5 +27,7 @@ void addPixelToBuffer(FrameBuffer* fb, int x, int y, int r, int g, int b,
                       int a);
 
 void updateFrame(FrameBuffer* fb);
+
+Color getColor(const FrameBuffer* fb, int x, int y);
 
 #endif

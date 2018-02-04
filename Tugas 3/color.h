@@ -11,4 +11,6 @@ typedef struct {
 } Color;
 
 void initColor(Color* c, char* color);
+
+char compareColor(Color c1, Color c2);
 #endif
