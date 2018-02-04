@@ -14,14 +14,25 @@ typedef struct {
 } Vertex;
 
 typedef struct {
-    Vertex v;
-} Vertices[MAX_VERTICES];
+    Vertex* vertices;
+    int count;
+} Polygon;
+
+typedef struct {
+    Polygon* polygons;
+    int count;
+} Shape;
+
+void initPolygon(Polygon* p, int n);
+
+void initShape(Shape* s, int n);
+
+void drawPolygon(FrameBuffer* fb, const Polygon* p, Color c);
 
 /**
  * A simple polygon is a polygon without any intersecting sides.
- * Assumption: polygon is a convex hull
  */
-void simplePolygonFill(FrameBuffer* fb, Vertex* vertices, int vertex_count, Color c);
+void fillShape(FrameBuffer* fb, Shape* s, Color c);
 
 
 

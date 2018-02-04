@@ -47,116 +47,29 @@ int main(){
     initColor(&pink, "FF8AD1");
     initColor(&background, "0d1b46");
 
-
-    openImage("nyancat", &nyanCat);
-    openImage("nyancat_a", &nyanCat_a);
-    topLeftX = fb.screen_width - 810;
-    topLeftY = fb.screen_height - 410;
-    botRightX = fb.screen_width - 10;
-    botRightY = fb.screen_height - 10;
-    nyanX = botRightX - 60;
-    nyanY = botRightY - 350;
-    x = nyanX;
-    y = nyanY;
-
-
-    //Line matter
-    int lineInitX = botRightX - 410;
-    int lineInitY = botRightY - 50;
-
-    int line1x0 = lineInitX, line1y0 = lineInitY;
-    int line1x1 = lineInitX - 10;
-    int line1y1 = lineInitY - 10;
-
-    int line2x0 = lineInitX, line2y0 = lineInitY;
-    int line2x1 = lineInitX, line2y1 = lineInitY - 10;
+    Shape s;
+    initShape(&s, 2);
     
-    int line3x0 = lineInitX, line3y0 = lineInitY;
-    int line3x1 = lineInitX + 10, line3y1 = lineInitY - 10;
-    int timer = 0;
-    
-    int laser2 = 0;
-    int laser3 = 0;
+    initPolygon(&(s.polygons[0]), 5);
+    s.polygons[0].vertices[0].x = 700;
+    s.polygons[0].vertices[0].y = 100;
+    s.polygons[0].vertices[1].x = 900;
+    s.polygons[0].vertices[1].y = 100;
+    s.polygons[0].vertices[2].x = 1000;
+    s.polygons[0].vertices[2].y = 300;
+    s.polygons[0].vertices[3].x = 800;
+    s.polygons[0].vertices[3].y = 600;
+    s.polygons[0].vertices[4].x = 600;
+    s.polygons[0].vertices[4].y = 300;
 
-    Vertex* vertices = (Vertex*) malloc(5 * sizeof(Vertex));
-    vertices[0].x = 700;
-    vertices[0].y = 100;
-    vertices[1].x = 900;
-    vertices[1].y = 100;
-    vertices[2].x = 1000;
-    vertices[2].y = 300;
-    vertices[3].x = 800;
-    vertices[3].y = 600;
-    vertices[4].x = 600;
-    vertices[4].y = 300;
+    initPolygon(&(s.polygons[1]), 3);
+    s.polygons[1].vertices[0].x = 750;
+    s.polygons[1].vertices[0].y = 200;
+    s.polygons[1].vertices[1].x = 850;
+    s.polygons[1].vertices[1].y = 200;
+    s.polygons[1].vertices[2].x = 800;
+    s.polygons[1].vertices[2].y = 400;
 
-    simplePolygonFill(&fb, vertices, 5, pink);
-
-    //Loop
-    // while(1){
-    //     fillSquareArea(&fb, topLeftX, topLeftY,botRightX, botRightY, background);
-    //     drawSquare(&fb, topLeftX, topLeftY,botRightX, botRightY, white);
-    //     drawRainbow(&fb, nyanCat.width+x, y);
-    //     if(x%50>25){
-    //         drawNyanImage(&fb, nyanCat, x, y, black, pink, grey);
-    //     }
-    //     else{
-    //         drawNyanImage(&fb, nyanCat_a, x, y, black, pink, grey);
-    //     }
-        
-    //     x--;
-    //     if(x < topLeftX) {
-    //         x = nyanX;               
-    //     }
-    //     if(x%50>25){
-    //         y = nyanY+2;
-    //     }
-    //     else{
-    //         y = nyanY;
-    //     }
-    //     usleep(1000);
-
-    //     //Line matter
-    //     line1x0 -= 5;
-    //     line1y0 -= 5;
-    //     line1x1 -= 5;
-    //     line1y1 -= 5;
-    //     drawThickLine(&fb, line1x0, line1y0, line1x1, line1y1, 2, orange);
-        
-    //     laser2 = (line1x1 <= lineInitX - 30)? 1: 0;
-    //     if (laser2) {
-    //         line2y0 -= 5;
-    //         line2y1 -= 5;
-    //         drawThickLine(&fb, line2x0, line2y0, line2x1, line2y1, 3, yellow);
-    //     }
-
-    //     laser3 = (line2y1 <= lineInitY - 40)? 1: 0;
-    //     if (laser3) {
-    //         line3x0 += 5;
-    //         line3y0 -= 5;
-    //         line3x1 += 5;
-    //         line3y1 -= 5;
-    //         drawThickLine(&fb, line3x0, line3y0, line3x1, line3y1, 4, green);
-    //     }
-        
-    //     if (line1x1 <= topLeftX || line1y1 <= topLeftY + 6) {
-    //         line1x0 = lineInitX;
-    //         line1y0 = lineInitY;
-    //         line1x1 = lineInitX - 10;
-    //         line1y1 = lineInitY - 10;
-    //     }
-    //     if (line2y1 <= topLeftY + 6) {
-    //         line2y0 = lineInitY;
-    //         line2y1 = lineInitY - 10;    
-    //     }
-    //     if (line3x0 >= botRightX || line3y1 <= topLeftY + 6) {
-    //         line3x0 = lineInitX;
-    //         line3x1 = lineInitX + 10;
-    //         line3y0 = lineInitY;
-    //         line3y1 = lineInitY - 10;
-    //     }
-    // }
-
-    updateFrame(&fb);
+    fillShape(&fb, &s, pink);
     return 0;
 }
