@@ -22,6 +22,12 @@ void drawPolygon(FrameBuffer *fb, const Polygon *p, Color c) {
 }
 
 void boundaryFill(FrameBuffer *fb, int x, int y, Color c) {
+    // Check screen boundaries
+    if ((x < 0) || (x >= fb->screen_width) ||
+        (y < 0) || (y >= fb->screen_height))
+        return;
+
+    // Output to screen
     Color curr = getColor(fb, x, y);
     if (!isSameColor(curr, c)) {
         addPixelToBuffer(fb, x, y, c.r, c.g, c.b, c.a);
@@ -99,6 +105,9 @@ void fillString(FrameBuffer *fb, char *s, RasterFont *rf, Vertex offset, Color c
         if (offset.x + 2 * rf->width >= fb->screen_width) {
             offset.x = origin.x;
             offset.y += rf->height;
+
+            if (offset.y >= fb->screen_height)
+                return;
         } else {
             offset.x += rf->width;
         }
