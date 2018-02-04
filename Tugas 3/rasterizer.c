@@ -43,7 +43,7 @@ void drawPolygon(FrameBuffer *fb, const Polygon *p, Color c) {
 
 void boundaryFill(FrameBuffer *fb, int x, int y, Color c) {
     Color curr = getColor(fb, x, y);
-    if (!compareColor(curr, c)) {
+    if (!isSameColor(curr, c)) {
         addPixelToBuffer(fb, x, y, c.r, c.g, c.b, c.a);
         boundaryFill(fb, x, y - 1, c);
         boundaryFill(fb, x, y + 1, c);

@@ -12,5 +12,5 @@ typedef struct {
 
 void initColor(Color *c, char *color);
 
-char compareColor(Color c1, Color c2);
+char isSameColor(Color c1, Color c2);
 #endif
