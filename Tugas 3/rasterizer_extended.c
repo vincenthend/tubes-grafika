@@ -95,3 +95,15 @@ int findMaxYInPolygon(Vertex *vertices, int vertex_count) {
     }
     return yMax;
 }
+
+Shape offsetShape(Shape s, const Vertex v) {
+    int i, j;
+    for (i = 0; i < s.count; ++i) {
+        Polygon p = s.polygons[i];
+        for (j = 0; j < p.count; ++j) {
+            p.vertices[j].x += v.x;
+            p.vertices[j].y += v.y;
+        }
+    }
+    return s;
+}

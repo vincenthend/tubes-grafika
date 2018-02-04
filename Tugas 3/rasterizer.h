@@ -47,8 +47,8 @@ int findMinYInPolygon(Vertex *vertices, int vertex_count);
 
 int findMaxYInPolygon(Vertex *vertices, int vertex_count);
 
-void fillChar(FrameBuffer *fb, char ch, int x, int y, Color c);
+void fillChar(FrameBuffer *fb, char ch, RasterFont *rf, Vertex offset, Color c);
 
-void fillString(FrameBuffer *fb, char *s, int x, int y, Color c);
+void fillString(FrameBuffer *fb, char *s, RasterFont *rf, Vertex offset, Color c);
 
 #endif

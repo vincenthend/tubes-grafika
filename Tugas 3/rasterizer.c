@@ -83,10 +83,24 @@ void fillShape(FrameBuffer *fb, Shape *s, Color c) {
     updateFrame(fb);
 }
 
-void fillChar(FrameBuffer *fb, char ch, int x, int y, Color c) {
-
+void fillChar(FrameBuffer *fb, char ch, RasterFont *rf, Vertex offset, Color c) {
+    fillShape(fb, offsetShape(rf->dict[int(ch)], offset), c);
 }
 
-void fillString(FrameBuffer *fb, char *s, int x, int y, Color c) {
+void fillString(FrameBuffer *fb, char *s, RasterFont *rf, Vertex offset, Color c) {
+    Vertex origin = offset;
+    int len = strlen(s);
 
+    int i;
+    for (i = 0; i < len; ++i) {
+        fillChar(fb, rf->dict[i], offset, c);
+
+        // Manage offset
+        if (offset.x + 2 * rf->width >= fb->screen_width) {
+            offset.x = origin.x;
+            offset.y += rf->height;
+        } else {
+            offset.x += rf->width;
+        }
+    }
 }
