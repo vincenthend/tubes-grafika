@@ -96,7 +96,7 @@ void openRasterFont(char *raster_font, RasterFont *rf) {
             while (fscanf(rf_file, "%d,%d", &x, &y) == 1) {
                 if ((x == -999 && y == -999) || (x == -9 && y == -9)) {
                     (*rf).dict[current_char]->polygons[poly_index].count = vertice_index;
-                    (*rf).dict[current_char].count = poly_index;
+                    (*rf).dict[current_char]->count = poly_index;
                     current_char++;
                     break;
                 }
