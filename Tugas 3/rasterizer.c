@@ -62,10 +62,6 @@ void scanlineFill(FrameBuffer *fb, Shape *s, Color c) {
     }
 }
 
-/**
- * Follow https://www.cosc.brocku.ca/Offerings/3P98/course/lectures/2d/
- * Scan converting solid polygons
- */
 void fillShape(FrameBuffer *fb, Shape *s, Color c) {
     int i;
     for (i = 0; i < s->count; ++i) {
@@ -85,4 +81,16 @@ void fillShape(FrameBuffer *fb, Shape *s, Color c) {
     // scanlineFill(fb, s, c);
 
     updateFrame(fb);
+}
+
+void initializeFontShape() {
+    raster_cdict['a']
+}
+
+void fillChar(FrameBuffer *fb, char ch, int x, int y, Color c) {
+
+}
+
+void fillString(FrameBuffer *fb, char *s, int x, int y, Color c) {
+
 }

@@ -2,6 +2,10 @@
     "files.associations": {
         "drawer.h": "c",
         "framebuffer.h": "c",
-        "font.h": "c"
+        "font.h": "c",
+        "array": "c",
+        "*.tcc": "c",
+        "bitset": "cpp",
+        "chrono": "cpp"
     }
 }
