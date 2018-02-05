@@ -1,4 +1,6 @@
-#include "rasterizer_extended.c"
+#include <string.h>
+
+#include "rasterizer.h"
 
 void initPolygon(Polygon *p, int n) {
     p->vertices = (Vertex *)malloc(n * sizeof(Vertex));
@@ -8,6 +10,12 @@ void initPolygon(Polygon *p, int n) {
 void initShape(Shape *s, int n) {
     s->polygons = (Polygon *)malloc(n * sizeof(Polygon));
     s->count = n;
+}
+
+void initRasterFont(RasterFont *rasterFont) {
+    rasterFont->dict = (Shape *)malloc(256 * sizeof(Shape));
+    rasterFont->height = 90;
+    rasterFont->width = 110;
 }
 
 void drawPolygon(FrameBuffer *fb, const Polygon *p, Color c) {
@@ -22,8 +30,8 @@ void drawPolygon(FrameBuffer *fb, const Polygon *p, Color c) {
 
 void boundaryFill(FrameBuffer *fb, int x, int y, Color c) {
     // Check screen boundaries
-    if ((x < 0) || (x >= fb->screen_width) ||
-        (y < 0) || (y >= fb->screen_height))
+    if ((x < 0) || (x >= fb->screen_width) || (y < 0) ||
+        (y >= fb->screen_height))
         return;
 
     // Output to screen
@@ -88,19 +96,21 @@ void fillShape(FrameBuffer *fb, Shape *s, Color c) {
     updateFrame(fb);
 }
 
-void fillChar(FrameBuffer *fb, char ch, RasterFont *rf, Vertex offset, Color c) {
-    //offsetShape apa ya?
-    fillShape(fb, offsetShape(*(rf->dict[(int) (ch)]), offset), c);
+void fillChar(FrameBuffer *fb, char ch, RasterFont *rf, Vertex offset,
+              Color c) {
+    offsetShape(&(rf->dict[(int)ch]), offset);
+    fillShape(fb, &(rf->dict[(int)ch]), c);
 }
 
-void fillString(FrameBuffer *fb, char *s, RasterFont *rf, Vertex offset, Color c) {
+void fillString(FrameBuffer *fb, char *s, RasterFont *rf, Vertex offset,
+                Color c) {
     Vertex origin = offset;
     int len = strlen(s);
 
     int i;
     for (i = 0; i < len; ++i) {
         //Ini yang gw ubah --AGUS s[i]
-        fillChar(fb, s[i], rf->dict[i], offset, c);
+        fillChar(fb, s[i], rf, offset, c);
 
         // Manage offset
         if (offset.x + 2 * rf->width >= fb->screen_width) {
@@ -113,4 +123,113 @@ void fillString(FrameBuffer *fb, char *s, RasterFont *rf, Vertex offset, Color c
             offset.x += rf->width;
         }
     }
+}
+
+void offsetShape(Shape *s, const Vertex v) {
+    int i, j;
+    for (i = 0; i < s->count; ++i) {
+        Polygon *p = &(s->polygons[i]);
+        for (j = 0; j < p->count; ++j) {
+            p->vertices[j].x += v.x;
+            p->vertices[j].y += v.y;
+        }
+    }
+}
+
+// -------- extended --------
+
+int findMinXInShape(Polygon *polygons, int polygon_count) {
+    int i;
+    int xMin = findMinXInPolygon(polygons[0].vertices, polygons[0].count);
+    for (i = 1; i < polygon_count; i++) {
+        int xMinLocal =
+            findMinXInPolygon(polygons[i].vertices, polygons[i].count);
+        if (xMinLocal < xMin) {
+            xMin = xMinLocal;
+        }
+    }
+    return xMin;
+}
+
+int findMaxXInShape(Polygon *polygons, int polygon_count) {
+    int i;
+    int xMax = findMaxXInPolygon(polygons[0].vertices, polygons[0].count);
+    for (i = 1; i < polygon_count; i++) {
+        int xMaxLocal =
+            findMaxXInPolygon(polygons[i].vertices, polygons[i].count);
+        if (xMaxLocal > xMax) {
+            xMax = xMaxLocal;
+        }
+    }
+    return xMax;
+}
+
+int findMinYInShape(Polygon *polygons, int polygon_count) {
+    int i;
+    int yMin = findMinYInPolygon(polygons[0].vertices, polygons[0].count);
+    for (i = 1; i < polygon_count; i++) {
+        int yMinLocal =
+            findMinYInPolygon(polygons[i].vertices, polygons[i].count);
+        if (yMinLocal < yMin) {
+            yMin = yMinLocal;
+        }
+    }
+    return yMin;
+}
+
+int findMaxYInShape(Polygon *polygons, int polygon_count) {
+    int i;
+    int yMax = findMaxYInPolygon(polygons[0].vertices, polygons[0].count);
+    for (i = 1; i < polygon_count; i++) {
+        int yMaxLocal =
+            findMaxYInPolygon(polygons[i].vertices, polygons[i].count);
+        if (yMaxLocal > yMax) {
+            yMax = yMaxLocal;
+        }
+    }
+    return yMax;
+}
+
+int findMinXInPolygon(Vertex *vertices, int vertex_count) {
+    int i;
+    int xMin = vertices[0].x;
+    for (i = 0; i < vertex_count; i++) {
+        if (vertices[i].x < xMin) {
+            xMin = vertices[i].x;
+        }
+    }
+    return xMin;
+}
+
+int findMaxXInPolygon(Vertex *vertices, int vertex_count) {
+    int i;
+    int xMax = vertices[0].x;
+    for (i = 1; i < vertex_count; i++) {
+        if (vertices[i].x > xMax) {
+            xMax = vertices[i].x;
+        }
+    }
+    return xMax;
+}
+
+int findMinYInPolygon(Vertex *vertices, int vertex_count) {
+    int i;
+    int yMin = vertices[0].y;
+    for (i = 1; i < vertex_count; i++) {
+        if (vertices[i].y < yMin) {
+            yMin = vertices[i].y;
+        }
+    }
+    return yMin;
+}
+
+int findMaxYInPolygon(Vertex *vertices, int vertex_count) {
+    int i;
+    int yMax = vertices[0].y;
+    for (i = 1; i < vertex_count; i++) {
+        if (vertices[i].y > yMax) {
+            yMax = vertices[i].y;
+        }
+    }
+    return yMax;
 }

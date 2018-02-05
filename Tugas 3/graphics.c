@@ -59,62 +59,65 @@ void openImage(char *image, Image *img) {
 }
 
 void openRasterFont(char *raster_font, RasterFont *rf) {
-    int i;
-
     // TODO: Put some malloc here for Shapes and Polygons
-    for(int i = 'a'; i <= 'z'; i++) {
-        initShape((*rf).dict[i], 10);
-        for(int j = 0; j < 10; j++) {
-            initPolygon(&((*rf).dict[i]->polygons[j]), 20);
+    for (int i = 'a'; i <= 'z'; i++) {
+        initShape(&(rf->dict[i]), 10);
+        for (int j = 0; j < 10; j++) {
+            initPolygon(&(rf->dict[i].polygons[j]), 20);
         }
     }
 
+    // char rf_filename[30];
+    // strcpy(rf_filename, "fonts/");
+    // strcat(rf_filename, raster_font);
+    // strcat(rf_filename, ".txt");
 
-    char rf_filename[30];
-    strcpy(rf_filename, "fonts/");
-    strcat(rf_filename, raster_font);
-    strcat(rf_filename, ".txt");
+    // char *ch_dump;
+    // FILE *rf_file;
+    // rf_file = fopen(rf_filename, "r");
+    // if (rf_file) {
+    //     fscanf(rf_file, "%d", &((*rf).width));
+    //     fscanf(rf_file, "%d", &((*rf).height));
 
-    char* ch_dump;
-    int max_char_read = 10;
-    FILE *rf_file;
-    rf_file = fopen(rf_filename, "r");
-    if (rf_file) {
-        fscanf(rf_file, "%d", &((*rf).width));
-        fscanf(rf_file, "%d", &((*rf).height));
-
-        int x, y;
-        // Next line would be character
-        int current_char = 'a';
-        while (fscanf(rf_file, "%s", ch_dump) == 1) {
-            // Let the party begin
-            // Check for -1,-1 which means new polygon
-            // Check for -9,-9 which means new char
-            // Check for -999,-999 which means end of file
-            int poly_index = 0;
-            int vertice_index = 0;
-            while (fscanf(rf_file, "%d,%d", &x, &y) == 1) {
-                if ((x == -999 && y == -999) || (x == -9 && y == -9)) {
-                    (*rf).dict[current_char]->polygons[poly_index].count = vertice_index;
-                    (*rf).dict[current_char]->count = poly_index;
-                    current_char++;
-                    break;
-                }
-                else {
-                    if (x == -1 && y == -1) {
-                        (*rf).dict[current_char]->polygons[poly_index].count = vertice_index;
-                        poly_index++;
-                    }
-                    else {
-                        // Normal read
-                        (*rf).dict[current_char]->polygons[poly_index].vertices[vertice_index].x = x;
-                        (*rf).dict[current_char]->polygons[poly_index].vertices[vertice_index].x = y;
-                        vertice_index++;
-                    }
-                }
-            }
-        }
-        fclose(rf_file);
-    }
-
+    //     int x, y;
+    //     // Next line would be character
+    //     int current_char = 'a';
+    //     while (fscanf(rf_file, "%s", ch_dump) == 1) {
+    //         // Let the party begin
+    //         // Check for -1,-1 which means new polygon
+    //         // Check for -9,-9 which means new char
+    //         // Check for -999,-999 which means end of file
+    //         int poly_index = 0;
+    //         int vertice_index = 0;
+    //         while (fscanf(rf_file, "%d,%d", &x, &y) == 1) {
+    //             if ((x == -999 && y == -999) || (x == -9 && y == -9)) {
+    //                 (*rf).dict[current_char]->polygons[poly_index].count =
+    //                     vertice_index;
+    //                 (*rf).dict[current_char]->count = poly_index;
+    //                 current_char++;
+    //                 break;
+    //             } else {
+    //                 if (x == -1 && y == -1) {
+    //                     (*rf).dict[current_char]->polygons[poly_index].count =
+    //                         vertice_index;
+    //                     poly_index++;
+    //                 } else {
+    //                     // Normal read
+    //                     (*rf)
+    //                         .dict[current_char]
+    //                         ->polygons[poly_index]
+    //                         .vertices[vertice_index]
+    //                         .x = x;
+    //                     (*rf)
+    //                         .dict[current_char]
+    //                         ->polygons[poly_index]
+    //                         .vertices[vertice_index]
+    //                         .x = y;
+    //                     vertice_index++;
+    //                 }
+    //             }
+    //         }
+    //     }
+    //     fclose(rf_file);
+    // }
 }
