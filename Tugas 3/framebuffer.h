@@ -1,7 +1,6 @@
 #ifndef _FRAMEBUFFER_H
 #define _FRAMEBUFFER_H
 
-#include "color.h"
 #include <fcntl.h>
 #include <linux/fb.h>
 #include <stdio.h>
@@ -9,6 +8,8 @@
 #include <sys/ioctl.h>
 #include <sys/mman.h>
 #include <unistd.h>
+
+#include "color.h"
 
 typedef struct {
     int fbfd;

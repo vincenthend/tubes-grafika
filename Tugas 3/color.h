@@ -10,7 +10,8 @@ typedef struct {
     int a;
 } Color;
 
-void initColor(Color *c, char *color);
+void initColor(Color *color, char *colorHex);
 
-char isSameColor(Color c1, Color c2);
+char isSameColor(Color color1, Color color2);
+
 #endif

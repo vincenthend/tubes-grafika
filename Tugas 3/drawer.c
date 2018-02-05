@@ -1,7 +1,5 @@
 #include "drawer.h"
 
-#include <math.h>
-
 void swap(int *a, int *b) {
     int temp;
     temp = *a;
@@ -36,9 +34,9 @@ void drawLine(FrameBuffer *fb, int x0, int y0, int x1, int y1, Color c) {
         ystep = -1;
     }
 
-    int x;
-    int y = y0;
-    for (x = x0; x <= x1; x++) {
+    for (int x = x0; x <= x1; x++) {
+        int y = y0;
+
         if (steep) {
             addPixelToBuffer(fb, y, x, c.r, c.g, c.b, c.a);
         } else {
@@ -127,9 +125,7 @@ void drawCircle(FrameBuffer *fb, int x0, int y0, int radius, Color c) {
 }
 
 void drawFilledCircle(FrameBuffer *fb, int x0, int y0, int radius, Color c) {
-    int current_radius;
-
-    for (current_radius = 1; current_radius <= radius; current_radius++) {
+    for (int current_radius = 1; current_radius <= radius; current_radius++) {
         int x = radius;
         int y = 0;
         int radiusError = 1 - x;
@@ -164,10 +160,9 @@ void drawSquare(FrameBuffer *fb, int x0, int y0, int x1, int y1, Color c) {
 }
 
 void drawMonoImage(FrameBuffer *fb, Image img, int x, int y, Color col) {
-    int i, j;
     char *data = img.data;
-    for (i = 0; i < img.height; i++) {
-        for (j = 0; j < img.width; j++) {
+    for (int i = 0; i < img.height; i++) {
+        for (int j = 0; j < img.width; j++) {
             if (data[i * img.width + j] == '1') {
                 addPixelToBuffer(fb, (x) + j, (y) + i, col.r, col.g, col.b,
                                  col.a);
@@ -176,21 +171,11 @@ void drawMonoImage(FrameBuffer *fb, Image img, int x, int y, Color col) {
     }
 }
 
-void fillSquareArea(FrameBuffer *fb, int x0, int y0, int x1, int y1, Color c) {
-    int x, y;
-    for (x = x0; x <= x1; x++) {
-        for (y = y0; y <= y1; y++) {
-            addPixelToBuffer(fb, x, y, c.r, c.g, c.b, c.a);
-        }
-    }
-}
-
 void drawNyanImage(FrameBuffer *fb, Image img, int x, int y, Color lineColor,
                    Color clothColor, Color skinColor) {
-    int i, j;
     char *data = img.data;
-    for (i = 0; i < img.height; i++) {
-        for (j = 0; j < img.width; j++) {
+    for (int i = 0; i < img.height; i++) {
+        for (int j = 0; j < img.width; j++) {
             if (data[i * img.width + j] == '1') {
                 addPixelToBuffer(fb, (x) + j, (y) + i, lineColor.r, lineColor.g,
                                  lineColor.b, lineColor.a);
@@ -201,6 +186,14 @@ void drawNyanImage(FrameBuffer *fb, Image img, int x, int y, Color lineColor,
                 addPixelToBuffer(fb, (x) + j, (y) + i, skinColor.r, skinColor.g,
                                  skinColor.b, skinColor.a);
             }
+        }
+    }
+}
+
+void fillSquareArea(FrameBuffer *fb, int x0, int y0, int x1, int y1, Color c) {
+    for (int x = x0; x <= x1; x++) {
+        for (int y = y0; y <= y1; y++) {
+            addPixelToBuffer(fb, x, y, c.r, c.g, c.b, c.a);
         }
     }
 }
