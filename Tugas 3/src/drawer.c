@@ -191,8 +191,7 @@ void drawNyanImage(FrameBuffer *fb, Image img, int x, int y, Color lineColor,
 }
 
 void drawPolygon(FrameBuffer *fb, const Polygon *p, Color c) {
-    int i;
-    for (i = 0; i < p->vertexCount - 1; ++i) {
+    for (int i = 0; i < p->vertexCount - 1; ++i) {
         drawLine(fb, p->vertices[i].x, p->vertices[i].y, p->vertices[i + 1].x,
                  p->vertices[i + 1].y, c);
     }

@@ -13,9 +13,9 @@ void scanlineFill(FrameBuffer *fb, Shape *s, Color c);
 
 void fillShape(FrameBuffer *fb, Shape *s, Color c);
 
-void fillChar(FrameBuffer *fb, char ch, RasterFont *rf, Vertex offset, Color c);
+void fillChar(FrameBuffer *fb, char ch, RasterFont *rasterFont, Vertex offset, Color c);
 
-void fillString(FrameBuffer *fb, char *s, RasterFont *rf, Vertex offset,
+void fillString(FrameBuffer *fb, char *s, RasterFont *rasterFont, Vertex offset,
                 Color c);
 
 void fillSquareArea(FrameBuffer *fb, int x0, int y0, int x1, int y1, Color c);

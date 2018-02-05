@@ -50,22 +50,20 @@ void scanlineFill(FrameBuffer *fb, Shape *s, Color c) {
 }
 
 void fillShape(FrameBuffer *fb, Shape *s, Color c) {
-    int i;
-    printf("Preparing to draw polygon\n");
-    for (i = 0; i < s->polygonCount; ++i) {
+    printf("Starting to draw polygon\n");
+    for (int i = 0; i < s->polygonCount; ++i) {
         drawPolygon(fb, &(s->polygons[i]), c);
     }
+    printf("Finished drawing polygon\n");
 
     // Get point in polygon
     // TODO: make a better one
-    printf("Finished drawing polygon\n");
     Vertex v = (*s).polygons[0].vertices[0];
     v.x++;
     v.y++;
 
     // Boundary fill
-    printf("Boundary Fill\n");
-    boundaryFill(fb, v.x, v.y, c);
+    // boundaryFill(fb, v.x, v.y, c);
 
     // Scanline fill
     // scanlineFill(fb, s, c);
@@ -73,33 +71,32 @@ void fillShape(FrameBuffer *fb, Shape *s, Color c) {
     updateFrame(fb);
 }
 
-void fillChar(FrameBuffer *fb, char ch, RasterFont *rf, Vertex offset,
+void fillChar(FrameBuffer *fb, char ch, RasterFont *rasterFont, Vertex offset,
               Color c) {
-    printf("Count: %d\n", (*rf).dict[(int)ch].polygonCount);
+    printf("Count: %d\n", (*rasterFont).dict[(int)ch].polygonCount);
 
-    offsetShape(&(rf->dict[(int)ch]), offset);
-    fillShape(fb, &(rf->dict[(int)ch]), c);
+    offsetShape(&(rasterFont->dict[(int)ch]), offset);
+    fillShape(fb, &(rasterFont->dict[(int)ch]), c);
 }
 
-void fillString(FrameBuffer *fb, char *s, RasterFont *rf, Vertex offset,
+void fillString(FrameBuffer *fb, char *s, RasterFont *rasterFont, Vertex offset,
                 Color c) {
     Vertex origin = offset;
     int len = strlen(s);
 
     int i;
     for (i = 0; i < len; ++i) {
-        //Ini yang gw ubah --AGUS s[i]
-        fillChar(fb, s[i], rf, offset, c);
+        fillChar(fb, s[i], rasterFont, offset, c);
 
         // Manage offset
-        if (offset.x + 2 * rf->width >= fb->screen_width) {
+        if (offset.x + 2 * rasterFont->width >= fb->screen_width) {
             offset.x = origin.x;
-            offset.y += rf->height;
+            offset.y += rasterFont->height;
 
             if (offset.y >= fb->screen_height)
                 return;
         } else {
-            offset.x += rf->width;
+            offset.x += rasterFont->width;
         }
     }
 }

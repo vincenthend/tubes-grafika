@@ -11,16 +11,16 @@ void initShape(Shape *s, int n) {
 }
 
 void offsetShape(Shape *s, const Vertex v) {
-    int i, j;
-    printf("Offset shape\n");
-    printf("%d\n", (*s).polygonCount);
-    for (i = 0; i < (*s).polygonCount; ++i) {
+    printf("Offset shape: %d\n", (*s).polygonCount);
+
+    for (int i = 0; i < (*s).polygonCount; ++i) {
         Polygon *p = &(s->polygons[i]);
-        for (j = 0; j < p->vertexCount; ++j) {
+        for (int j = 0; j < p->vertexCount; ++j) {
             p->vertices[j].x += v.x;
             p->vertices[j].y += v.y;
         }
     }
+
     printf("Finished offset\n");
 }
 
