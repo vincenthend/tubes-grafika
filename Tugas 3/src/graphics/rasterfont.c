@@ -1,60 +1,9 @@
-#include "graphics.h"
+#include "rasterfont.h"
 
-void openFont(char *fontChar, Font *font) {
-    for (int i = 0; i < 256; i++) {
-        (*font).dict[i] = (char *)malloc(100);
-    }
-
-    int c = 'a';
-    char fontFilename[30];
-    strcpy(fontFilename, "fonts/");
-    strcat(fontFilename, fontChar);
-    strcat(fontFilename, ".txt");
-
-    FILE *fontFile;
-    fontFile = fopen(fontFilename, "r");
-    if (fontFile) {
-        fscanf(fontFile, "%d", &((*font).width));
-        fscanf(fontFile, "%d", &((*font).height));
-        while ((fscanf(fontFile, "%s", (*font).dict[c]) == 1) && (c <= 'z')) {
-            c++;
-        }
-
-        if (c == 'z' + 1) {
-            printf("Successfully loaded font %s\n", fontChar);
-        } else {
-            printf("Error in reading font %s\n", fontChar);
-        }
-        fclose(fontFile);
-    } else {
-        printf("Font does not exist\n");
-        exit(5);
-    }
-}
-
-void openImage(char *imageName, Image *image) {
-    char imageFilename[30];
-    strcpy(imageFilename, "image/");
-    strcat(imageFilename, imageName);
-    strcat(imageFilename, ".txt");
-
-    FILE *imageFile;
-    imageFile = fopen(imageFilename, "r");
-    if (imageFile) {
-        fscanf(imageFile, "%d", &((*image).width));
-        fscanf(imageFile, "%d", &((*image).height));
-        (*image).data = (char *)malloc((*image).width * (*image).height + 2);
-
-        if (fscanf(imageFile, "%s", (*image).data) == 1) {
-            printf("Successfully loaded image %s\n", imageName);
-        } else {
-            printf("Error in reading image %s\n", imageName);
-        }
-        fclose(imageFile);
-    } else {
-        printf("Image does not exist\n");
-        exit(5);
-    }
+void initRasterFont(RasterFont *rasterFont) {
+    rasterFont->dict = (Shape *)malloc(256 * sizeof(Shape));
+    rasterFont->height = 90;
+    rasterFont->width = 110;
 }
 
 void openRasterFont(char *rasterFont, RasterFont *rf) {

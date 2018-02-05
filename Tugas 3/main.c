@@ -3,12 +3,15 @@
 #include <string.h>
 #include <unistd.h>
 
-#include "color.h"
-#include "drawer.h"
-#include "framebuffer.h"
-#include "graphics.h"
-#include "printer.h"
-#include "rasterizer.h"
+#include "src/color.h"
+#include "src/drawer.h"
+#include "src/framebuffer.h"
+#include "src/graphics/font.h"
+#include "src/graphics/image.h"
+#include "src/graphics/rasterfont.h"
+#include "src/graphics/shape.h"
+#include "src/printer.h"
+#include "src/rasterizer.h"
 
 int main() {
     FrameBuffer fb = initFrameBuffer();
@@ -41,7 +44,7 @@ int main() {
     v.x = 5;
     v.y = 10;
 
-    fillChar(&fb, "a", &rasterFont, v, pink);
+    fillChar(&fb, 'a', &rasterFont, v, pink);
 
     // for (char i = 'a'; i <= 'z'; i++) {
     //     fillChar(&fb, i, &rasterFont, v, pink);

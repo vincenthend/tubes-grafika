@@ -5,7 +5,8 @@
 
 #include "color.h"
 #include "framebuffer.h"
-#include "graphics.h"
+#include "graphics/image.h"
+#include "graphics/shape.h"
 
 void drawLine(FrameBuffer *fb, int x0, int y0, int x1, int y1, Color c);
 
@@ -23,6 +24,6 @@ void drawMonoImage(FrameBuffer *fb, Image image, int x, int y, Color col);
 void drawNyanImage(FrameBuffer *fb, Image image, int x, int y, Color lineColor,
                    Color clothColor, Color skinColor);
 
-void fillSquareArea(FrameBuffer *fb, int x0, int y0, int x1, int y1, Color c);
+void drawPolygon(FrameBuffer *fb, const Polygon *p, Color c);
 
 #endif

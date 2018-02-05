@@ -3,7 +3,7 @@
 
 #include "color.h"
 #include "framebuffer.h"
-#include "graphics.h"
+#include "graphics/font.h"
 
 void printChar(FrameBuffer *fb, char c, Font f, int x, int y, Color col);
 
