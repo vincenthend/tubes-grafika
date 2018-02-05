@@ -48,13 +48,12 @@ int main() {
     initRasterFont(&rasterFont);
     openRasterFont("raster_font", &rasterFont);
 
-    int i, j;
-    for(i = 0; i < 1; i++) {
-        for (j = 0; j < 5; j++) {
-            printf("(%d,%d)\n", rasterFont.dict['z'].polygons[i].vertices[j].x, rasterFont.dict['z'].polygons[i].vertices[j].y);
-        }
-    }
-    
+    // int i, j;
+    // for(i = 0; i < 1; i++) {
+    //     for (j = 0; j < 5; j++) {
+    //         printf("(%d,%d)\n", rasterFont.dict['z'].polygons[i].vertices[j].x, rasterFont.dict['z'].polygons[i].vertices[j].y);
+    //     }
+    // }
 
     Vertex v;
     v.x = 5;

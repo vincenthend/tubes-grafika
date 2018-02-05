@@ -86,7 +86,7 @@ void fillShape(FrameBuffer *fb, Shape *s, Color c) {
     // Get point in polygon
     // TODO: make a better one
     printf("Finished drawing polygon\n");
-    Vertex v = s->polygons[0].vertices[0];
+    Vertex v = (*s).polygons[0].vertices[0];
     v.x++;
     v.y++;
 
@@ -102,6 +102,7 @@ void fillShape(FrameBuffer *fb, Shape *s, Color c) {
 
 void fillChar(FrameBuffer *fb, char ch, RasterFont *rf, Vertex offset,
               Color c) {
+    printf("count: %d\n", (*rf).dict[(int)ch].count);
     offsetShape(&(rf->dict[(int)ch]), offset);
     fillShape(fb, &(rf->dict[(int)ch]), c);
 }
@@ -131,13 +132,16 @@ void fillString(FrameBuffer *fb, char *s, RasterFont *rf, Vertex offset,
 
 void offsetShape(Shape *s, const Vertex v) {
     int i, j;
-    for (i = 0; i < s->count; ++i) {
+    printf("Offset shape\n");
+    printf("%d\n", (*s).count);
+    for (i = 0; i < (*s).count; ++i) {
         Polygon *p = &(s->polygons[i]);
         for (j = 0; j < p->count; ++j) {
             p->vertices[j].x += v.x;
             p->vertices[j].y += v.y;
         }
     }
+    printf("Finished offset\n");
 }
 
 // -------- extended --------

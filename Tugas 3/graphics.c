@@ -97,7 +97,9 @@ void openRasterFont(char *raster_font, RasterFont *rf) {
                 if ((x == -999 && y == -999) || (x == -9 && y == -9)) {
                     (*rf).dict[current_char].polygons[poly_index].count =
                         vertice_index;
-                    (*rf).dict[current_char].count = poly_index;
+                    (*rf).dict[current_char].count = poly_index+1;
+                    // printf("vertices.count: %d\n", (*rf).dict[current_char].polygons[poly_index].count);
+                    // printf("polygons.count: %d\n", (*rf).dict[current_char].count);
                     current_char++;
                     break;
                 } else {
