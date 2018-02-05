@@ -12,12 +12,12 @@ typedef struct {
 
 typedef struct {
     Vertex *vertices;
-    int count;
+    int vertexCount;
 } Polygon;
 
 typedef struct {
     Polygon *polygons;
-    int count;
+    int polygonCount;
 } Shape;
 
 void initPolygon(Polygon *p, int n);

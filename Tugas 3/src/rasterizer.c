@@ -20,10 +20,10 @@ void boundaryFill(FrameBuffer *fb, int x, int y, Color c) {
 }
 
 void scanlineFill(FrameBuffer *fb, Shape *s, Color c) {
-    int minX = findMinXInShape(s->polygons, s->count);
-    int maxX = findMaxXInShape(s->polygons, s->count);
-    int minY = findMinYInShape(s->polygons, s->count);
-    int maxY = findMaxYInShape(s->polygons, s->count);
+    int minX = findMinXInShape(s->polygons, s->polygonCount);
+    int maxX = findMaxXInShape(s->polygons, s->polygonCount);
+    int minY = findMinYInShape(s->polygons, s->polygonCount);
+    int maxY = findMaxYInShape(s->polygons, s->polygonCount);
 
     int y;
     int colorize = 1;
@@ -52,7 +52,7 @@ void scanlineFill(FrameBuffer *fb, Shape *s, Color c) {
 void fillShape(FrameBuffer *fb, Shape *s, Color c) {
     int i;
     printf("Preparing to draw polygon\n");
-    for (i = 0; i < s->count; ++i) {
+    for (i = 0; i < s->polygonCount; ++i) {
         drawPolygon(fb, &(s->polygons[i]), c);
     }
 
@@ -75,7 +75,8 @@ void fillShape(FrameBuffer *fb, Shape *s, Color c) {
 
 void fillChar(FrameBuffer *fb, char ch, RasterFont *rf, Vertex offset,
               Color c) {
-    printf("count: %d\n", (*rf).dict[(int)ch].count);
+    printf("Count: %d\n", (*rf).dict[(int)ch].polygonCount);
+
     offsetShape(&(rf->dict[(int)ch]), offset);
     fillShape(fb, &(rf->dict[(int)ch]), c);
 }

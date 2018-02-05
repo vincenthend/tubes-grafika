@@ -44,9 +44,9 @@ void openRasterFont(char *rasterFont, RasterFont *rf) {
                 // printf("Integers read: (%d,%d)\n", x, y);
 
                 if ((x == -999 && y == -999) || (x == -9 && y == -9)) {
-                    (*rf).dict[currentChar].polygons[polygonIndex].count =
+                    (*rf).dict[currentChar].polygons[polygonIndex].vertexCount =
                         verticeIndex;
-                    (*rf).dict[currentChar].count = polygonIndex + 1;
+                    (*rf).dict[currentChar].polygonCount = polygonIndex + 1;
 
                     // printf(
                     //     "Vertices count: %d\n",
@@ -56,7 +56,7 @@ void openRasterFont(char *rasterFont, RasterFont *rf) {
 
                     break;
                 } else if (x == -1 && y == -1) {
-                    (*rf).dict[currentChar].polygons[polygonIndex].count =
+                    (*rf).dict[currentChar].polygons[polygonIndex].vertexCount =
                         verticeIndex;
 
                     polygonIndex++;
