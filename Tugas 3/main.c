@@ -43,17 +43,32 @@ int main() {
     initColor(&grey, "77797A");
     initColor(&pink, "FF8AD1");
     initColor(&background, "0d1b46");
-    printf("DONE\n");
 
     RasterFont rasterFont;
     initRasterFont(&rasterFont);
     openRasterFont("raster_font", &rasterFont);
 
-    // Vertex v;
-    // v.x = 5;
-    // v.y = 10;
+    int i, j;
+    for(i = 0; i < 1; i++) {
+        for (j = 0; j < 5; j++) {
+            printf("(%d,%d)\n", rasterFont.dict['z'].polygons[i].vertices[j].x, rasterFont.dict['z'].polygons[i].vertices[j].y);
+        }
+    }
+    
+
+    Vertex v;
+    v.x = 5;
+    v.y = 10;
+
+    fillChar(&fb, "a", &rasterFont, v, pink);
+
     // for (char i = 'a'; i <= 'z'; i++) {
-    //     fillChar(&fb, i, rasterFont, v, pink);
+    //     fillChar(&fb, i, &rasterFont, v, pink);
+    //     v.x += 100;
+    //     if (v.x >= 1000) {
+    //         v.y += 120;
+    //         v.x = 5;
+    //     }
     // }
     return 0;
 }

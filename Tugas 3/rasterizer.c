@@ -78,17 +78,20 @@ void scanlineFill(FrameBuffer *fb, Shape *s, Color c) {
 
 void fillShape(FrameBuffer *fb, Shape *s, Color c) {
     int i;
+    printf("Preparing to draw polygon\n");
     for (i = 0; i < s->count; ++i) {
         drawPolygon(fb, &(s->polygons[i]), c);
     }
 
     // Get point in polygon
     // TODO: make a better one
+    printf("Finished drawing polygon\n");
     Vertex v = s->polygons[0].vertices[0];
     v.x++;
     v.y++;
 
     // Boundary fill
+    printf("Boundary Fill\n");
     boundaryFill(fb, v.x, v.y, c);
 
     // Scanline fill
