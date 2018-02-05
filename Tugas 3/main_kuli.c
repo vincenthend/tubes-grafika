@@ -1,16 +1,19 @@
+#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 
-#include "color.h"
-#include "drawer.h"
-#include "framebuffer.h"
-#include "graphics.h"
-#include "printer.h"
-#include "rasterizer.h"
+#include "src/color.h"
+#include "src/drawer.h"
+#include "src/framebuffer.h"
+#include "src/graphics/font.h"
+#include "src/graphics/image.h"
+#include "src/graphics/rasterfont.h"
+#include "src/graphics/shape.h"
+#include "src/printer.h"
+#include "src/rasterizer.h"
 
-FrameBuffer fb;
 void drawRainbow(FrameBuffer *fb, int x, int y) {
     Color red, orange, yellow, green, blue, purple;
     initColor(&red, "FF0000");
@@ -29,7 +32,7 @@ void drawRainbow(FrameBuffer *fb, int x, int y) {
 }
 
 int main() {
-    fb = initialize();
+    FrameBuffer fb = initFrameBuffer();
 
     //Initialization
     Color white, black, grey, pink, background;
@@ -43,13 +46,14 @@ int main() {
     initColor(&grey, "77797A");
     initColor(&pink, "FF8AD1");
     initColor(&background, "0d1b46");
-    
+
     Shape s;
     int offsetX = 800, offsetY = 500;
+
     char c;
     scanf("%c", &c);
-
     c = tolower(c);
+
     printf("\033[H\033[J");
 
     if (c == 'a') {
@@ -69,7 +73,7 @@ int main() {
         s.polygons[0].vertices[5].y = offsetY + 90;
         s.polygons[0].vertices[6].x = offsetX + 53;
         s.polygons[0].vertices[6].y = offsetY + 90;
-        
+
         initPolygon(&(s.polygons[1]), 3);
         s.polygons[1].vertices[0].x = offsetX + 28;
         s.polygons[1].vertices[0].y = offsetY + 75;
@@ -98,7 +102,7 @@ int main() {
         s.polygons[0].vertices[7].y = offsetY + 15;
         s.polygons[0].vertices[8].x = offsetX + 66;
         s.polygons[0].vertices[8].y = offsetY + 0;
-        
+
         initPolygon(&(s.polygons[1]), 6);
         s.polygons[1].vertices[0].x = offsetX + 20;
         s.polygons[1].vertices[0].y = offsetY + 14;
@@ -184,7 +188,7 @@ int main() {
         s.polygons[0].vertices[4].y = offsetY + 110;
         s.polygons[0].vertices[5].x = offsetX + 80;
         s.polygons[0].vertices[5].y = offsetY + 90;
-        
+
         initPolygon(&(s.polygons[1]), 6);
         s.polygons[1].vertices[0].x = offsetX + 65;
         s.polygons[1].vertices[0].y = offsetY + 27;
@@ -224,7 +228,7 @@ int main() {
         s.polygons[0].vertices[10].x = offsetX + 80;
         s.polygons[0].vertices[10].y = offsetY + 18;
         s.polygons[0].vertices[11].x = offsetX + 80;
-        s.polygons[0].vertices[11].y = offsetY + 0;       
+        s.polygons[0].vertices[11].y = offsetY + 0;
     } else if (c == 'f') {
         initShape(&s, 1);
         initPolygon(&(s.polygons[0]), 10);
@@ -444,7 +448,7 @@ int main() {
         s.polygons[0].vertices[10].x = offsetX + 15;
         s.polygons[0].vertices[10].y = offsetY + 31;
         s.polygons[0].vertices[11].x = offsetX + 15;
-        s.polygons[0].vertices[11].y = offsetY + 110;        
+        s.polygons[0].vertices[11].y = offsetY + 110;
     } else if (c == 'n') {
         initShape(&s, 1);
         initPolygon(&(s.polygons[0]), 10);
@@ -487,7 +491,7 @@ int main() {
         s.polygons[0].vertices[6].y = offsetY + 90;
         s.polygons[0].vertices[7].x = offsetX + 60;
         s.polygons[0].vertices[7].y = offsetY + 110;
-        
+
         initPolygon(&(s.polygons[1]), 8);
         s.polygons[0].vertices[0].x = offsetX + 26;
         s.polygons[0].vertices[0].y = offsetY + 94;
@@ -524,7 +528,7 @@ int main() {
         s.polygons[0].vertices[6].y = offsetY + 110;
         s.polygons[0].vertices[7].x = offsetX + 0;
         s.polygons[0].vertices[7].y = offsetY + 110;
-        
+
         initPolygon(&(s.polygons[1]), 6);
         s.polygons[1].vertices[0].x = offsetX + 15;
         s.polygons[1].vertices[0].y = offsetY + 47;
@@ -848,8 +852,11 @@ int main() {
         s.polygons[0].vertices[8].y = offsetY + 15;
         s.polygons[0].vertices[9].x = offsetX + 80;
         s.polygons[0].vertices[9].y = offsetY + 0;
-    }   
+    }
+
     scanlineFill(&fb, &s, pink);
+
     sleep(1);
+
     return 0;
 }
