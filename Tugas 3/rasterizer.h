@@ -4,29 +4,9 @@
 #include "color.h"
 #include "drawer.h"
 #include "framebuffer.h"
+#include "graphics.h"
 
 #define MAX_VERTICES 25
-
-typedef struct {
-    int x;
-    int y;
-} Vertex;
-
-typedef struct {
-    Vertex *vertices;
-    int count;
-} Polygon;
-
-typedef struct {
-    Polygon *polygons;
-    int count;
-} Shape;
-
-typedef struct {
-    Shape *dict;
-    int height;
-    int width;
-} RasterFont;
 
 void initPolygon(Polygon *p, int n);
 

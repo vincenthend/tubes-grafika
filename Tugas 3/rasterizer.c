@@ -1,6 +1,7 @@
 #include <string.h>
 
 #include "rasterizer.h"
+#include "graphics.h"
 
 void initPolygon(Polygon *p, int n) {
     p->vertices = (Vertex *)malloc(n * sizeof(Vertex));

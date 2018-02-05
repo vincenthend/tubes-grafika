@@ -1,4 +1,5 @@
 #include "printer.h"
+#include "graphics.h"
 
 /**
  * Menuliskan karakter pada x dan y tertentu
