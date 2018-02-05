@@ -20,9 +20,12 @@ void fillShape(FrameBuffer *fb, Shape *s, Color c);
 
 void fillChar(FrameBuffer *fb, char ch, RasterFont *rf, Vertex offset, Color c);
 
-void fillString(FrameBuffer *fb, char *s, RasterFont *rf, Vertex offset, Color c);
+void fillString(FrameBuffer *fb, char *s, RasterFont *rf, Vertex offset,
+                Color c);
 
 void offsetShape(Shape *s, const Vertex v);
+
+/* ---- min-max related ---- */
 
 int findMinXInShape(Polygon *polygons, int polygon_count);
 

@@ -5,6 +5,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "rasterizer.h"
+
 typedef struct {
     char *dict[256];
     int height;
@@ -38,10 +40,10 @@ typedef struct {
     int width;
 } RasterFont;
 
-void openFont(char *font, Font *f);
+void openFont(char *fontChar, Font *font);
 
-void openImage(char *image, Image *i);
+void openImage(char *imageName, Image *image);
 
-void openRasterFont(char *raster_font, RasterFont *f);
+void openRasterFont(char *rasterFontChar, RasterFont *rasterFont);
 
 #endif

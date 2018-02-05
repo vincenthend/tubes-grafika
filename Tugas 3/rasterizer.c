@@ -1,7 +1,6 @@
 #include <string.h>
 
 #include "rasterizer.h"
-#include "graphics.h"
 
 void initPolygon(Polygon *p, int n) {
     p->vertices = (Vertex *)malloc(n * sizeof(Vertex));
@@ -144,7 +143,7 @@ void offsetShape(Shape *s, const Vertex v) {
     printf("Finished offset\n");
 }
 
-// -------- extended --------
+/* ---- min-max related ---- */
 
 int findMinXInShape(Polygon *polygons, int polygon_count) {
     int i;
