@@ -110,3 +110,20 @@ void fillSquareArea(FrameBuffer *fb, int x0, int y0, int x1, int y1, Color c) {
         }
     }
 }
+
+void fillRainbow(FrameBuffer *fb, int x, int y) {
+    Color red, orange, yellow, green, blue, purple;
+    initColor(&red, "FF0000");
+    initColor(&orange, "FF7700");
+    initColor(&yellow, "FFFF00");
+    initColor(&green, "009900");
+    initColor(&blue, "000099");
+    initColor(&purple, "990099");
+
+    fillSquareArea(fb, x - 8, y + 4, x + 20, y + 6, red);
+    fillSquareArea(fb, x - 8, y + 7, x + 20, y + 9, orange);
+    fillSquareArea(fb, x - 8, y + 10, x + 20, y + 12, yellow);
+    fillSquareArea(fb, x - 8, y + 13, x + 20, y + 15, green);
+    fillSquareArea(fb, x - 8, y + 16, x + 20, y + 18, blue);
+    fillSquareArea(fb, x - 8, y + 19, x + 20, y + 21, purple);
+}

@@ -14,23 +14,6 @@
 #include "src/printer.h"
 #include "src/rasterizer.h"
 
-void drawRainbow(FrameBuffer *fb, int x, int y) {
-    Color red, orange, yellow, green, blue, purple;
-    initColor(&red, "FF0000");
-    initColor(&orange, "FF7700");
-    initColor(&yellow, "FFFF00");
-    initColor(&green, "009900");
-    initColor(&blue, "000099");
-    initColor(&purple, "990099");
-
-    fillSquareArea(fb, x - 8, y + 4, x + 20, y + 6, red);
-    fillSquareArea(fb, x - 8, y + 7, x + 20, y + 9, orange);
-    fillSquareArea(fb, x - 8, y + 10, x + 20, y + 12, yellow);
-    fillSquareArea(fb, x - 8, y + 13, x + 20, y + 15, green);
-    fillSquareArea(fb, x - 8, y + 16, x + 20, y + 18, blue);
-    fillSquareArea(fb, x - 8, y + 19, x + 20, y + 21, purple);
-}
-
 int main() {
     FrameBuffer fb = initFrameBuffer();
 
@@ -38,14 +21,14 @@ int main() {
     Color white, black, grey, pink, background;
     Color orange, yellow, green;
 
-    initColor(&orange, "ff7800");
+    initColor(&orange, "FF7800");
     initColor(&yellow, "FFFF00");
-    initColor(&green, "00ff00");
+    initColor(&green, "00FF00");
     initColor(&white, "FFFFFF");
     initColor(&black, "000000");
     initColor(&grey, "77797A");
     initColor(&pink, "FF8AD1");
-    initColor(&background, "0d1b46");
+    initColor(&background, "0D1B46");
 
     Shape s;
     int offsetX = 800, offsetY = 500;

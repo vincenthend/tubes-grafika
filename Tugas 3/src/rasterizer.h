@@ -20,4 +20,6 @@ void fillString(FrameBuffer *fb, char *s, RasterFont *rf, Vertex offset,
 
 void fillSquareArea(FrameBuffer *fb, int x0, int y0, int x1, int y1, Color c);
 
+void fillRainbow(FrameBuffer *fb, int x, int y);
+
 #endif
