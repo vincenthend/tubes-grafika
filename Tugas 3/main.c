@@ -29,9 +29,11 @@ int main() {
     initColor(&pink, "FF8AD1");
     initColor(&background, "0D1B46");
 
-    RasterFont rasterFont;
-    initRasterFont(&rasterFont);
-    openRasterFont("raster_font", &rasterFont);
+    // RasterFont rasterFont;
+    // initRasterFont(&rasterFont);
+    // openRasterFont("raster_font", &rasterFont);
+
+    drawLine(&fb, 400, 400, 100, 1000, pink);
 
     // int i, j;
     // for(i = 0; i < 1; i++) {
@@ -40,11 +42,11 @@ int main() {
     //     }
     // }
 
-    Vertex v;
-    v.x = 5;
-    v.y = 10;
+    // Vertex v;
+    // v.x = 5;
+    // v.y = 10;
 
-    fillChar(&fb, 'a', &rasterFont, v, pink);
+    // fillChar(&fb, 'a', &rasterFont, v, pink);
 
     // for (char i = 'a'; i <= 'z'; i++) {
     //     fillChar(&fb, i, &rasterFont, v, pink);

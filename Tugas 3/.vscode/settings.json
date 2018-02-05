@@ -8,6 +8,16 @@
         "bitset": "cpp",
         "chrono": "cpp",
         "initializer_list": "c",
-        "valarray": "c"
+        "valarray": "c",
+        "fstream": "c",
+        "functional": "c",
+        "future": "c",
+        "istream": "c",
+        "mutex": "c",
+        "ostream": "c",
+        "sstream": "c",
+        "streambuf": "c",
+        "thread": "c",
+        "tuple": "c"
     }
 }

@@ -33,10 +33,10 @@ void drawLine(FrameBuffer *fb, int x0, int y0, int x1, int y1, Color c) {
     } else {
         ystep = -1;
     }
-
-    for (int x = x0; x <= x1; x++) {
-        int y = y0;
-
+    
+    int x;
+    int y = y0;
+    for (x = x0; x <= x1; x++) {
         if (steep) {
             addPixelToBuffer(fb, y, x, c.r, c.g, c.b, c.a);
         } else {
