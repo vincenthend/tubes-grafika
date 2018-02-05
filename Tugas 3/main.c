@@ -43,33 +43,12 @@ int main() {
     initColor(&grey, "77797A");
     initColor(&pink, "FF8AD1");
     initColor(&background, "0d1b46");
-
-    // Shape s;
-    // initShape(&s, 2);
-
-    // initPolygon(&(s.polygons[0]), 5);
-    // s.polygons[0].vertices[0].x = 700;
-    // s.polygons[0].vertices[0].y = 100;
-    // s.polygons[0].vertices[1].x = 900;
-    // s.polygons[0].vertices[1].y = 100;
-    // s.polygons[0].vertices[2].x = 1000;
-    // s.polygons[0].vertices[2].y = 300;
-    // s.polygons[0].vertices[3].x = 800;
-    // s.polygons[0].vertices[3].y = 600;
-    // s.polygons[0].vertices[4].x = 600;
-    // s.polygons[0].vertices[4].y = 300;
-
-    // initPolygon(&(s.polygons[1]), 3);
-    // s.polygons[1].vertices[0].x = 750;
-    // s.polygons[1].vertices[0].y = 200;
-    // s.polygons[1].vertices[1].x = 850;
-    // s.polygons[1].vertices[1].y = 200;
-    // s.polygons[1].vertices[2].x = 800;
-    // s.polygons[1].vertices[2].y = 400;
+    printf("DONE\n");
 
     RasterFont *rasterFont;
     initRasterFont(rasterFont);
-    openRasterFont("raster_font", rasterFont);
+    //openRasterFont("raster_font", rasterFont);
+    printf("DONE\n");
 
     // Vertex v;
     // v.x = 5;
