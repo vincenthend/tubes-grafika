@@ -45,10 +45,9 @@ int main() {
     initColor(&background, "0d1b46");
     printf("DONE\n");
 
-    RasterFont *rasterFont;
-    initRasterFont(rasterFont);
-    //openRasterFont("raster_font", rasterFont);
-    printf("DONE\n");
+    RasterFont rasterFont;
+    initRasterFont(&rasterFont);
+    openRasterFont("raster_font", &rasterFont);
 
     // Vertex v;
     // v.x = 5;
