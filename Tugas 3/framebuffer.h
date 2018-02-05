@@ -21,7 +21,7 @@ typedef struct {
     char *buffer;
 } FrameBuffer;
 
-FrameBuffer initialize();
+FrameBuffer initFrameBuffer();
 
 void addPixelToBuffer(FrameBuffer *fb, int x, int y, int r, int g, int b,
                       int a);

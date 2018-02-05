@@ -1,6 +1,6 @@
 #include "framebuffer.h"
 
-FrameBuffer initialize() {
+FrameBuffer initFrameBuffer() {
     FrameBuffer fb;
 
     fb.fbfd = open("/dev/fb0", O_RDWR);
