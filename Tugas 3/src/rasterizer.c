@@ -20,23 +20,29 @@ void boundaryFill(FrameBuffer *fb, int x, int y, Color c) {
 }
 
 void scanlineFill(FrameBuffer *fb, Shape *s, Color c) {
+    int i;
+    Color white;
+    initColor(&white, "FFFFFF");
+
+    for (i = 0; i < s->count; ++i) {
+        drawPolygon(fb, &(s->polygons[i]), white);
+    }
+
     int minX = findMinXInShape(s->polygons, s->count);
     int maxX = findMaxXInShape(s->polygons, s->count);
     int minY = findMinYInShape(s->polygons, s->count);
     int maxY = findMaxYInShape(s->polygons, s->count);
 
     int y;
-    int colorize = 1;
+    int colorize = 0;
     for (y = minY; y <= maxY; y++) {
         Color curr = getColor(fb, minX, y);
-        if (!isSameColor(curr, c)) {
-            colorize = 0;
-        }
+        colorize = 0;
 
         int x;
         for (x = minX; x <= maxX; x++) {
             curr = getColor(fb, x, y);
-            if (isSameColor(curr, c)) {
+            if (isSameColor(curr, white)) {
                 colorize = !colorize;
 
                 continue;
