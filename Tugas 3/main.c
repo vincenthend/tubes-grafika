@@ -67,9 +67,9 @@ int main() {
     // s.polygons[1].vertices[2].x = 800;
     // s.polygons[1].vertices[2].y = 400;
 
-    RasterFont *rasterFont;
-    initRasterFont(rasterFont);
-    openRasterFont("raster_font", rasterFont);
+    RasterFont rasterFont;
+    initRasterFont(&rasterFont);
+    openRasterFont("raster_font", &rasterFont);
 
     // Vertex v;
     // v.x = 5;

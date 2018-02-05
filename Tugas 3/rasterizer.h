@@ -12,7 +12,7 @@ void initPolygon(Polygon *p, int n);
 
 void initShape(Shape *s, int n);
 
-void initRasterFont();
+void initRasterFont(RasterFont *rf);
 
 void drawPolygon(FrameBuffer *fb, const Polygon *p, Color c);
 
