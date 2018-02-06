@@ -53,8 +53,6 @@ int inCriticalList(int x, int y, Vertex *vertices, int vertexCount) {
 }
 
 void scanlineFill(FrameBuffer *fb, Shape *s, Color c) {
-    Color white;
-    initColor(&white, "FFFFFF");
 
     Vertex vertices[999];
     int vertexCount = 0;
@@ -65,7 +63,7 @@ void scanlineFill(FrameBuffer *fb, Shape *s, Color c) {
     int maxY = findMaxYInShape(s->polygons, s->polygonCount);
 
     for (int i = 0; i < s->polygonCount; ++i) {
-        drawPolygon(fb, &(s->polygons[i]), white);
+        drawPolygon(fb, &(s->polygons[i]), c);
 
         //Find critical vertex
         if (isCritical(
@@ -96,20 +94,28 @@ void scanlineFill(FrameBuffer *fb, Shape *s, Color c) {
 
     // Color Fill
     int colorize = 0;
+    int threshold = 10;
+    int adj_pixel_counter = 0;
     for (int y = minY; y <= maxY; y++) {
         Color curr = getColor(fb, minX, y);
         colorize = 0;
-
+        adj_pixel_counter = 0;
         for (int x = minX; x <= maxX; x++) {
             curr = getColor(fb, x, y);
-            if (isSameColor(curr, white)) {
+            if (isSameColor(curr, c)) {
+                adj_pixel_counter++;
                 if (inCriticalList(x, y, vertices, vertexCount) == 0) {
                     colorize = !colorize;
                 } else {
                     printf("in %d, %d\n", x, y);
                 }
             } else if (colorize) {
-                addPixelToBuffer(fb, x, y, c.r, c.g, c.b, c.a);
+                if (adj_pixel_counter > threshold) {
+                    colorize = !colorize;
+                }
+                else {
+                    addPixelToBuffer(fb, x, y, c.r, c.g, c.b, c.a);
+                }
             }
         }
     }
@@ -121,10 +127,10 @@ void fillShape(FrameBuffer *fb, Shape *s, Color color) {
     }
 
     // Boundary fill
-    boundaryFill(fb, s, color);
+    // boundaryFill(fb, s, color);
 
     // Scanline fill
-    // scanlineFill(fb, s, color);
+    scanlineFill(fb, s, color);
 }
 
 void fillChar(FrameBuffer *fb, char c, RasterFont *rf, Vertex offset,
@@ -146,7 +152,7 @@ void fillString(FrameBuffer *fb, char *s, RasterFont *rf, Vertex offset,
         // Manage offset
         if (offset.x + 2 * rf->width >= fb->screen_width) {
             offset.x = origin.x;
-            offset.y += rf->height;
+            offset.y += rf->height + 10;
 
             if (offset.y >= fb->screen_height)
                 return;
