@@ -11,8 +11,6 @@ void initShape(Shape *s, int n) {
 }
 
 void offsetShape(Shape *s, const Vertex v) {
-    printf("Offset shape: %d\n", (*s).polygonCount);
-
     for (int i = 0; i < (*s).polygonCount; ++i) {
         Polygon *p = &(s->polygons[i]);
         for (int j = 0; j < p->vertexCount; ++j) {
@@ -20,8 +18,6 @@ void offsetShape(Shape *s, const Vertex v) {
             p->vertices[j].y += v.y;
         }
     }
-
-    printf("Finished offset\n");
 }
 
 int findMinXInShape(Polygon *polygons, int polygon_count) {

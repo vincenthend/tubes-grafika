@@ -59,8 +59,6 @@ void addPixelToBuffer(FrameBuffer *fb, int x, int y, int r, int g, int b,
 void updateFrame(FrameBuffer *fb) {
     munmap(fb->buffer, fb->screen_size);
     close(fb->fbfd);
-
-    printf("Frame updated\n");
 }
 
 void setBackground(FrameBuffer *fb, int r, int g, int b, int a) {

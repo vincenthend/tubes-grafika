@@ -53,11 +53,9 @@ void scanlineFill(FrameBuffer *fb, Shape *s, Color c) {
 }
 
 void fillShape(FrameBuffer *fb, Shape *s, Color c) {
-    printf("Starting to draw polygon\n");
     for (int i = 0; i < s->polygonCount; ++i) {
         drawPolygon(fb, &(s->polygons[i]), c);
     }
-    printf("Finished drawing polygon\n");
 
     // Get point in polygon
     // TODO: make a better one
@@ -69,15 +67,13 @@ void fillShape(FrameBuffer *fb, Shape *s, Color c) {
     // boundaryFill(fb, v.x, v.y, c);
 
     // Scanline fill
-    // scanlineFill(fb, s, c);
+    scanlineFill(fb, s, c);
 
     updateFrame(fb);
 }
 
 void fillChar(FrameBuffer *fb, char ch, RasterFont *rasterFont, Vertex offset,
               Color c) {
-    printf("Count: %d\n", (*rasterFont).dict[(int)ch].polygonCount);
-
     offsetShape(&(rasterFont->dict[(int)ch]), offset);
     fillShape(fb, &(rasterFont->dict[(int)ch]), c);
 }
