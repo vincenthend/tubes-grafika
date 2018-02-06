@@ -9,8 +9,8 @@ typedef struct {
     int width;
 } RasterFont;
 
-void initRasterFont(RasterFont *rasterFont);
+void initRasterFont(RasterFont *rf);
 
-void openRasterFont(char *rasterFontChar, RasterFont *rasterFont);
+void openRasterFont(char *ch, RasterFont *rf);
 
 #endif

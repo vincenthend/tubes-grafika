@@ -32,10 +32,6 @@ FrameBuffer initFrameBuffer() {
         exit(4);
     }
 
-    // for (i = 0; i < fb.finfo.smem_len; i++) {
-    //     printf("%d\n", *(fb.buffer + i));
-    // }
-
     return fb;
 }
 

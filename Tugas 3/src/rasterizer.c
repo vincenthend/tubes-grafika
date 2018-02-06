@@ -2,7 +2,7 @@
 
 #include "rasterizer.h"
 
-void boundaryFill(FrameBuffer *fb, int x, int y, Color c) {
+void boundaryFill(FrameBuffer *fb, int x, int y, Color color) {
     // Check screen boundaries
     if ((x < 0) || (x >= fb->screen_width) || (y < 0) ||
         (y >= fb->screen_height))
@@ -10,16 +10,16 @@ void boundaryFill(FrameBuffer *fb, int x, int y, Color c) {
 
     // Output to screen
     Color curr = getColor(fb, x, y);
-    if (!isSameColor(curr, c)) {
-        addPixelToBuffer(fb, x, y, c.r, c.g, c.b, c.a);
-        boundaryFill(fb, x, y - 1, c);
-        boundaryFill(fb, x, y + 1, c);
-        boundaryFill(fb, x - 1, y, c);
-        boundaryFill(fb, x + 1, y, c);
+    if (!isSameColor(curr, color)) {
+        addPixelToBuffer(fb, x, y, color.r, color.g, color.b, color.a);
+        boundaryFill(fb, x, y - 1, color);
+        boundaryFill(fb, x, y + 1, color);
+        boundaryFill(fb, x - 1, y, color);
+        boundaryFill(fb, x + 1, y, color);
     }
 }
 
-void scanlineFill(FrameBuffer *fb, Shape *s, Color c) {
+void scanlineFill(FrameBuffer *fb, Shape *s, Color color) {
     Color white;
     initColor(&white, "FFFFFF");
 
@@ -46,15 +46,15 @@ void scanlineFill(FrameBuffer *fb, Shape *s, Color c) {
             }
 
             if (colorize) {
-                addPixelToBuffer(fb, x, y, c.r, c.g, c.b, c.a);
+                addPixelToBuffer(fb, x, y, color.r, color.g, color.b, color.a);
             }
         }
     }
 }
 
-void fillShape(FrameBuffer *fb, Shape *s, Color c) {
+void fillShape(FrameBuffer *fb, Shape *s, Color color) {
     for (int i = 0; i < s->polygonCount; ++i) {
-        drawPolygon(fb, &(s->polygons[i]), c);
+        drawPolygon(fb, &(s->polygons[i]), color);
     }
 
     // Get point in polygon
@@ -64,46 +64,47 @@ void fillShape(FrameBuffer *fb, Shape *s, Color c) {
     v.y++;
 
     // Boundary fill
-    // boundaryFill(fb, v.x, v.y, c);
+    // boundaryFill(fb, v.x, v.y, color);
 
     // Scanline fill
-    scanlineFill(fb, s, c);
+    scanlineFill(fb, s, color);
 
     updateFrame(fb);
 }
 
-void fillChar(FrameBuffer *fb, char c, RasterFont *rasterFont, Vertex offset,
+void fillChar(FrameBuffer *fb, char c, RasterFont *rf, Vertex offset,
               Color color) {
-    offsetShape(&(rasterFont->dict[(int)c]), offset);
-    fillShape(fb, &(rasterFont->dict[(int)c]), color);
+    offsetShape(&(rf->dict[(int)c]), offset);
+    fillShape(fb, &(rf->dict[(int)c]), color);
 }
 
-void fillString(FrameBuffer *fb, char *s, RasterFont *rasterFont, Vertex offset,
-                Color c) {
+void fillString(FrameBuffer *fb, char *s, RasterFont *rf, Vertex offset,
+                Color color) {
     Vertex origin = offset;
     int len = strlen(s);
 
     int i;
     for (i = 0; i < len; ++i) {
-        fillChar(fb, s[i], rasterFont, offset, c);
+        fillChar(fb, s[i], rf, offset, color);
 
         // Manage offset
-        if (offset.x + 2 * rasterFont->width >= fb->screen_width) {
+        if (offset.x + 2 * rf->width >= fb->screen_width) {
             offset.x = origin.x;
-            offset.y += rasterFont->height;
+            offset.y += rf->height;
 
             if (offset.y >= fb->screen_height)
                 return;
         } else {
-            offset.x += rasterFont->width;
+            offset.x += rf->width;
         }
     }
 }
 
-void fillSquareArea(FrameBuffer *fb, int x0, int y0, int x1, int y1, Color c) {
+void fillSquareArea(FrameBuffer *fb, int x0, int y0, int x1, int y1,
+                    Color color) {
     for (int x = x0; x <= x1; x++) {
         for (int y = y0; y <= y1; y++) {
-            addPixelToBuffer(fb, x, y, c.r, c.g, c.b, c.a);
+            addPixelToBuffer(fb, x, y, color.r, color.g, color.b, color.a);
         }
     }
 }

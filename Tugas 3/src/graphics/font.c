@@ -1,31 +1,31 @@
 #include "font.h"
 
-void openFont(char *fontChar, Font *font) {
+void openFont(char *ch, Font *font) {
     for (int i = 0; i < 256; i++) {
         font->dict[i] = (char *)malloc(100);
     }
 
     int c = 'a';
-    char fontFilename[30];
-    strcpy(fontFilename, "fonts/");
-    strcat(fontFilename, fontChar);
-    strcat(fontFilename, ".txt");
+    char filename[30];
+    strcpy(filename, "fonts/");
+    strcat(filename, ch);
+    strcat(filename, ".txt");
 
-    FILE *fontFile;
-    fontFile = fopen(fontFilename, "r");
-    if (fontFile) {
-        fscanf(fontFile, "%d", &(font->width));
-        fscanf(fontFile, "%d", &(font->height));
-        while ((fscanf(fontFile, "%s", font->dict[c]) == 1) && (c <= 'z')) {
+    FILE *file;
+    file = fopen(filename, "r");
+    if (file) {
+        fscanf(file, "%d", &(font->width));
+        fscanf(file, "%d", &(font->height));
+        while ((fscanf(file, "%s", font->dict[c]) == 1) && (c <= 'z')) {
             c++;
         }
 
         if (c == 'z' + 1) {
-            printf("Successfully loaded font %s\n", fontChar);
+            printf("Successfully loaded font %s\n", ch);
         } else {
-            printf("Error in reading font %s\n", fontChar);
+            printf("Error in reading font %s\n", ch);
         }
-        fclose(fontFile);
+        fclose(file);
     } else {
         printf("Font does not exist\n");
         exit(5);

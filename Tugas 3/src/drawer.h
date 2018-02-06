@@ -8,22 +8,22 @@
 #include "graphics/image.h"
 #include "graphics/shape.h"
 
-void drawLine(FrameBuffer *fb, int x0, int y0, int x1, int y1, Color c);
+void drawLine(FrameBuffer *fb, int x0, int y0, int x1, int y1, Color color);
 
 void drawThickLine(FrameBuffer *fb, int x0, int y0, int x1, int y1, int width,
-                   Color c);
+                   Color color);
 
-void drawCircle(FrameBuffer *fb, int x0, int y0, int radius, Color c);
+void drawCircle(FrameBuffer *fb, int x0, int y0, int radius, Color color);
 
-void drawFilledCircle(FrameBuffer *fb, int x0, int y0, int radius, Color c);
+void drawFilledCircle(FrameBuffer *fb, int x0, int y0, int radius, Color color);
 
-void drawSquare(FrameBuffer *fb, int x0, int y0, int x1, int y1, Color c);
+void drawSquare(FrameBuffer *fb, int x0, int y0, int x1, int y1, Color color);
 
-void drawMonoImage(FrameBuffer *fb, Image image, int x, int y, Color c);
+void drawMonoImage(FrameBuffer *fb, Image image, int x, int y, Color color);
 
 void drawNyanImage(FrameBuffer *fb, Image image, int x, int y, Color lineColor,
                    Color clothColor, Color skinColor);
 
-void drawPolygon(FrameBuffer *fb, const Polygon *p, Color c);
+void drawPolygon(FrameBuffer *fb, const Polygon *polygon, Color color);
 
 #endif
