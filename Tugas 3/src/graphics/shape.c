@@ -20,6 +20,10 @@ void offsetShape(Shape *shape, const Vertex vertex) {
     }
 }
 
+int isCritical(Vertex a, Vertex b, Vertex c) {
+    return (a.y < b.y && c.y < b.y) || (a.y > b.y && c.y > b.y);
+}
+
 int findMinXInShape(Polygon *polygons, int polygonCount) {
     int xMin = findMinXInPolygon(polygons[0].vertices, polygons[0].vertexCount);
     for (int i = 1; i < polygonCount; i++) {
