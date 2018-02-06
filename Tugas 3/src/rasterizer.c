@@ -72,10 +72,10 @@ void fillShape(FrameBuffer *fb, Shape *s, Color c) {
     updateFrame(fb);
 }
 
-void fillChar(FrameBuffer *fb, char ch, RasterFont *rasterFont, Vertex offset,
-              Color c) {
-    offsetShape(&(rasterFont->dict[(int)ch]), offset);
-    fillShape(fb, &(rasterFont->dict[(int)ch]), c);
+void fillChar(FrameBuffer *fb, char c, RasterFont *rasterFont, Vertex offset,
+              Color color) {
+    offsetShape(&(rasterFont->dict[(int)c]), offset);
+    fillShape(fb, &(rasterFont->dict[(int)c]), color);
 }
 
 void fillString(FrameBuffer *fb, char *s, RasterFont *rasterFont, Vertex offset,

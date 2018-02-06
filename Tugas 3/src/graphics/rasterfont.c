@@ -39,25 +39,26 @@ void openRasterFont(char *rasterFontChar, RasterFont *rasterFont) {
             int verticeIndex = 0;
             while (fscanf(rasterFontFile, "%d,%d", &x, &y) == 2) {
                 if ((x == -999 && y == -999) || (x == -9 && y == -9)) {
-                    rasterFont->dict[currentChar].polygons[polygonIndex].vertexCount =
-                        verticeIndex;
-                    rasterFont->dict[currentChar].polygonCount = polygonIndex + 1;
+                    rasterFont->dict[currentChar]
+                        .polygons[polygonIndex]
+                        .vertexCount = verticeIndex;
+                    rasterFont->dict[currentChar].polygonCount =
+                        polygonIndex + 1;
 
                     break;
                 } else if (x == -1 && y == -1) {
-                    rasterFont->dict[currentChar].polygons[polygonIndex].vertexCount =
-                        verticeIndex;
+                    rasterFont->dict[currentChar]
+                        .polygons[polygonIndex]
+                        .vertexCount = verticeIndex;
 
                     polygonIndex++;
                     verticeIndex = 0;
                 } else {
-                    rasterFont
-                        ->dict[currentChar]
+                    rasterFont->dict[currentChar]
                         .polygons[polygonIndex]
                         .vertices[verticeIndex]
                         .x = x;
-                    rasterFont
-                        ->dict[currentChar]
+                    rasterFont->dict[currentChar]
                         .polygons[polygonIndex]
                         .vertices[verticeIndex]
                         .y = y;

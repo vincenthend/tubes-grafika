@@ -19,7 +19,7 @@ void drawFilledCircle(FrameBuffer *fb, int x0, int y0, int radius, Color c);
 
 void drawSquare(FrameBuffer *fb, int x0, int y0, int x1, int y1, Color c);
 
-void drawMonoImage(FrameBuffer *fb, Image image, int x, int y, Color col);
+void drawMonoImage(FrameBuffer *fb, Image image, int x, int y, Color c);
 
 void drawNyanImage(FrameBuffer *fb, Image image, int x, int y, Color lineColor,
                    Color clothColor, Color skinColor);
