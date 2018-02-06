@@ -20,6 +20,16 @@ void offsetShape(Shape *shape, const Vertex vertex) {
     }
 }
 
+void normalizeShape(Shape *shape, const Vertex vertex) {
+    for (int i = 0; i < shape->polygonCount; ++i) {
+        Polygon *polygon = &(shape->polygons[i]);
+        for (int j = 0; j < polygon->vertexCount; ++j) {
+            polygon->vertices[j].x -= vertex.x;
+            polygon->vertices[j].y -= vertex.y;
+        }
+    }
+}
+
 int isCritical(Vertex a, Vertex b, Vertex c) {
     return (a.y < b.y && c.y < b.y) || (a.y > b.y && c.y > b.y);
 }

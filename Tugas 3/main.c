@@ -42,14 +42,26 @@ int main() {
     v.x = 300;
     v.y = 100;
 
-    for (int i = (int)'a'; i <= (int)'z'; i++) {
-        fillChar(&fb, (char)i, &rasterFont, v, yellow);
-        v.x += 100;
-        if (v.x > 1000) {
-            v.y += 130;
-            v.x = 300;
-        }
+    // for (int i = (int)'a'; i <= (int)'z'; i++) {
+    //     fillChar(&fb, (char)i, &rasterFont, v, yellow);
+    //     v.x += 100;
+    //     if (v.x > 1000) {
+    //         v.y += 130;
+    //         v.x = 300;
+    //     }
+    // }
+
+    char input[100];
+
+    printf("Input string: ");
+    scanf("%100s", input);
+
+    // Convert to lowercase
+    for (int i=0; input[i]; i++) {
+        input[i] = tolower((char)input[i]);
     }
+
+    fillString(&fb, input, &rasterFont, v, yellow);
 
     updateFrame(&fb);
 

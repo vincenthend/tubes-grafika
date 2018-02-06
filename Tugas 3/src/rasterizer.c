@@ -20,15 +20,12 @@ void boundaryFillHelper(FrameBuffer *fb, int x, int y, Color color) {
 }
 
 void boundaryFill(FrameBuffer *fb, Shape *s, Color color) {
-    Color pink;
-    initColor(&pink, "FF8AD1");
-
     int x = findMinXInShape(s->polygons, s->polygonCount);
     int y = findMinYInShape(s->polygons, s->polygonCount) + 3;
 
     Color curr = getColor(fb, x, y);
 
-    while (!isSameColor(curr, pink)) {
+    while (!isSameColor(curr, color)) {
         x++;
         curr = getColor(fb, x, y);
     }
@@ -124,16 +121,17 @@ void fillShape(FrameBuffer *fb, Shape *s, Color color) {
     }
 
     // Boundary fill
-    // boundaryFill(fb, s, color);
+    boundaryFill(fb, s, color);
 
     // Scanline fill
-    scanlineFill(fb, s, color);
+    // scanlineFill(fb, s, color);
 }
 
 void fillChar(FrameBuffer *fb, char c, RasterFont *rf, Vertex offset,
               Color color) {
     offsetShape(&(rf->dict[(int)c]), offset);
     fillShape(fb, &(rf->dict[(int)c]), color);
+    normalizeShape(&(rf->dict[(int)c]), offset);
 }
 
 void fillString(FrameBuffer *fb, char *s, RasterFont *rf, Vertex offset,
