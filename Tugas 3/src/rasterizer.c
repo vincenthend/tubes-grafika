@@ -24,7 +24,7 @@ int inCriticalList(int x, int y, Vertex* v, int vCount){
     int retVal = 0;
     int i = 0;
     while(i<vCount && retVal == 0){
-        if(v[i].x == x && v[i].y == y){
+        if((v[i].x == x && v[i].y == y)||(v[i].x == x && v[i].y+1 == y)){
             retVal = 1;
         }
         else {

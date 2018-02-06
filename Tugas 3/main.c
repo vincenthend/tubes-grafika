@@ -42,7 +42,7 @@ int main() {
     v.x = 500;
     v.y = 500;
 
-    fillChar(&fb, 'd', &rasterFont, v, pink);
+    fillChar(&fb, 'a', &rasterFont, v, pink);
 
     sleep(3);
 
