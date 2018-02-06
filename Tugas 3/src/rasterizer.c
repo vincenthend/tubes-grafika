@@ -103,25 +103,36 @@ void fillShape(FrameBuffer *fb, Shape *s, Color c) {
         drawPolygon(fb, &(s->polygons[i]), c);
     }
 
-    // Get point in polygon
-    // TODO: make a better one
-    Vertex v = s->polygons[0].vertices[0];
-    v.x++;
-    v.y++;
+    // Color pink;
+    // initColor(&pink, "FF8AD1");
+
+    // int x = findMinXInShape(s->polygons, s->polygonCount);
+    // int y = findMinYInShape(s->polygons, s->polygonCount) + 3;
+
+    // Color curr = getColor(fb, x, y);
+
+    // while(!isSameColor(curr, pink)) {
+    //     x++;
+    //     curr = getColor(fb, x, y);
+    // }
+
+
+    // Vertex v;
+    // v.x = x+2;
+    // v.y = y+2;
+
 
     // Boundary fill
     // boundaryFill(fb, v.x, v.y, c);
 
     // Scanline fill
     scanlineFill(fb, s, c);
-
-    updateFrame(fb);
 }
 
-void fillChar(FrameBuffer *fb, char ch, RasterFont *rasterFont, Vertex offset,
-              Color c) {
-    offsetShape(&(rasterFont->dict[(int)ch]), offset);
-    fillShape(fb, &(rasterFont->dict[(int)ch]), c);
+void fillChar(FrameBuffer *fb, char c, RasterFont *rasterFont, Vertex offset,
+              Color color) {
+    offsetShape(&(rasterFont->dict[(int)c]), offset);
+    fillShape(fb, &(rasterFont->dict[(int)c]), color);
 }
 
 void fillString(FrameBuffer *fb, char *s, RasterFont *rasterFont, Vertex offset,

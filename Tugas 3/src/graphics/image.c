@@ -24,4 +24,3 @@ void openImage(char *imageName, Image *image) {
         exit(5);
     }
 }
-

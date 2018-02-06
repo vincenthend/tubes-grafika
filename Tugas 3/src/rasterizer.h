@@ -7,18 +7,20 @@
 
 #define MAX_VERTICES 25
 
-void boundaryFill(FrameBuffer *fb, int x, int y, Color c);
+void boundaryFill(FrameBuffer *fb, int x, int y, Color color);
 
-void scanlineFill(FrameBuffer *fb, Shape *s, Color c);
+void scanlineFill(FrameBuffer *fb, Shape *s, Color color);
 
-void fillShape(FrameBuffer *fb, Shape *s, Color c);
+void fillShape(FrameBuffer *fb, Shape *s, Color color);
 
-void fillChar(FrameBuffer *fb, char ch, RasterFont *rasterFont, Vertex offset, Color c);
+void fillChar(FrameBuffer *fb, char c, RasterFont *rasterFont, Vertex offset,
+              Color color);
 
 void fillString(FrameBuffer *fb, char *s, RasterFont *rasterFont, Vertex offset,
-                Color c);
+                Color color);
 
-void fillSquareArea(FrameBuffer *fb, int x0, int y0, int x1, int y1, Color c);
+void fillSquareArea(FrameBuffer *fb, int x0, int y0, int x1, int y1,
+                    Color color);
 
 void fillRainbow(FrameBuffer *fb, int x, int y);
 

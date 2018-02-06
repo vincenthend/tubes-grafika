@@ -33,7 +33,7 @@ void drawLine(FrameBuffer *fb, int x0, int y0, int x1, int y1, Color c) {
     } else {
         ystep = -1;
     }
-    
+
     int x;
     int y = y0;
     for (x = x0; x <= x1; x++) {
@@ -159,13 +159,12 @@ void drawSquare(FrameBuffer *fb, int x0, int y0, int x1, int y1, Color c) {
     drawLine(fb, x1, y0, x0, y0, c);
 }
 
-void drawMonoImage(FrameBuffer *fb, Image img, int x, int y, Color col) {
+void drawMonoImage(FrameBuffer *fb, Image img, int x, int y, Color c) {
     char *data = img.data;
     for (int i = 0; i < img.height; i++) {
         for (int j = 0; j < img.width; j++) {
             if (data[i * img.width + j] == '1') {
-                addPixelToBuffer(fb, (x) + j, (y) + i, col.r, col.g, col.b,
-                                 col.a);
+                addPixelToBuffer(fb, (x) + j, (y) + i, c.r, c.g, c.b, c.a);
             }
         }
     }
@@ -196,5 +195,6 @@ void drawPolygon(FrameBuffer *fb, const Polygon *p, Color c) {
                  p->vertices[i + 1].y, c);
     }
     drawLine(fb, p->vertices[0].x, p->vertices[0].y,
-             p->vertices[p->vertexCount - 1].x, p->vertices[p->vertexCount - 1].y, c);
+             p->vertices[p->vertexCount - 1].x,
+             p->vertices[p->vertexCount - 1].y, c);
 }

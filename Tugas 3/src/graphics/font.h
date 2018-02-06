@@ -1,9 +1,9 @@
 #ifndef _FONT_H
 #define _FONT_H
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdio.h>
 
 typedef struct {
     char *dict[256];
