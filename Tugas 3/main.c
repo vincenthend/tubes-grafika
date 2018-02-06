@@ -35,16 +35,16 @@ int main() {
     openRasterFont("raster_font", &rasterFont);
 
     // Clear screen
-    printf("\e[1;1H\e[2J");
+    //printf("\e[1;1H\e[2J");
 
     // Draw and fill
     Vertex v;
     v.x = 500;
-    v.y = 100;
+    v.y = 500;
 
-    fillChar(&fb, 'a', &rasterFont, v, pink);
+    fillChar(&fb, 'd', &rasterFont, v, pink);
 
-    sleep(5);
+    sleep(3);
 
     return 0;
 }

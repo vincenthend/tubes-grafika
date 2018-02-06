@@ -22,7 +22,7 @@ void boundaryFill(FrameBuffer *fb, int x, int y, Color c) {
 
 int inCriticalList(int x, int y, Vertex* v, int vCount){
     int retVal = 0;
-    int i=0;
+    int i = 0;
     while(i<vCount && retVal == 0){
         if(v[i].x == x && v[i].y == y){
             retVal = 1;
@@ -53,49 +53,47 @@ void scanlineFill(FrameBuffer *fb, Shape *s, Color c) {
         drawPolygon(fb, &(s->polygons[i]), white);
 
         //Find critical vertex
-        grad0 = countGrad((*s).polygons[i].vertices[0],(*s).polygons[i].vertices[(*s).polygons[i].vertexCount-1]);
-        grad1 = countGrad((*s).polygons[i].vertices[0],(*s).polygons[i].vertices[1]);
-        if((grad0 < 0 && grad1 > 0) || (grad0 > 0 && grad1 < 0)){
-                v[vCount] = (*s).polygons[i].vertices[j];
-                vCount++;
+        if(isCritical((*s).polygons[i].vertices[(*s).polygons[i].vertexCount-1],(*s).polygons[i].vertices[0],(*s).polygons[i].vertices[1]) == 1){
+            v[vCount] = (*s).polygons[i].vertices[0];
+            vCount++;
         }
 
         for(j = 1; j < (*s).polygons[i].vertexCount-1; j++){
-            grad0 = countGrad((*s).polygons[i].vertices[j],(*s).polygons[i].vertices[j-1]);
-            grad1 = countGrad((*s).polygons[i].vertices[j],(*s).polygons[i].vertices[j+1]);
-            if((grad0 < 0 && grad1 > 0) || (grad0 > 0 && grad1 < 0)){
+            if(isCritical((*s).polygons[i].vertices[j-1],(*s).polygons[i].vertices[j],(*s).polygons[i].vertices[j+1]) == 1){
                 v[vCount] = (*s).polygons[i].vertices[j];
                 vCount++;
             }
         }
 
-        grad0 = countGrad((*s).polygons[i].vertices[j],(*s).polygons[i].vertices[j-1]);
-        grad1 = countGrad((*s).polygons[i].vertices[j],(*s).polygons[i].vertices[0]);
-        if((grad0 < 0 && grad1 > 0) || (grad0 > 0 && grad1 < 0)){
-                v[vCount] = (*s).polygons[i].vertices[j];
-                vCount++;
+        if(isCritical((*s).polygons[i].vertices[j-1],(*s).polygons[i].vertices[j],(*s).polygons[i].vertices[0]) == 1){
+            v[vCount] = (*s).polygons[i].vertices[j];
+            vCount++;
         }
-    }    
+    }
 
     // Color Fill
     int colorize = 0;
     for (int y = minY; y <= maxY; y++) {
         Color curr = getColor(fb, minX, y);
+        Color currBefore = curr;
         colorize = 0;
 
         for (int x = minX; x <= maxX; x++) {
             curr = getColor(fb, x, y);
-            if (isSameColor(curr, white)) {
-                if(!inCriticalList(x, y, &v, vCount)){
+            if (isSameColor(curr, white) && !isSameColor(currBefore, white)) {
+                if(inCriticalList(x, y, &v, vCount) == 0){
                     colorize = !colorize;
-
-                    continue;
+                }
+                else {
+                    printf("in %d, %d\n", x, y);
                 }
             }
-
-            if (colorize) {
-                addPixelToBuffer(fb, x, y, c.r, c.g, c.b, c.a);
+            else {                      
+                if (colorize) {
+                    addPixelToBuffer(fb, x, y, c.r, c.g, c.b, c.a);
+                }
             }
+            currBefore = curr;
         }
     }
 }
