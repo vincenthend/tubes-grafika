@@ -80,7 +80,7 @@ void scanlineFill(FrameBuffer *fb, Shape *s, Color c) {
 
         for (int x = minX; x <= maxX; x++) {
             curr = getColor(fb, x, y);
-            if (isSameColor(curr, white) && !isSameColor(currBefore, white)) {
+            if (isSameColor(curr, white) ) {
                 if(inCriticalList(x, y, &v, vCount) == 0){
                     colorize = !colorize;
                 }
