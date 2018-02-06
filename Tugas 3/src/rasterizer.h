@@ -7,7 +7,7 @@
 
 #define MAX_VERTICES 25
 
-void boundaryFill(FrameBuffer *fb, int x, int y, Color color);
+void boundaryFill(FrameBuffer *fb, Shape *s, Color color);
 
 void scanlineFill(FrameBuffer *fb, Shape *s, Color color);
 

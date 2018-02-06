@@ -2,7 +2,7 @@
 
 #include "rasterizer.h"
 
-void boundaryFill(FrameBuffer *fb, int x, int y, Color color) {
+void boundaryFillHelper(FrameBuffer *fb, int x, int y, Color color) {
     // Check screen boundaries
     if ((x < 0) || (x >= fb->screen_width) || (y < 0) ||
         (y >= fb->screen_height))
@@ -12,11 +12,32 @@ void boundaryFill(FrameBuffer *fb, int x, int y, Color color) {
     Color curr = getColor(fb, x, y);
     if (!isSameColor(curr, color)) {
         addPixelToBuffer(fb, x, y, color.r, color.g, color.b, color.a);
-        boundaryFill(fb, x, y - 1, color);
-        boundaryFill(fb, x, y + 1, color);
-        boundaryFill(fb, x - 1, y, color);
-        boundaryFill(fb, x + 1, y, color);
+        boundaryFillHelper(fb, x, y - 1, color);
+        boundaryFillHelper(fb, x, y + 1, color);
+        boundaryFillHelper(fb, x - 1, y, color);
+        boundaryFillHelper(fb, x + 1, y, color);
     }
+}
+
+void boundaryFill(FrameBuffer *fb, Shape *s, Color color) {
+    Color pink;
+    initColor(&pink, "FF8AD1");
+
+    int x = findMinXInShape(s->polygons, s->polygonCount);
+    int y = findMinYInShape(s->polygons, s->polygonCount) + 3;
+
+    Color curr = getColor(fb, x, y);
+
+    while (!isSameColor(curr, pink)) {
+        x++;
+        curr = getColor(fb, x, y);
+    }
+
+    Vertex v;
+    v.x = x + 2;
+    v.y = y + 2;
+
+    boundaryFillHelper(fb, v.x, v.y, color);
 }
 
 int inCriticalList(int x, int y, Vertex *v, int vertexCount) {
@@ -101,25 +122,8 @@ void fillShape(FrameBuffer *fb, Shape *s, Color color) {
         drawPolygon(fb, &(s->polygons[i]), color);
     }
 
-    // Color pink;
-    // initColor(&pink, "FF8AD1");
-
-    // int x = findMinXInShape(s->polygons, s->polygonCount);
-    // int y = findMinYInShape(s->polygons, s->polygonCount) + 3;
-
-    // Color curr = getColor(fb, x, y);
-
-    // while(!isSameColor(curr, pink)) {
-    //     x++;
-    //     curr = getColor(fb, x, y);
-    // }
-
-    // Vertex v;
-    // v.x = x+2;
-    // v.y = y+2;
-
     // Boundary fill
-    // boundaryFill(fb, v.x, v.y, color);
+    // boundaryFill(fb, s, color);
 
     // Scanline fill
     scanlineFill(fb, s, color);
