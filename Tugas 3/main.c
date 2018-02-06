@@ -39,12 +39,15 @@ int main() {
 
     // Draw and fill
     Vertex v;
-    v.x = 500;
-    v.y = 100;
+    v.x = 800;
+    v.y = 600;
 
-    fillChar(&fb, 'a', &rasterFont, v, pink);
+    char c;
+    scanf("%c", &c);
+    c = tolower(c);
+    fillChar(&fb, c, &rasterFont, v, pink);
 
-    sleep(5);
+    sleep(1);
 
     return 0;
 }
