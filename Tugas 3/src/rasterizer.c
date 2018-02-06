@@ -33,18 +33,19 @@ void boundaryFill(FrameBuffer *fb, Shape *s, Color color) {
         curr = getColor(fb, x, y);
     }
 
-    Vertex v;
-    v.x = x + 2;
-    v.y = y + 2;
+    Vertex vertex;
+    vertex.x = x + 2;
+    vertex.y = y + 2;
 
-    boundaryFillHelper(fb, v.x, v.y, color);
+    boundaryFillHelper(fb, vertex.x, vertex.y, color);
 }
 
-int inCriticalList(int x, int y, Vertex *v, int vertexCount) {
+int inCriticalList(int x, int y, Vertex *vertices, int vertexCount) {
     int retVal = 0;
     int i = 0;
     while (i < vertexCount && retVal == 0) {
-        if ((v[i].x == x && v[i].y == y) || (v[i].x == x && v[i].y + 1 == y)) {
+        if ((vertices[i].x == x && vertices[i].y == y) ||
+            (vertices[i].x == x && vertices[i].y + 1 == y)) {
             retVal = 1;
         } else {
             i++;
@@ -58,7 +59,7 @@ void scanlineFill(FrameBuffer *fb, Shape *s, Color c) {
     Color white;
     initColor(&white, "FFFFFF");
 
-    Vertex v[999];
+    Vertex vertices[999];
     int vertexCount = 0;
 
     int minX = findMinXInShape(s->polygons, s->polygonCount);
@@ -74,7 +75,7 @@ void scanlineFill(FrameBuffer *fb, Shape *s, Color c) {
                 (*s).polygons[i].vertices[(*s).polygons[i].vertexCount - 1],
                 (*s).polygons[i].vertices[0],
                 (*s).polygons[i].vertices[1]) == 1) {
-            v[vertexCount] = (*s).polygons[i].vertices[0];
+            vertices[vertexCount] = (*s).polygons[i].vertices[0];
             vertexCount++;
         }
 
@@ -83,7 +84,7 @@ void scanlineFill(FrameBuffer *fb, Shape *s, Color c) {
             if (isCritical((*s).polygons[i].vertices[j - 1],
                            (*s).polygons[i].vertices[j],
                            (*s).polygons[i].vertices[j + 1]) == 1) {
-                v[vertexCount] = (*s).polygons[i].vertices[j];
+                vertices[vertexCount] = (*s).polygons[i].vertices[j];
                 vertexCount++;
             }
         }
@@ -91,7 +92,7 @@ void scanlineFill(FrameBuffer *fb, Shape *s, Color c) {
         if (isCritical((*s).polygons[i].vertices[j - 1],
                        (*s).polygons[i].vertices[j],
                        (*s).polygons[i].vertices[0]) == 1) {
-            v[vertexCount] = (*s).polygons[i].vertices[j];
+            vertices[vertexCount] = (*s).polygons[i].vertices[j];
             vertexCount++;
         }
     }
@@ -105,7 +106,7 @@ void scanlineFill(FrameBuffer *fb, Shape *s, Color c) {
         for (int x = minX; x <= maxX; x++) {
             curr = getColor(fb, x, y);
             if (isSameColor(curr, white)) {
-                if (inCriticalList(x, y, v, vertexCount) == 0) {
+                if (inCriticalList(x, y, vertices, vertexCount) == 0) {
                     colorize = !colorize;
                 } else {
                     printf("in %d, %d\n", x, y);
