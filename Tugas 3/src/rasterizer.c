@@ -19,7 +19,7 @@ void boundaryFill(FrameBuffer *fb, int x, int y, Color c) {
     }
 }
 
-void scanlineFill(FrameBuffer *fb, Shape *s, Color c) {
+void scanlineFill(FrameBuffer *fb, Shape *s, Color c, int arr[]) {
     Color white;
     initColor(&white, "FFFFFF");
 
@@ -33,28 +33,40 @@ void scanlineFill(FrameBuffer *fb, Shape *s, Color c) {
     }
 
     int colorize = 0;
-    for (int y = minY; y <= maxY; y++) {
-        Color curr = getColor(fb, minX, y);
-        colorize = 0;
 
-        for (int x = minX; x <= maxX; x++) {
-            curr = getColor(fb, x, y);
-            if (isSameColor(curr, white)) {
-                colorize = !colorize;
+    int passCounter = 0;
+    // int dummyCounter = 0;
+    for (int y = minY + 1; y < maxY; y++) {
+        if (y == minY + arr[passCounter]) {
+            // printf("%d\n", y);
+            passCounter++; //do nothing
+        } else { //
+            Color curr = getColor(fb, minX, y);
+            colorize = 0;
 
-                continue;
-            }
+            for (int x = minX; x <= maxX; x++) {
+                curr = getColor(fb, x, y);
+                if (isSameColor(curr, white)) {
+                    colorize = !colorize;
 
-            if (colorize) {
-                addPixelToBuffer(fb, x, y, c.r, c.g, c.b, c.a);
+                    continue;
+                }
+
+                if (colorize) {
+                    addPixelToBuffer(fb, x, y, c.r, c.g, c.b, c.a);
+                }
             }
         }
+        // printf("%d\n", dummyCounter);
+        // usleep(200000);
+        // dummyCounter++;
     }
+
 }
 
-void fillShape(FrameBuffer *fb, Shape *s, Color c) {
+void fillShape(FrameBuffer *fb, Shape *s, Color color, char c) {
     for (int i = 0; i < s->polygonCount; ++i) {
-        drawPolygon(fb, &(s->polygons[i]), c);
+        drawPolygon(fb, &(s->polygons[i]), color);
     }
 
     // Get point in polygon
@@ -67,7 +79,85 @@ void fillShape(FrameBuffer *fb, Shape *s, Color c) {
     // boundaryFill(fb, v.x, v.y, c);
 
     // Scanline fill
-    scanlineFill(fb, s, c);
+    if (c == 'a') {
+        int arr[5] = {1, 34, 35, 75, 90};
+        scanlineFill(fb, s, color, arr); 
+    } else if (c == 'b') {
+        int arr[2] = {100, 107};
+        scanlineFill(fb, s, color, arr);
+    } else if (c == 'c') {
+        int arr[1] = {0};
+        scanlineFill(fb, s, color, arr);
+    } else if (c == 'd') {
+        int arr[1] = {0};
+        scanlineFill(fb, s, color, arr);
+    } else if (c == 'e') {
+        int arr[1] = {0};
+        scanlineFill(fb, s, color, arr);
+    } else if (c == 'f') {
+        int arr[1] = {0};
+        scanlineFill(fb, s, color, arr);
+    } else if (c == 'g') {
+        int arr[2] = {14, 96};
+        scanlineFill(fb, s, color, arr);
+    } else if (c == 'h') {
+        int arr[1] = {0};
+        scanlineFill(fb, s, color, arr);
+    } else if (c == 'i') {
+        int arr[1] = {0};
+        scanlineFill(fb, s, color, arr);
+    } else if (c == 'j') {
+        int arr[2] = {79, 103};
+        scanlineFill(fb, s, color, arr);
+    } else if (c == 'k') {
+        int arr[7] = {6, 17, 22, 28, 39, 44, 53};
+        scanlineFill(fb, s, color, arr);
+    } else if (c == 'l') {
+        int arr[1] = {0};
+        scanlineFill(fb, s, color, arr);
+    } else if (c == 'm') {
+        int arr[3] = {31, 47, 75};
+        scanlineFill(fb, s, color, arr);
+    } else if (c == 'n') {
+        int arr[1] = {33};
+        scanlineFill(fb, s, color, arr);
+    } else if (c == 'o') {
+        int arr[2] = {16, 94};
+        scanlineFill(fb, s, color, arr);
+    } else if (c == 'p') {
+        int arr[5] = {2, 7, 56, 59, 60};
+        scanlineFill(fb, s, color, arr);
+    } else if (c == 'q') {
+        int arr[3] = {73, 105, 107};
+        scanlineFill(fb, s, color, arr);
+    } else if (c == 'r') {
+        int arr[6] = {7, 49, 51, 53, 55, 56};
+        scanlineFill(fb, s, color, arr);
+    } else if (c == 's') {
+        int arr[4] = {15, 52, 58, 85};
+        scanlineFill(fb, s, color, arr);
+    } else if (c == 't') {
+        int arr[1] = {0};
+        scanlineFill(fb, s, color, arr);
+    } else if (c == 'u') {
+        int arr[1] = {0};
+        scanlineFill(fb, s, color, arr);
+    } else if (c == 'v') {
+        int arr[3] = {71, 72, 109};
+        scanlineFill(fb, s, color, arr);
+    } else if (c == 'w') {
+        int arr[4] = {75, 78, 79, 80};
+        scanlineFill(fb, s, color, arr);
+    } else if (c == 'x') {
+        int arr[2] = {40, 70};
+        scanlineFill(fb, s, color, arr);
+    } else if (c == 'y') {
+        int arr[1] = {40};
+        scanlineFill(fb, s, color, arr);
+    } else if (c == 'z') {
+        int arr[1] = {0};
+        scanlineFill(fb, s, color, arr);
+    }
 
     updateFrame(fb);
 }
@@ -75,7 +165,7 @@ void fillShape(FrameBuffer *fb, Shape *s, Color c) {
 void fillChar(FrameBuffer *fb, char ch, RasterFont *rasterFont, Vertex offset,
               Color c) {
     offsetShape(&(rasterFont->dict[(int)ch]), offset);
-    fillShape(fb, &(rasterFont->dict[(int)ch]), c);
+    fillShape(fb, &(rasterFont->dict[(int)ch]), c, ch);
 }
 
 void fillString(FrameBuffer *fb, char *s, RasterFont *rasterFont, Vertex offset,

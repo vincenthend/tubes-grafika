@@ -9,9 +9,9 @@
 
 void boundaryFill(FrameBuffer *fb, int x, int y, Color c);
 
-void scanlineFill(FrameBuffer *fb, Shape *s, Color c);
+void scanlineFill(FrameBuffer *fb, Shape *s, Color c, int arr[]);
 
-void fillShape(FrameBuffer *fb, Shape *s, Color c);
+void fillShape(FrameBuffer *fb, Shape *s, Color color, char c);
 
 void fillChar(FrameBuffer *fb, char ch, RasterFont *rasterFont, Vertex offset, Color c);
 
