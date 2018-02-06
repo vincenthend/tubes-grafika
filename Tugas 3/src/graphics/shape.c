@@ -1,29 +1,32 @@
 #include "shape.h"
 
-void initPolygon(Polygon *p, int n) {
-    p->vertices = (Vertex *)malloc(n * sizeof(Vertex));
-    p->vertexCount = n;
+void initPolygon(Polygon *polygon, int vertexCount) {
+    polygon->vertices = (Vertex *)malloc(vertexCount * sizeof(Vertex));
+    polygon->vertexCount = vertexCount;
 }
 
-void initShape(Shape *s, int n) {
-    s->polygons = (Polygon *)malloc(n * sizeof(Polygon));
-    s->polygonCount = n;
+void initShape(Shape *shape, int polygonCount) {
+    shape->polygons = (Polygon *)malloc(polygonCount * sizeof(Polygon));
+    shape->polygonCount = polygonCount;
 }
 
-void offsetShape(Shape *s, const Vertex v) {
-    for (int i = 0; i < s->polygonCount; ++i) {
-        Polygon *p = &(s->polygons[i]);
-        for (int j = 0; j < p->vertexCount; ++j) {
-            p->vertices[j].x += v.x;
-            p->vertices[j].y += v.y;
+void offsetShape(Shape *shape, const Vertex vertex) {
+    for (int i = 0; i < shape->polygonCount; ++i) {
+        Polygon *polygon = &(shape->polygons[i]);
+        for (int j = 0; j < polygon->vertexCount; ++j) {
+            polygon->vertices[j].x += vertex.x;
+            polygon->vertices[j].y += vertex.y;
         }
     }
 }
 
-int findMinXInShape(Polygon *polygons, int polygon_count) {
-    int i;
+int isCritical(Vertex a, Vertex b, Vertex c) {
+    return (a.y < b.y && c.y < b.y) || (a.y > b.y && c.y > b.y);
+}
+
+int findMinXInShape(Polygon *polygons, int polygonCount) {
     int xMin = findMinXInPolygon(polygons[0].vertices, polygons[0].vertexCount);
-    for (i = 1; i < polygon_count; i++) {
+    for (int i = 1; i < polygonCount; i++) {
         int xMinLocal =
             findMinXInPolygon(polygons[i].vertices, polygons[i].vertexCount);
         if (xMinLocal < xMin) {
@@ -33,10 +36,9 @@ int findMinXInShape(Polygon *polygons, int polygon_count) {
     return xMin;
 }
 
-int findMaxXInShape(Polygon *polygons, int polygon_count) {
-    int i;
+int findMaxXInShape(Polygon *polygons, int polygonCount) {
     int xMax = findMaxXInPolygon(polygons[0].vertices, polygons[0].vertexCount);
-    for (i = 1; i < polygon_count; i++) {
+    for (int i = 1; i < polygonCount; i++) {
         int xMaxLocal =
             findMaxXInPolygon(polygons[i].vertices, polygons[i].vertexCount);
         if (xMaxLocal > xMax) {
@@ -46,10 +48,9 @@ int findMaxXInShape(Polygon *polygons, int polygon_count) {
     return xMax;
 }
 
-int findMinYInShape(Polygon *polygons, int polygon_count) {
-    int i;
+int findMinYInShape(Polygon *polygons, int polygonCount) {
     int yMin = findMinYInPolygon(polygons[0].vertices, polygons[0].vertexCount);
-    for (i = 1; i < polygon_count; i++) {
+    for (int i = 1; i < polygonCount; i++) {
         int yMinLocal =
             findMinYInPolygon(polygons[i].vertices, polygons[i].vertexCount);
         if (yMinLocal < yMin) {
@@ -59,10 +60,9 @@ int findMinYInShape(Polygon *polygons, int polygon_count) {
     return yMin;
 }
 
-int findMaxYInShape(Polygon *polygons, int polygon_count) {
-    int i;
+int findMaxYInShape(Polygon *polygons, int polygonCount) {
     int yMax = findMaxYInPolygon(polygons[0].vertices, polygons[0].vertexCount);
-    for (i = 1; i < polygon_count; i++) {
+    for (int i = 1; i < polygonCount; i++) {
         int yMaxLocal =
             findMaxYInPolygon(polygons[i].vertices, polygons[i].vertexCount);
         if (yMaxLocal > yMax) {
@@ -72,10 +72,9 @@ int findMaxYInShape(Polygon *polygons, int polygon_count) {
     return yMax;
 }
 
-int findMinXInPolygon(Vertex *vertices, int vertex_count) {
-    int i;
+int findMinXInPolygon(Vertex *vertices, int vertexCount) {
     int xMin = vertices[0].x;
-    for (i = 0; i < vertex_count; i++) {
+    for (int i = 0; i < vertexCount; i++) {
         if (vertices[i].x < xMin) {
             xMin = vertices[i].x;
         }
@@ -83,10 +82,9 @@ int findMinXInPolygon(Vertex *vertices, int vertex_count) {
     return xMin;
 }
 
-int findMaxXInPolygon(Vertex *vertices, int vertex_count) {
-    int i;
+int findMaxXInPolygon(Vertex *vertices, int vertexCount) {
     int xMax = vertices[0].x;
-    for (i = 1; i < vertex_count; i++) {
+    for (int i = 1; i < vertexCount; i++) {
         if (vertices[i].x > xMax) {
             xMax = vertices[i].x;
         }
@@ -94,10 +92,9 @@ int findMaxXInPolygon(Vertex *vertices, int vertex_count) {
     return xMax;
 }
 
-int findMinYInPolygon(Vertex *vertices, int vertex_count) {
-    int i;
+int findMinYInPolygon(Vertex *vertices, int vertexCount) {
     int yMin = vertices[0].y;
-    for (i = 1; i < vertex_count; i++) {
+    for (int i = 1; i < vertexCount; i++) {
         if (vertices[i].y < yMin) {
             yMin = vertices[i].y;
         }
@@ -105,23 +102,12 @@ int findMinYInPolygon(Vertex *vertices, int vertex_count) {
     return yMin;
 }
 
-int findMaxYInPolygon(Vertex *vertices, int vertex_count) {
-    int i;
+int findMaxYInPolygon(Vertex *vertices, int vertexCount) {
     int yMax = vertices[0].y;
-    for (i = 1; i < vertex_count; i++) {
+    for (int i = 1; i < vertexCount; i++) {
         if (vertices[i].y > yMax) {
             yMax = vertices[i].y;
         }
     }
     return yMax;
-}
-
-int isCritical(Vertex a, Vertex b, Vertex c){
-    if((a.y < b.y && c.y < b.y)||a.y > b.y && c.y > b.y){
-        return 1;
-    }
-    else {
-        return 0;
-    }
-
 }

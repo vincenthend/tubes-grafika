@@ -11,6 +11,6 @@ typedef struct {
     int width;
 } Font;
 
-void openFont(char *fontChar, Font *font);
+void openFont(char *ch, Font *font);
 
 #endif

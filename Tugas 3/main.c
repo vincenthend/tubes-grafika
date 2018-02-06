@@ -50,7 +50,7 @@ int main() {
             v.x = 300;
         }
     }
-    
+
     updateFrame(&fb);
 
     sleep(3);

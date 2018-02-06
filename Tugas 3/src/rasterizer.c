@@ -2,7 +2,7 @@
 
 #include "rasterizer.h"
 
-void boundaryFill(FrameBuffer *fb, int x, int y, Color c) {
+void boundaryFillHelper(FrameBuffer *fb, int x, int y, Color color) {
     // Check screen boundaries
     if ((x < 0) || (x >= fb->screen_width) || (y < 0) ||
         (y >= fb->screen_height))
@@ -10,24 +10,44 @@ void boundaryFill(FrameBuffer *fb, int x, int y, Color c) {
 
     // Output to screen
     Color curr = getColor(fb, x, y);
-    if (!isSameColor(curr, c)) {
-        addPixelToBuffer(fb, x, y, c.r, c.g, c.b, c.a);
-        boundaryFill(fb, x, y - 1, c);
-        boundaryFill(fb, x, y + 1, c);
-        boundaryFill(fb, x - 1, y, c);
-        boundaryFill(fb, x + 1, y, c);
+    if (!isSameColor(curr, color)) {
+        addPixelToBuffer(fb, x, y, color.r, color.g, color.b, color.a);
+        boundaryFillHelper(fb, x, y - 1, color);
+        boundaryFillHelper(fb, x, y + 1, color);
+        boundaryFillHelper(fb, x - 1, y, color);
+        boundaryFillHelper(fb, x + 1, y, color);
     }
 }
 
+void boundaryFill(FrameBuffer *fb, Shape *s, Color color) {
+    Color pink;
+    initColor(&pink, "FF8AD1");
 
-int inCriticalList(int x, int y, Vertex* v, int vCount){
+    int x = findMinXInShape(s->polygons, s->polygonCount);
+    int y = findMinYInShape(s->polygons, s->polygonCount) + 3;
+
+    Color curr = getColor(fb, x, y);
+
+    while (!isSameColor(curr, pink)) {
+        x++;
+        curr = getColor(fb, x, y);
+    }
+
+    Vertex vertex;
+    vertex.x = x + 2;
+    vertex.y = y + 2;
+
+    boundaryFillHelper(fb, vertex.x, vertex.y, color);
+}
+
+int inCriticalList(int x, int y, Vertex *vertices, int vertexCount) {
     int retVal = 0;
     int i = 0;
-    while(i<vCount && retVal == 0){
-        if((v[i].x == x && v[i].y == y)||(v[i].x == x && v[i].y+1 == y)){
+    while (i < vertexCount && retVal == 0) {
+        if ((vertices[i].x == x && vertices[i].y == y) ||
+            (vertices[i].x == x && vertices[i].y + 1 == y)) {
             retVal = 1;
-        }
-        else {
+        } else {
             i++;
         }
     }
@@ -36,13 +56,11 @@ int inCriticalList(int x, int y, Vertex* v, int vCount){
 }
 
 void scanlineFill(FrameBuffer *fb, Shape *s, Color c) {
-
     Color white;
-    Vertex v[999];
-    int vCount = 0;
-    float grad0, grad1;
     initColor(&white, "FFFFFF");
-    int j;
+
+    Vertex vertices[999];
+    int vertexCount = 0;
 
     int minX = findMinXInShape(s->polygons, s->polygonCount);
     int maxX = findMaxXInShape(s->polygons, s->polygonCount);
@@ -53,21 +71,29 @@ void scanlineFill(FrameBuffer *fb, Shape *s, Color c) {
         drawPolygon(fb, &(s->polygons[i]), white);
 
         //Find critical vertex
-        if(isCritical((*s).polygons[i].vertices[(*s).polygons[i].vertexCount-1],(*s).polygons[i].vertices[0],(*s).polygons[i].vertices[1]) == 1){
-            v[vCount] = (*s).polygons[i].vertices[0];
-            vCount++;
+        if (isCritical(
+                (*s).polygons[i].vertices[(*s).polygons[i].vertexCount - 1],
+                (*s).polygons[i].vertices[0],
+                (*s).polygons[i].vertices[1]) == 1) {
+            vertices[vertexCount] = (*s).polygons[i].vertices[0];
+            vertexCount++;
         }
 
-        for(j = 1; j < (*s).polygons[i].vertexCount-1; j++){
-            if(isCritical((*s).polygons[i].vertices[j-1],(*s).polygons[i].vertices[j],(*s).polygons[i].vertices[j+1]) == 1){
-                v[vCount] = (*s).polygons[i].vertices[j];
-                vCount++;
+        int j;
+        for (j = 1; j < (*s).polygons[i].vertexCount - 1; j++) {
+            if (isCritical((*s).polygons[i].vertices[j - 1],
+                           (*s).polygons[i].vertices[j],
+                           (*s).polygons[i].vertices[j + 1]) == 1) {
+                vertices[vertexCount] = (*s).polygons[i].vertices[j];
+                vertexCount++;
             }
         }
 
-        if(isCritical((*s).polygons[i].vertices[j-1],(*s).polygons[i].vertices[j],(*s).polygons[i].vertices[0]) == 1){
-            v[vCount] = (*s).polygons[i].vertices[j];
-            vCount++;
+        if (isCritical((*s).polygons[i].vertices[j - 1],
+                       (*s).polygons[i].vertices[j],
+                       (*s).polygons[i].vertices[0]) == 1) {
+            vertices[vertexCount] = (*s).polygons[i].vertices[j];
+            vertexCount++;
         }
     }
 
@@ -75,95 +101,68 @@ void scanlineFill(FrameBuffer *fb, Shape *s, Color c) {
     int colorize = 0;
     for (int y = minY; y <= maxY; y++) {
         Color curr = getColor(fb, minX, y);
-        Color currBefore = curr;
         colorize = 0;
 
         for (int x = minX; x <= maxX; x++) {
             curr = getColor(fb, x, y);
-            if (isSameColor(curr, white) ) {
-                if(inCriticalList(x, y, &v, vCount) == 0){
+            if (isSameColor(curr, white)) {
+                if (inCriticalList(x, y, vertices, vertexCount) == 0) {
                     colorize = !colorize;
-                }
-                else {
+                } else {
                     printf("in %d, %d\n", x, y);
                 }
+            } else if (colorize) {
+                addPixelToBuffer(fb, x, y, c.r, c.g, c.b, c.a);
             }
-            else {                      
-                if (colorize) {
-                    addPixelToBuffer(fb, x, y, c.r, c.g, c.b, c.a);
-                }
-            }
-            currBefore = curr;
         }
     }
 }
 
-void fillShape(FrameBuffer *fb, Shape *s, Color c) {
+void fillShape(FrameBuffer *fb, Shape *s, Color color) {
     for (int i = 0; i < s->polygonCount; ++i) {
-        drawPolygon(fb, &(s->polygons[i]), c);
+        drawPolygon(fb, &(s->polygons[i]), color);
     }
-
-    Color check;
-    check.r = c.r;
-    check.g = c.g;
-    check.b = c.b;
-    check.a = c.a;
-
-    int x = findMinXInShape(s->polygons, s->polygonCount);
-    int y = findMinYInShape(s->polygons, s->polygonCount) + 3;
-
-    Color curr = getColor(fb, x, y);
-
-    while(!isSameColor(curr, check)) {
-        x++;
-        curr = getColor(fb, x, y);
-    }
-
-
-    Vertex v;
-    v.x = x+2;
-    v.y = y+2;
-
 
     // Boundary fill
-    boundaryFill(fb, v.x, v.y, c);
+    // boundaryFill(fb, s, color);
 
     // Scanline fill
-    // scanlineFill(fb, s, c);
+    scanlineFill(fb, s, color);
 }
 
-void fillChar(FrameBuffer *fb, char c, RasterFont *rasterFont, Vertex offset,
+void fillChar(FrameBuffer *fb, char c, RasterFont *rf, Vertex offset,
               Color color) {
-    offsetShape(&(rasterFont->dict[(int)c]), offset);
-    fillShape(fb, &(rasterFont->dict[(int)c]), color);
+    offsetShape(&(rf->dict[(int)c]), offset);
+    fillShape(fb, &(rf->dict[(int)c]), color);
 }
 
-void fillString(FrameBuffer *fb, char *s, RasterFont *rasterFont, Vertex offset,
-                Color c) {
+void fillString(FrameBuffer *fb, char *s, RasterFont *rf, Vertex offset,
+                Color color) {
     Vertex origin = offset;
     int len = strlen(s);
 
     int i;
     for (i = 0; i < len; ++i) {
-        fillChar(fb, s[i], rasterFont, offset, c);
+        fillChar(fb, s[i], rf, offset, color);
 
         // Manage offset
-        if (offset.x + 2 * rasterFont->width >= fb->screen_width) {
+        if (offset.x + 2 * rf->width >= fb->screen_width) {
             offset.x = origin.x;
-            offset.y += rasterFont->height;
+            offset.y += rf->height;
 
             if (offset.y >= fb->screen_height)
                 return;
         } else {
-            offset.x += rasterFont->width;
+            offset.x += rf->width;
         }
     }
 }
 
-void fillSquareArea(FrameBuffer *fb, int x0, int y0, int x1, int y1, Color c) {
+void fillSquareArea(FrameBuffer *fb, int x0, int y0, int x1, int y1,
+                    Color color) {
     for (int x = x0; x <= x1; x++) {
         for (int y = y0; y <= y1; y++) {
-            addPixelToBuffer(fb, x, y, c.r, c.g, c.b, c.a);
+            addPixelToBuffer(fb, x, y, color.r, color.g, color.b, color.a);
         }
     }
 }
