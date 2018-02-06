@@ -115,3 +115,17 @@ int findMaxYInPolygon(Vertex *vertices, int vertex_count) {
     }
     return yMax;
 }
+
+float countGrad(Vertex v0, Vertex v1){
+    float deltX, deltY;
+    deltY = v0.y - v1.y;
+    deltX = v0.x - v1.x;
+
+    if(deltX == 0){
+        return 0;
+    }
+    else {
+        return deltY/deltX;
+    }
+
+}
