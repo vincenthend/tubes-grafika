@@ -43,7 +43,7 @@ int main() {
     v.y = 100;
 
     for (int i = (int)'a'; i <= (int)'z'; i++) {
-        fillChar(&fb, (char)i, &rasterFont, v, pink);
+        fillChar(&fb, (char)i, &rasterFont, v, yellow);
         v.x += 100;
         if (v.x > 1000) {
             v.y += 130;

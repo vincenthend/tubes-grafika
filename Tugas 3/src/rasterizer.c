@@ -57,30 +57,33 @@ void fillShape(FrameBuffer *fb, Shape *s, Color c) {
         drawPolygon(fb, &(s->polygons[i]), c);
     }
 
-    // Color pink;
-    // initColor(&pink, "FF8AD1");
+    Color check;
+    check.r = c.r;
+    check.g = c.g;
+    check.b = c.b;
+    check.a = c.a;
 
-    // int x = findMinXInShape(s->polygons, s->polygonCount);
-    // int y = findMinYInShape(s->polygons, s->polygonCount) + 3;
+    int x = findMinXInShape(s->polygons, s->polygonCount);
+    int y = findMinYInShape(s->polygons, s->polygonCount) + 3;
 
-    // Color curr = getColor(fb, x, y);
+    Color curr = getColor(fb, x, y);
 
-    // while(!isSameColor(curr, pink)) {
-    //     x++;
-    //     curr = getColor(fb, x, y);
-    // }
+    while(!isSameColor(curr, check)) {
+        x++;
+        curr = getColor(fb, x, y);
+    }
 
 
-    // Vertex v;
-    // v.x = x+2;
-    // v.y = y+2;
+    Vertex v;
+    v.x = x+2;
+    v.y = y+2;
 
 
     // Boundary fill
-    // boundaryFill(fb, v.x, v.y, c);
+    boundaryFill(fb, v.x, v.y, c);
 
     // Scanline fill
-    scanlineFill(fb, s, c);
+    // scanlineFill(fb, s, c);
 }
 
 void fillChar(FrameBuffer *fb, char c, RasterFont *rasterFont, Vertex offset,
