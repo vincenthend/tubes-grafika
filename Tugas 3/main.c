@@ -39,10 +39,19 @@ int main() {
 
     // Draw and fill
     Vertex v;
-    v.x = 500;
+    v.x = 300;
     v.y = 100;
 
-    fillChar(&fb, 'a', &rasterFont, v, pink);
+    for (int i = (int)'a'; i <= (int)'z'; i++) {
+        fillChar(&fb, (char)i, &rasterFont, v, pink);
+        v.x += 100;
+        if (v.x > 1000) {
+            v.y += 130;
+            v.x = 300;
+        }
+    }
+    
+    updateFrame(&fb);
 
     sleep(5);
 

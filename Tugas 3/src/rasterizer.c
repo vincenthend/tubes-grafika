@@ -68,8 +68,6 @@ void fillShape(FrameBuffer *fb, Shape *s, Color c) {
 
     // Scanline fill
     scanlineFill(fb, s, c);
-
-    updateFrame(fb);
 }
 
 void fillChar(FrameBuffer *fb, char c, RasterFont *rasterFont, Vertex offset,
