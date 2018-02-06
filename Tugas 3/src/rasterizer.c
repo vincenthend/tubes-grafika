@@ -59,7 +59,7 @@ void fillShape(FrameBuffer *fb, Shape *s, Color c) {
 
     // Get point in polygon
     // TODO: make a better one
-    Vertex v = (*s).polygons[0].vertices[0];
+    Vertex v = s->polygons[0].vertices[0];
     v.x++;
     v.y++;
 

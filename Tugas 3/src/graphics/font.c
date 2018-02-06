@@ -2,7 +2,7 @@
 
 void openFont(char *fontChar, Font *font) {
     for (int i = 0; i < 256; i++) {
-        (*font).dict[i] = (char *)malloc(100);
+        font->dict[i] = (char *)malloc(100);
     }
 
     int c = 'a';
@@ -14,9 +14,9 @@ void openFont(char *fontChar, Font *font) {
     FILE *fontFile;
     fontFile = fopen(fontFilename, "r");
     if (fontFile) {
-        fscanf(fontFile, "%d", &((*font).width));
-        fscanf(fontFile, "%d", &((*font).height));
-        while ((fscanf(fontFile, "%s", (*font).dict[c]) == 1) && (c <= 'z')) {
+        fscanf(fontFile, "%d", &(font->width));
+        fscanf(fontFile, "%d", &(font->height));
+        while ((fscanf(fontFile, "%s", font->dict[c]) == 1) && (c <= 'z')) {
             c++;
         }
 

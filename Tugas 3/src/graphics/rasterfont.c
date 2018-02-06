@@ -6,25 +6,25 @@ void initRasterFont(RasterFont *rasterFont) {
     rasterFont->width = 110;
 }
 
-void openRasterFont(char *rasterFont, RasterFont *rf) {
+void openRasterFont(char *rasterFontChar, RasterFont *rasterFont) {
     for (int i = 'a'; i <= 'z'; i++) {
-        initShape(&(rf->dict[i]), 10);
+        initShape(&(rasterFont->dict[i]), 10);
         for (int j = 0; j < 10; j++) {
-            initPolygon(&(rf->dict[i].polygons[j]), 20);
+            initPolygon(&(rasterFont->dict[i].polygons[j]), 20);
         }
     }
 
     char rasterFontFilename[30];
     strcpy(rasterFontFilename, "fonts/");
-    strcat(rasterFontFilename, rasterFont);
+    strcat(rasterFontFilename, rasterFontChar);
     strcat(rasterFontFilename, ".txt");
 
     char charDump[2];
     FILE *rasterFontFile;
     rasterFontFile = fopen(rasterFontFilename, "r");
     if (rasterFontFile) {
-        fscanf(rasterFontFile, "%d", &((*rf).width));
-        fscanf(rasterFontFile, "%d", &((*rf).height));
+        fscanf(rasterFontFile, "%d", &(rasterFont->width));
+        fscanf(rasterFontFile, "%d", &(rasterFont->height));
 
         int x, y;
         while (fscanf(rasterFontFile, "%s", charDump) == 1) {
@@ -39,25 +39,25 @@ void openRasterFont(char *rasterFont, RasterFont *rf) {
             int verticeIndex = 0;
             while (fscanf(rasterFontFile, "%d,%d", &x, &y) == 2) {
                 if ((x == -999 && y == -999) || (x == -9 && y == -9)) {
-                    (*rf).dict[currentChar].polygons[polygonIndex].vertexCount =
+                    rasterFont->dict[currentChar].polygons[polygonIndex].vertexCount =
                         verticeIndex;
-                    (*rf).dict[currentChar].polygonCount = polygonIndex + 1;
+                    rasterFont->dict[currentChar].polygonCount = polygonIndex + 1;
 
                     break;
                 } else if (x == -1 && y == -1) {
-                    (*rf).dict[currentChar].polygons[polygonIndex].vertexCount =
+                    rasterFont->dict[currentChar].polygons[polygonIndex].vertexCount =
                         verticeIndex;
 
                     polygonIndex++;
                     verticeIndex = 0;
                 } else {
-                    (*rf)
-                        .dict[currentChar]
+                    rasterFont
+                        ->dict[currentChar]
                         .polygons[polygonIndex]
                         .vertices[verticeIndex]
                         .x = x;
-                    (*rf)
-                        .dict[currentChar]
+                    rasterFont
+                        ->dict[currentChar]
                         .polygons[polygonIndex]
                         .vertices[verticeIndex]
                         .y = y;

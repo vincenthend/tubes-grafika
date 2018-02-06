@@ -11,7 +11,7 @@ void initShape(Shape *s, int n) {
 }
 
 void offsetShape(Shape *s, const Vertex v) {
-    for (int i = 0; i < (*s).polygonCount; ++i) {
+    for (int i = 0; i < s->polygonCount; ++i) {
         Polygon *p = &(s->polygons[i]);
         for (int j = 0; j < p->vertexCount; ++j) {
             p->vertices[j].x += v.x;

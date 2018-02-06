@@ -9,11 +9,11 @@ void openImage(char *imageName, Image *image) {
     FILE *imageFile;
     imageFile = fopen(imageFilename, "r");
     if (imageFile) {
-        fscanf(imageFile, "%d", &((*image).width));
-        fscanf(imageFile, "%d", &((*image).height));
-        (*image).data = (char *)malloc((*image).width * (*image).height + 2);
+        fscanf(imageFile, "%d", &(image->width));
+        fscanf(imageFile, "%d", &(image->height));
+        image->data = (char *)malloc(image->width * image->height + 2);
 
-        if (fscanf(imageFile, "%s", (*image).data) == 1) {
+        if (fscanf(imageFile, "%s", image->data) == 1) {
             printf("Successfully loaded image %s\n", imageName);
         } else {
             printf("Error in reading image %s\n", imageName);
