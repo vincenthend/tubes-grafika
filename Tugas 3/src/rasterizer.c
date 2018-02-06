@@ -19,9 +19,30 @@ void boundaryFill(FrameBuffer *fb, int x, int y, Color c) {
     }
 }
 
+
+int inCriticalList(int x, int y, Vertex* v, int vCount){
+    int retVal = 0;
+    int i = 0;
+    while(i<vCount && retVal == 0){
+        if((v[i].x == x && v[i].y == y)||(v[i].x == x && v[i].y+1 == y)){
+            retVal = 1;
+        }
+        else {
+            i++;
+        }
+    }
+
+    return retVal;
+}
+
 void scanlineFill(FrameBuffer *fb, Shape *s, Color c) {
+
     Color white;
+    Vertex v[999];
+    int vCount = 0;
+    float grad0, grad1;
     initColor(&white, "FFFFFF");
+    int j;
 
     int minX = findMinXInShape(s->polygons, s->polygonCount);
     int maxX = findMaxXInShape(s->polygons, s->polygonCount);
@@ -30,24 +51,49 @@ void scanlineFill(FrameBuffer *fb, Shape *s, Color c) {
 
     for (int i = 0; i < s->polygonCount; ++i) {
         drawPolygon(fb, &(s->polygons[i]), white);
+
+        //Find critical vertex
+        if(isCritical((*s).polygons[i].vertices[(*s).polygons[i].vertexCount-1],(*s).polygons[i].vertices[0],(*s).polygons[i].vertices[1]) == 1){
+            v[vCount] = (*s).polygons[i].vertices[0];
+            vCount++;
+        }
+
+        for(j = 1; j < (*s).polygons[i].vertexCount-1; j++){
+            if(isCritical((*s).polygons[i].vertices[j-1],(*s).polygons[i].vertices[j],(*s).polygons[i].vertices[j+1]) == 1){
+                v[vCount] = (*s).polygons[i].vertices[j];
+                vCount++;
+            }
+        }
+
+        if(isCritical((*s).polygons[i].vertices[j-1],(*s).polygons[i].vertices[j],(*s).polygons[i].vertices[0]) == 1){
+            v[vCount] = (*s).polygons[i].vertices[j];
+            vCount++;
+        }
     }
 
+    // Color Fill
     int colorize = 0;
     for (int y = minY; y <= maxY; y++) {
         Color curr = getColor(fb, minX, y);
+        Color currBefore = curr;
         colorize = 0;
 
         for (int x = minX; x <= maxX; x++) {
             curr = getColor(fb, x, y);
-            if (isSameColor(curr, white)) {
-                colorize = !colorize;
-
-                continue;
+            if (isSameColor(curr, white) ) {
+                if(inCriticalList(x, y, &v, vCount) == 0){
+                    colorize = !colorize;
+                }
+                else {
+                    printf("in %d, %d\n", x, y);
+                }
             }
-
-            if (colorize) {
-                addPixelToBuffer(fb, x, y, c.r, c.g, c.b, c.a);
+            else {                      
+                if (colorize) {
+                    addPixelToBuffer(fb, x, y, c.r, c.g, c.b, c.a);
+                }
             }
+            currBefore = curr;
         }
     }
 }

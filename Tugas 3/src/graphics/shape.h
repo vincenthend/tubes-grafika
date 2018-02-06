@@ -42,4 +42,6 @@ int findMinYInShape(Polygon *polygons, int polygon_count);
 
 int findMaxYInShape(Polygon *polygons, int polygon_count);
 
+int isCritical(Vertex a, Vertex b, Vertex c);
+
 #endif

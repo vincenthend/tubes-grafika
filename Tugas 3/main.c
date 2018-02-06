@@ -35,7 +35,7 @@ int main() {
     openRasterFont("raster_font", &rasterFont);
 
     // Clear screen
-    printf("\e[1;1H\e[2J");
+    //printf("\e[1;1H\e[2J");
 
     // Draw and fill
     Vertex v;
@@ -53,7 +53,7 @@ int main() {
     
     updateFrame(&fb);
 
-    sleep(5);
+    sleep(3);
 
     return 0;
 }

@@ -115,3 +115,13 @@ int findMaxYInPolygon(Vertex *vertices, int vertex_count) {
     }
     return yMax;
 }
+
+int isCritical(Vertex a, Vertex b, Vertex c){
+    if((a.y < b.y && c.y < b.y)||a.y > b.y && c.y > b.y){
+        return 1;
+    }
+    else {
+        return 0;
+    }
+
+}
