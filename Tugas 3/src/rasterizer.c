@@ -127,10 +127,10 @@ void fillShape(FrameBuffer *fb, Shape *s, Color color) {
     }
 
     // Boundary fill
-    // boundaryFill(fb, s, color);
+    boundaryFill(fb, s, color);
 
     // Scanline fill
-    scanlineFill(fb, s, color);
+    // scanlineFill(fb, s, color);
 }
 
 void fillChar(FrameBuffer *fb, char c, RasterFont *rf, Vertex offset,
@@ -147,7 +147,12 @@ void fillString(FrameBuffer *fb, char *s, RasterFont *rf, Vertex offset,
 
     int i;
     for (i = 0; i < len; ++i) {
-        fillChar(fb, s[i], rf, offset, color);
+        if (s[i] == ' ') {
+
+        }
+        else {
+            fillChar(fb, s[i], rf, offset, color);
+        }
 
         // Manage offset
         if (offset.x + 2 * rf->width >= fb->screen_width) {

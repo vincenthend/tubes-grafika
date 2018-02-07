@@ -51,17 +51,18 @@ int main() {
     //     }
     // }
 
-    char input[100];
+    char input[1000];
 
     printf("Input string: ");
-    scanf("%100s", input);
+    scanf("%999[0-9a-zA-Z ]", input);
+    printf("%s\n", input);
 
     // Convert to lowercase
     for (int i=0; input[i]; i++) {
         input[i] = tolower((char)input[i]);
     }
 
-    fillString(&fb, input, &rasterFont, v, yellow);
+    fillString(&fb, input, &rasterFont, v, pink);
 
     updateFrame(&fb);
 
