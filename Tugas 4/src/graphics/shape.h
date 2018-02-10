@@ -18,6 +18,8 @@ typedef struct {
 typedef struct {
     Polygon *polygons;
     int polygonCount;
+    Vertex upperLeft;
+    Vertex lowerRight;
 } Shape;
 
 void initPolygon(Polygon *polygon, int vertexCount);
@@ -36,25 +38,11 @@ void growShape(Shape *shape, int multiplierScale);
 
 void shrinkShape(Shape *shape, int dividerScale);
 
+void calculateBoundaries(Shape *shape);
+
 void normalizeShapeAfterRotation(Shape *shape);
 
 void rotateShape(Shape *shape, const int degrees);
-
-int findMinXInPolygon(Vertex *vertices, int vertexCount);
-
-int findMaxXInPolygon(Vertex *vertices, int vertexCount);
-
-int findMinYInPolygon(Vertex *vertices, int vertexCount);
-
-int findMaxYInPolygon(Vertex *vertices, int vertexCount);
-
-int findMinXInShape(Polygon *polygons, int polygonCount);
-
-int findMaxXInShape(Polygon *polygons, int polygonCount);
-
-int findMinYInShape(Polygon *polygons, int polygonCount);
-
-int findMaxYInShape(Polygon *polygons, int polygonCount);
 
 int isCritical(Vertex a, Vertex b, Vertex c);
 

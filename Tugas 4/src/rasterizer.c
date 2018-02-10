@@ -20,8 +20,11 @@ void boundaryFillHelper(FrameBuffer *fb, int x, int y, Color color) {
 }
 
 void boundaryFill(FrameBuffer *fb, Shape *s, Color color) {
-    int x = findMinXInShape(s->polygons, s->polygonCount);
-    int y = findMinYInShape(s->polygons, s->polygonCount) + 3;
+    calculateBoundaries(s);
+    int x = s->upperLeft.x;
+    int y = s->upperLeft.y + 3;
+    // int x = findMinXInShape(s->polygons, s->polygonCount);
+    // int y = findMinYInShape(s->polygons, s->polygonCount) + 3;
 
     Color curr = getColor(fb, x, y);
 
@@ -57,10 +60,11 @@ void scanlineFill(FrameBuffer *fb, Shape *s, Color c) {
     Vertex vertices[999];
     int vertexCount = 0;
 
-    int minX = findMinXInShape(s->polygons, s->polygonCount);
-    int maxX = findMaxXInShape(s->polygons, s->polygonCount);
-    int minY = findMinYInShape(s->polygons, s->polygonCount);
-    int maxY = findMaxYInShape(s->polygons, s->polygonCount);
+    calculateBoundaries(s);
+    int minX = s->upperLeft.x;
+    int minY = s->upperLeft.y;
+    int maxX = s->lowerRight.x;
+    int maxY = s->lowerRight.y;
 
     for (int i = 0; i < s->polygonCount; ++i) {
         drawPolygon(fb, &(s->polygons[i]), c);
