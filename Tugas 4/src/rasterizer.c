@@ -134,7 +134,7 @@ void fillShape(FrameBuffer *fb, Shape *s, Color color) {
     boundaryFill(fb, s, color);
 
     // Scanline fill
-    // scanlineFill(fb, s, color);
+    //scanlineFill(fb, s, color);
 }
 
 void fillChar(FrameBuffer *fb, char c, RasterFont *rf, Vertex offset,
@@ -197,11 +197,12 @@ void fillRainbow(FrameBuffer *fb, int x, int y) {
     fillSquareArea(fb, x - 8, y + 19, x + 20, y + 21, purple);
 }
 
-void fillImage(FrameBuffer *fb, VectorImage *image){
+void fillImage(FrameBuffer *fb, VectorImage *image, Vertex offset){
     for(int i = 0; i < image->n_component; i++){
         Shape *s = &(image->shape[i]);
         Color c = image->color[i];
-        
+        offsetShape(s, offset);
         fillShape(fb, s, c);
+        normalizeShapeOffset(s, offset);
     }
 }

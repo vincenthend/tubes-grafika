@@ -28,6 +28,6 @@ void fillSquareArea(FrameBuffer *fb, int x0, int y0, int x1, int y1,
 
 void fillRainbow(FrameBuffer *fb, int x, int y);
 
-void fillImage(FrameBuffer *fb, VectorImage *image);
+void fillImage(FrameBuffer *fb, VectorImage *image, Vertex offset);
 
 #endif

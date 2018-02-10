@@ -27,11 +27,11 @@ int main() {
     v.y = 100;
 
     //system("clear");
-    fillImage(&fb, &image);
+    fillImage(&fb, &image, v);
 
     updateFrame(&fb);
 
-    sleep(3);
+    sleep(1);
 
     return 0;
 }

@@ -42,7 +42,6 @@ void openVectorImage(char *imageName, VectorImage *image){
         int x, y;
         for(int n = 0; n < image->n_component; n++){            
             fscanf(file, "%s", polyColor);
-            printf("%s\n",polyColor);
             int polygonIndex = 0;
             int vertexIndex = 0;
             do{
