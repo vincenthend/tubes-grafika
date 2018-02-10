@@ -26,6 +26,12 @@ void initShape(Shape *shape, int polygonCount);
 
 void offsetShape(Shape *shape, const Vertex vertex);
 
+void normalizeShape(Shape *shape, const Vertex vertex);
+
+void growShape(Shape *shape, int multiplierScale);
+
+void shrinkShape(Shape *shape, int dividerScale);
+
 int findMinXInPolygon(Vertex *vertices, int vertexCount);
 
 int findMaxXInPolygon(Vertex *vertices, int vertexCount);
