@@ -135,9 +135,10 @@ void fillShape(FrameBuffer *fb, Shape *s, Color color) {
 
 void fillChar(FrameBuffer *fb, char c, RasterFont *rf, Vertex offset,
               Color color) {
-    offsetShape(&(rf->dict[(int)c]), offset);
-    fillShape(fb, &(rf->dict[(int)c]), color);
-    normalizeShape(&(rf->dict[(int)c]), offset);
+    Shape *s = &(rf->dict[(int)c]);
+    offsetShape(s, offset);
+    fillShape(fb, s, color);
+    normalizeShapeOffset(s, offset);
 }
 
 void fillString(FrameBuffer *fb, char *s, RasterFont *rf, Vertex offset,
@@ -148,9 +149,8 @@ void fillString(FrameBuffer *fb, char *s, RasterFont *rf, Vertex offset,
     int i;
     for (i = 0; i < len; ++i) {
         if (s[i] == ' ') {
-
-        }
-        else {
+            // Do nothing
+        } else {
             fillChar(fb, s[i], rf, offset, color);
         }
 

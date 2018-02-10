@@ -24,13 +24,21 @@ void initPolygon(Polygon *polygon, int vertexCount);
 
 void initShape(Shape *shape, int polygonCount);
 
+void cloneShape(const Shape* src, Shape* dest);
+
+void destroyShape(Shape *shape);
+
 void offsetShape(Shape *shape, const Vertex vertex);
 
-void normalizeShape(Shape *shape, const Vertex vertex);
+void normalizeShapeOffset(Shape *shape, const Vertex vertex);
 
 void growShape(Shape *shape, int multiplierScale);
 
 void shrinkShape(Shape *shape, int dividerScale);
+
+void normalizeShapeAfterRotation(Shape *shape);
+
+void rotateShape(Shape *shape, const int degrees);
 
 int findMinXInPolygon(Vertex *vertices, int vertexCount);
 

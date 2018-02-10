@@ -1,3 +1,4 @@
+#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -62,6 +63,7 @@ int main() {
         input[i] = tolower((char)input[i]);
     }
 
+    system("clear");
     fillString(&fb, input, &rasterFont, v, pink);
 
     updateFrame(&fb);

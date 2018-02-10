@@ -1,3 +1,4 @@
+#include <stdint.h>
 #include "framebuffer.h"
 
 FrameBuffer initFrameBuffer() {
@@ -27,7 +28,7 @@ FrameBuffer initFrameBuffer() {
 
     fb.buffer = (char *)mmap(0, fb.screen_size, PROT_READ | PROT_WRITE,
                              MAP_SHARED, fb.fbfd, 0);
-    if ((int)fb.buffer == -1) {
+    if ((int)(uintptr_t) fb.buffer == -1) {
         perror("Error: failed to map framebuffer device to memory");
         exit(4);
     }
