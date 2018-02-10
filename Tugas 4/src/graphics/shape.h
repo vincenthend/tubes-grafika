@@ -20,6 +20,7 @@ typedef struct {
     int polygonCount;
     Vertex upperLeft;
     Vertex lowerRight;
+    Vertex center;
 } Shape;
 
 void initPolygon(Polygon *polygon, int vertexCount);
@@ -40,10 +41,12 @@ void shrinkShape(Shape *shape, int dividerScale);
 
 void calculateBoundaries(Shape *shape);
 
-void normalizeShapeAfterRotation(Shape *shape);
+void prepareShapeForRotation(Shape *shape);
 
 void rotateShape(Shape *shape, const int degrees);
 
 int isCritical(Vertex a, Vertex b, Vertex c);
+
+float distance(Vertex a, Vertex b);
 
 #endif

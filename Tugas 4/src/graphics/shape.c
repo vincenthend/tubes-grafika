@@ -13,21 +13,16 @@ void initShape(Shape *shape, int polygonCount) {
 
 void cloneShape(const Shape* src, Shape* dest) {
     initShape(dest, src->polygonCount);
-    printf("Polygon: %d\n", dest->polygonCount);
     for (int i = 0; i < src->polygonCount; ++i) {
-        printf("Init polygon %d\n", i);
         Polygon *srcPolygon = &(src->polygons[i]);
         initPolygon(&(dest->polygons[i]), srcPolygon->vertexCount);
         Polygon *destPolygon = &(dest->polygons[i]);
 
-        printf("Clone polygon %d\n", i);
         for (int j = 0; j < srcPolygon->vertexCount; ++j) {
             destPolygon->vertices[j].x = srcPolygon->vertices[j].x;
             destPolygon->vertices[j].y = srcPolygon->vertices[j].y;
         }
-        printf("Polygon %d copied\n", i);
     }
-    printf("Shape copied\n");
 }
 
 void destroyShape(Shape *shape) {
@@ -41,12 +36,8 @@ void offsetShape(Shape *shape, const Vertex vertex) {
     for (int i = 0; i < shape->polygonCount; ++i) {
         Polygon *polygon = &(shape->polygons[i]);
         for (int j = 0; j < polygon->vertexCount; ++j) {
-            printf("(%d, %d)->", polygon->vertices[j].x, polygon->vertices[j].y);
-
             polygon->vertices[j].x += vertex.x;
             polygon->vertices[j].y += vertex.y;
-
-            printf("(%d, %d)\n", polygon->vertices[j].x, polygon->vertices[j].y);
         }
     }
 }
@@ -105,54 +96,52 @@ void calculateBoundaries(Shape *shape) {
 
     shape->upperLeft = (Vertex) { xMin, yMin };
     shape->lowerRight = (Vertex) { xMax, yMax };
+    shape->center = (Vertex) {
+        round((xMin + xMax) / 2),
+        round((yMin + yMax) / 2)
+    };
 }
 
-void normalizeShapeAfterRotation(Shape *shape) {
-    int xMin = shape->polygons[0].vertices[0].x;
-    int yMin = shape->polygons[0].vertices[0].y;
-    int xMax = xMin;
-    int yMax = yMin;
+void prepareShapeForRotation(Shape *shape) {
+    calculateBoundaries(shape);
 
-    for (int i = 0; i < shape->polygonCount; ++i) {
-        Polygon *p = &(shape->polygons[i]);
-        for (int j = 0; j < p->vertexCount; ++j) {
-            Vertex *v =  &(p->vertices[j]);
+    int radius = round(distance(shape->upperLeft, shape->center));
+    Vertex offset = (Vertex) {
+        radius - shape->center.x + shape->upperLeft.x,
+        radius - shape->center.y + shape->upperLeft.y
+    };
 
-            if (v->x < xMin)
-                xMin = v->x;
-            else if (v->x > xMax)
-                xMax = v->x;
-            if (v->y < yMin)
-                yMin = v->y;
-            else if (v->y > yMax)
-                yMax = v->y;
-        }
-    }
-
-    Vertex offset = (Vertex) { -xMin, -yMin };
     offsetShape(shape, offset);
+    calculateBoundaries(shape);
 }
 
 void rotateShape(Shape *shape, const int degrees) {
     const float radians = degrees * M_PI / 180;
     const float sin = sinf(radians);
     const float cos = cosf(radians);
+    const Vertex *offset = &(shape->center);
 
     for (int i = 0; i < shape->polygonCount; ++i) {
         Polygon *p = &(shape->polygons[i]);
         for (int j = 0; j < p->vertexCount; ++j) {
             Vertex *v = &(p->vertices[j]);
 
-            float x2 = cos * v->x - sin * v->y;
-            float y2 = sin * v->x + cos * v->y;
+            float x2 = cos * (v->x - offset->x) - sin * (v->y - offset->y);
+            float y2 = sin * (v->x - offset->x) + cos * (v->y - offset->y);
 
-            v->x = round(x2);
-            v->y = round(y2);
+            v->x = round(x2 + offset->x);
+            v->y = round(y2 + offset->y);
         }
     }
-    normalizeShapeAfterRotation(shape);
+    calculateBoundaries(shape);
 }
 
 int isCritical(Vertex a, Vertex b, Vertex c) {
     return (a.y < b.y && c.y < b.y) || (a.y > b.y && c.y > b.y);
+}
+
+float distance(Vertex a, Vertex b) {
+    int dx = a.x - b.x;
+    int dy = a.y - b.y;
+    return sqrt(dx * dx + dy * dy);
 }
