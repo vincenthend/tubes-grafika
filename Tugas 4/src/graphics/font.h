@@ -5,6 +5,11 @@
 #include <stdlib.h>
 #include <string.h>
 
+/**
+ * File Font
+ * digunakan untuk memanipulasi font bit map
+ */
+
 typedef struct {
     char *dict[256];
     int height;

@@ -3,9 +3,13 @@
 
 #include "drawer.h"
 #include "graphics/rasterfont.h"
+#include "graphics/vectorimage.h"
 #include "graphics/shape.h"
 
-#define MAX_VERTICES 25
+/**
+ * File Drawer
+ * Digunakan untuk melakukan fill
+ */
 
 void boundaryFill(FrameBuffer *fb, Shape *s, Color color);
 
@@ -23,5 +27,7 @@ void fillSquareArea(FrameBuffer *fb, int x0, int y0, int x1, int y1,
                     Color color);
 
 void fillRainbow(FrameBuffer *fb, int x, int y);
+
+void fillImage(FrameBuffer *fb, VectorImage *image);
 
 #endif

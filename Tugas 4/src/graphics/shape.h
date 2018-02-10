@@ -5,6 +5,11 @@
 #include <stdlib.h>
 #include <string.h>
 
+/**
+ * File Shape
+ * digunakan untuk memanipulasi bentuk
+ */
+
 typedef struct {
     int x;
     int y;

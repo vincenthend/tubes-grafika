@@ -127,7 +127,7 @@ void scanlineFill(FrameBuffer *fb, Shape *s, Color c) {
 
 void fillShape(FrameBuffer *fb, Shape *s, Color color) {
     for (int i = 0; i < s->polygonCount; ++i) {
-        drawPolygon(fb, &(s->polygons[i]), color);
+        drawPolygon(fb, &(s->polygons[i]), color);        
     }
 
     // Boundary fill
@@ -195,4 +195,13 @@ void fillRainbow(FrameBuffer *fb, int x, int y) {
     fillSquareArea(fb, x - 8, y + 13, x + 20, y + 15, green);
     fillSquareArea(fb, x - 8, y + 16, x + 20, y + 18, blue);
     fillSquareArea(fb, x - 8, y + 19, x + 20, y + 21, purple);
+}
+
+void fillImage(FrameBuffer *fb, VectorImage *image){
+    for(int i = 0; i < image->n_component; i++){
+        Shape *s = &(image->shape[i]);
+        Color c = image->color[i];
+        
+        fillShape(fb, s, c);
+    }
 }

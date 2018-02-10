@@ -188,25 +188,6 @@ void drawMonoImage(FrameBuffer *fb, Image image, int x, int y, Color color) {
     }
 }
 
-void drawNyanImage(FrameBuffer *fb, Image image, int x, int y, Color lineColor,
-                   Color clothColor, Color skinColor) {
-    char *data = image.data;
-    for (int i = 0; i < image.height; i++) {
-        for (int j = 0; j < image.width; j++) {
-            if (data[i * image.width + j] == '1') {
-                addPixelToBuffer(fb, (x) + j, (y) + i, lineColor.r, lineColor.g,
-                                 lineColor.b, lineColor.a);
-            } else if (data[i * image.width + j] == '2') {
-                addPixelToBuffer(fb, (x) + j, (y) + i, clothColor.r,
-                                 clothColor.g, clothColor.b, clothColor.a);
-            } else if (data[i * image.width + j] == '3') {
-                addPixelToBuffer(fb, (x) + j, (y) + i, skinColor.r, skinColor.g,
-                                 skinColor.b, skinColor.a);
-            }
-        }
-    }
-}
-
 void drawPolygon(FrameBuffer *fb, const Polygon *polygon, Color color) {
     for (int i = 0; i < polygon->vertexCount - 1; ++i) {
         drawLine(fb, polygon->vertices[i].x, polygon->vertices[i].y,

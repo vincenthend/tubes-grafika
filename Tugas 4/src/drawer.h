@@ -8,6 +8,11 @@
 #include "graphics/image.h"
 #include "graphics/shape.h"
 
+/**
+ * File Drawer
+ * Digunakan untuk menggambar garis/lingkaran/bidang lainnya/gambar
+ */
+
 void drawLine(FrameBuffer *fb, int x0, int y0, int x1, int y1, Color color);
 
 void drawThickLine(FrameBuffer *fb, int x0, int y0, int x1, int y1, int width,

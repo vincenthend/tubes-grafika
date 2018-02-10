@@ -3,6 +3,11 @@
 
 #include <stdlib.h>
 
+/**
+ * Kelas Color
+ * Digunakan untuk menampung warna
+ */
+
 typedef struct {
     int r;
     int g;

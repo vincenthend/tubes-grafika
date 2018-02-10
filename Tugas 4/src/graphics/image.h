@@ -5,6 +5,11 @@
 #include <stdlib.h>
 #include <string.h>
 
+/**
+ * File Image
+ * digunakan untuk membuka gambar bit map
+ */
+
 typedef struct {
     char *data;
     int height;

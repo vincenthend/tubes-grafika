@@ -3,6 +3,11 @@
 
 #include "shape.h"
 
+/**
+ * File RasterFont
+ * digunakan untuk memanipulasi huruf raster
+ */
+
 typedef struct {
     Shape *dict;
     int height;

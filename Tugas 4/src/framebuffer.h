@@ -10,6 +10,11 @@
 
 #include "color.h"
 
+/**
+ * File FrameBuffer
+ * Digunakan untuk memanipulasi framebuffer
+ */
+
 typedef struct {
     int fbfd;
     struct fb_var_screeninfo vinfo;
