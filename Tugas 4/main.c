@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <time.h>
 
 #include "src/color.h"
 #include "src/drawer.h"
@@ -19,19 +20,44 @@ int main() {
     FrameBuffer fb = initFrameBuffer();
     
     // Load Image
-    VectorImage image;
-    openVectorImage("plane_vector", &image);
+    VectorImage plane;
+    VectorImage blade_left;
+    VectorImage blade_right;
+    openVectorImage("plane_vector", &plane);
+    openVectorImage("blade_left", &blade_left);
+    openVectorImage("blade_right", &blade_right);
     // Draw and fill
     Vertex v;
     v.x = 300;
     v.y = 100;
 
-    //system("clear");
-    fillImage(&fb, &image, v);
+    int deg = 5;
+    
+    clock_t start;
+    clock_t end;
+    double renderTime;
+
+    while(1){        
+        start = clock();
+        //Nguli clear
+        clearScreen(&fb);
+        fillImage(&fb, &plane, v);
+        fillImage(&fb, &blade_left, v);
+        fillImage(&fb, &blade_right, v);
+        rotateVectorImage(&blade_left, deg);
+        rotateVectorImage(&blade_right, deg);
+        end = clock();
+
+        deg += 5;
+        //66000 for 30fps
+        renderTime = 16500 - ((double)(end-start))/CLOCKS_PER_SEC;
+        if(renderTime > 0){
+            usleep(renderTime);
+        }
+    }
+
 
     updateFrame(&fb);
-
-    sleep(1);
 
     return 0;
 }

@@ -62,10 +62,47 @@ void openVectorImage(char *imageName, VectorImage *image){
             image->shape[n].polygonCount = polygonIndex + 1;
             initColor(&(image->color[n]), polyColor);
         }
-
+        getImageCenter(image, &(image->center));
         fclose(file);
     } else {
         printf("Image does not exist\n");
         exit(5);
     }
+}
+
+void rotateVectorImage(VectorImage *image, int degrees){
+    int i;
+    for(i=0; i<image->n_component; i++) {        
+        rotateShapewithPivot(&(image->shape[i]), degrees, image->center);
+    }
+}
+
+void getImageCenter(VectorImage *image, Vertex *center) {
+    Shape *shape;
+    shape = &(image->shape[0]);
+    int xMin = shape->polygons[0].vertices[0].x;
+    int yMin = shape->polygons[0].vertices[0].y;
+    int xMax = xMin;
+    int yMax = yMin;
+    for(int i = 0; i< image->n_component; i++){
+        shape = &(image->shape[i]);
+
+        for (int i = 0; i < shape->polygonCount; ++i) {
+            Polygon *p = &(shape->polygons[i]);
+            for (int j = 0; j < p->vertexCount; ++j) {
+                Vertex *v =  &(p->vertices[j]);
+
+                if (v->x < xMin)
+                    xMin = v->x;
+                else if (v->x > xMax)
+                    xMax = v->x;
+                if (v->y < yMin)
+                    yMin = v->y;
+                else if (v->y > yMax)
+                    yMax = v->y;
+            }
+        }
+    }    
+    center->x = round((xMin + xMax) / 2);
+    center->y = round((yMin + yMax) / 2);
 }

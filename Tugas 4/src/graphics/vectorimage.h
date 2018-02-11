@@ -19,8 +19,13 @@ typedef struct {
     int height;
     int width;
     int n_component;
+    Vertex center;
 } VectorImage;
 
 void openVectorImage(char *imageName, VectorImage *image);
+
+void getImageCenter(VectorImage *image, Vertex *center);
+
+void rotateVectorImage(VectorImage *image, int degrees);
 
 #endif

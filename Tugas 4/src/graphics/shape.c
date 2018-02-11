@@ -136,6 +136,27 @@ void rotateShape(Shape *shape, const int degrees) {
     calculateBoundaries(shape);
 }
 
+void rotateShapewithPivot(Shape *shape, const int degrees, Vertex pivot) {
+    const float radians = degrees * M_PI / 180;
+    const float sin = sinf(radians);
+    const float cos = cosf(radians);
+    const Vertex *offset = &(pivot);
+
+    for (int i = 0; i < shape->polygonCount; ++i) {
+        Polygon *p = &(shape->polygons[i]);
+        for (int j = 0; j < p->vertexCount; ++j) {
+            Vertex *v = &(p->vertices[j]);
+
+            float x2 = cos * (v->x - offset->x) - sin * (v->y - offset->y);
+            float y2 = sin * (v->x - offset->x) + cos * (v->y - offset->y);
+
+            v->x = round(x2 + offset->x);
+            v->y = round(y2 + offset->y);
+        }
+    }
+    calculateBoundaries(shape);
+}
+
 int isCritical(Vertex a, Vertex b, Vertex c) {
     return (a.y < b.y && c.y < b.y) || (a.y > b.y && c.y > b.y);
 }
