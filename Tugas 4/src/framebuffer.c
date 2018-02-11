@@ -42,6 +42,8 @@ void addPixelToBuffer(FrameBuffer *fb, int x, int y, int r, int g, int b,
     long int location =
         (x + fb->vinfo.xoffset) * (fb->vinfo.bits_per_pixel / 8) +
         (y + fb->vinfo.yoffset) * (fb->finfo.line_length);
+    if (location > fb->finfo.smem_len - 3)
+        return;
 
     if (fb->screen_density == 32) {
         *(buffer + location) = b;
@@ -84,11 +86,13 @@ Color getColor(const FrameBuffer *fb, int x, int y) {
     long int location =
         (x + fb->vinfo.xoffset) * (fb->vinfo.bits_per_pixel / 8) +
         (y + fb->vinfo.yoffset) * (fb->finfo.line_length);
+    if (location > fb->finfo.smem_len - 3)
+        return (Color) { 0, 0, 0, 255 };
 
-    Color c;
-    c.r = (*(fb->buffer + location + 2) + 256) % 256;
-    c.g = (*(fb->buffer + location + 1) + 256) % 256;
-    c.b = (*(fb->buffer + location) + 256) % 256;
-    c.a = (*(fb->buffer + location + 3) + 256) % 256;
-    return c;
+    return (Color) {
+        .r = (*(fb->buffer + location + 2) + 256) % 256,
+        .g = (*(fb->buffer + location + 1) + 256) % 256,
+        .b = (*(fb->buffer + location) + 256) % 256,
+        .a = (*(fb->buffer + location + 3) + 256) % 256
+    };
 }
