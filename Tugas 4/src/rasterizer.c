@@ -223,5 +223,5 @@ void fillImage(FrameBuffer *fb, VectorImage *image, Vertex offset){
 }
 
 void clearArea(FrameBuffer *fb, Vertex v0, Vertex v1) {
-    fillSquareArea(fb, v0.x, v0.y, v1.x, v1.y, (Color) {0, 0, 0, 0});
+    fillSquareArea(fb, v0.x, v0.y, v1.x, v1.y, (Color) {0, 0, 0, 255});
 }

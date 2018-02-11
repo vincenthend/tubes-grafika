@@ -41,9 +41,9 @@ void offsetShape(Shape *shape, const Vertex vertex);
 
 void normalizeShapeOffset(Shape *shape, const Vertex vertex);
 
-void growShape(Shape *shape, int multiplierScale);
+void scaleVertex(Vertex *v, float scale, Vertex pivot);
 
-void shrinkShape(Shape *shape, int dividerScale);
+void scaleShape(Shape *shape, float scale, Vertex pivot);
 
 void calculateShapeBoundaries(Shape *shape);
 

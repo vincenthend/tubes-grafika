@@ -69,11 +69,47 @@ void openVectorImage(char *imageName, VectorImage *image){
     }
 }
 
+void cloneVectorImage(VectorImage *src, VectorImage *dest) {
+    dest->n_component = src->n_component;
+    dest->shape = (Shape*) malloc(dest->n_component * sizeof(Shape));
+    dest->color = (Color*) malloc(dest->n_component * sizeof(Color));
+
+    for (int i = 0; i < dest->n_component; ++i) {
+        cloneShape(&(src->shape[i]), &(dest->shape[i]));
+        dest->color[i] = src->color[i];
+    }
+
+    dest->height = src->height;
+    dest->width = src->width;
+    dest->upperLeft = src->upperLeft;
+    dest->lowerRight = src->lowerRight;
+    dest->center = src->center;
+}
+
+void destroyVectorImage(VectorImage *vi) {
+    for (int i = 0; i < vi->n_component; ++i) {
+        destroyShape(&(vi->shape[i]));
+    }
+    free(&(vi->shape));
+    free(&(vi->color));
+}
+
 void rotateVectorImage(VectorImage *image, int degrees){
     int i;
     for (i = 0; i < image->n_component; i++) {
         rotateShape(&(image->shape[i]), degrees, image->center);
     }
+}
+
+void scaleVectorImage(VectorImage *image, float scale, Vertex pivot) {
+    for (int i = 0; i < image->n_component; ++i) {
+        scaleShape(&(image->shape[i]), scale, pivot);
+    }
+    scaleVertex(&(image->upperLeft), scale, pivot);
+    scaleVertex(&(image->lowerRight), scale, pivot);
+    scaleVertex(&(image->center), scale, pivot);
+    image->height *= scale;
+    image->width *= scale;
 }
 
 void calculateVectorImageBoundaries(VectorImage *image) {

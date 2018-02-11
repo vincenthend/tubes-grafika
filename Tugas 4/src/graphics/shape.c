@@ -70,38 +70,28 @@ void normalizeShapeOffset(Shape *shape, const Vertex vertex) {
     shape->center.y -= vertex.y;
 }
 
-void growShape(Shape *shape, int multiplierScale) {
-    for (int i = 0; i < shape->polygonCount; ++i) {
-        Polygon *polygon = &(shape->polygons[i]);
-        for (int j = 0; j < polygon->vertexCount; ++j) {
-            polygon->vertices[j].x *= multiplierScale;
-            polygon->vertices[j].y *= multiplierScale;
-        }
-    }
-
-    shape->upperLeft.x *= multiplierScale;
-    shape->upperLeft.y *= multiplierScale;
-    shape->lowerRight.x *= multiplierScale;
-    shape->lowerRight.y *= multiplierScale;
-    shape->center.x *= multiplierScale;
-    shape->center.y *= multiplierScale;
+void scaleVertex(Vertex *v, float scale, Vertex pivot) {
+    Vertex temp = (Vertex) {
+        round((v->x - pivot.x) * scale + pivot.x),
+        round((v->y - pivot.y) * scale + pivot.y)
+    };
+    *v = (Vertex) { temp.x, temp.y };
 }
 
-void shrinkShape(Shape *shape, int dividerScale) {
+void scaleShape(Shape *shape, float scale, Vertex pivot) {
     for (int i = 0; i < shape->polygonCount; ++i) {
         Polygon *polygon = &(shape->polygons[i]);
         for (int j = 0; j < polygon->vertexCount; ++j) {
-            polygon->vertices[j].x /= dividerScale;
-            polygon->vertices[j].y /= dividerScale;
+            scaleVertex(&(polygon->vertices[j]), scale, pivot);
         }
     }
 
-    shape->upperLeft.x /= dividerScale;
-    shape->upperLeft.y /= dividerScale;
-    shape->lowerRight.x /= dividerScale;
-    shape->lowerRight.y /= dividerScale;
-    shape->center.x /= dividerScale;
-    shape->center.y /= dividerScale;
+    scaleVertex(&(shape->upperLeft), scale, pivot);
+    scaleVertex(&(shape->upperLeft), scale, pivot);
+    scaleVertex(&(shape->lowerRight), scale, pivot);
+    scaleVertex(&(shape->lowerRight), scale, pivot);
+    scaleVertex(&(shape->center), scale, pivot);
+    scaleVertex(&(shape->center), scale, pivot);
 }
 
 void calculateShapeBoundaries(Shape *shape) {

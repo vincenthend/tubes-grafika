@@ -39,38 +39,66 @@ int main() {
 
     int correction = 5;
 
-    while(1){        
+    calculateVectorImageBoundaries(&plane);
+    calculateVectorImageCenter(&plane);
+
+    // clearScreen(&fb);
+    calculateVectorImageBoundaries(&blade_left);
+    calculateVectorImageCenter(&blade_left);
+
+    calculateVectorImageBoundaries(&blade_right);
+    calculateVectorImageCenter(&blade_right);
+
+    float scale = 1;
+    system("clear");
+    while (1) {        
         start = clock();
-        
-        // clearScreen(&fb);
-        calculateVectorImageBoundaries(&blade_left);
-        blade_left.upperLeft.x += v.x - correction;
-        blade_left.lowerRight.x += v.x + correction;
-        blade_left.upperLeft.y - correction;
-        blade_left.lowerRight.y += v.y + correction;
 
-        calculateVectorImageBoundaries(&blade_right);
-        blade_right.upperLeft.x += v.x - correction;
-        blade_right.lowerRight.x += v.x + correction;
-        blade_right.upperLeft.y - correction;
-        blade_right.lowerRight.y += v.y + correction;
+        VectorImage plane2, blade_left2, blade_right2;
+        cloneVectorImage(&plane, &plane2);
+        cloneVectorImage(&blade_left, &blade_left2);
+        cloneVectorImage(&blade_right, &blade_right2);
 
-        clearArea(&fb, blade_left.upperLeft, blade_left.lowerRight);
-        clearArea(&fb, blade_right.upperLeft, blade_right.lowerRight);
+        blade_left2.upperLeft.x += v.x - correction;
+        blade_left2.lowerRight.x += v.x + correction;
+        blade_left2.upperLeft.y - correction;
+        blade_left2.lowerRight.y += v.y + correction;
 
-        fillImage(&fb, &plane, v);
-        fillImage(&fb, &blade_left, v);
-        fillImage(&fb, &blade_right, v);
-        rotateVectorImage(&blade_left, deg);
-        rotateVectorImage(&blade_right, deg);
+        blade_right2.upperLeft.x += v.x - correction;
+        blade_right2.lowerRight.x += v.x + correction;
+        blade_right2.upperLeft.y - correction;
+        blade_right2.lowerRight.y += v.y + correction;
+
+        // clearArea(&fb, blade_left2.upperLeft, blade_left2.lowerRight);
+        // clearArea(&fb, blade_right2.upperLeft, blade_right2.lowerRight);
+
+        rotateVectorImage(&blade_left2, deg);
+        rotateVectorImage(&blade_right2, deg);
+
+        scaleVectorImage(&plane2, scale, plane2.center);
+        scaleVectorImage(&blade_left2, scale, plane2.center);
+        scaleVectorImage(&blade_right2, scale, plane2.center);
+
+        clearArea(&fb, plane2.upperLeft, plane2.lowerRight);
+
+        fillImage(&fb, &plane2, v);
+        fillImage(&fb, &blade_left2, v);
+        fillImage(&fb, &blade_right2, v);
+
         end = clock();
 
-        deg += 5;
         //66000 for 30fps
-        renderTime = 33000 - ((double)(end-start))/CLOCKS_PER_SEC;
-        if(renderTime > 0){
+        renderTime = 66000 - ((double)(end-start))/CLOCKS_PER_SEC;
+        if (renderTime > 0){
             usleep(renderTime);
         }
+
+        // scaleVectorImage(plane2, 1/scale, plane2->center);
+        // scaleVectorImage(blade_left2, 1/scale, plane2->center);
+        // scaleVectorImage(blade_right2, 1/scale, plane2->center);
+
+        deg += 30;
+        scale += 0.1;
     }
 
     updateFrame(&fb);

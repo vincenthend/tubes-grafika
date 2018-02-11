@@ -26,7 +26,13 @@ typedef struct {
 
 void openVectorImage(char *imageName, VectorImage *image);
 
+void cloneVectorImage(VectorImage *src, VectorImage *dest);
+
+void destroyVectorImage(VectorImage *vi);
+
 void rotateVectorImage(VectorImage *image, int degrees);
+
+void scaleVectorImage(VectorImage *image, float scale, Vertex pivot);
 
 void calculateVectorImageCenter(VectorImage *image);
 
