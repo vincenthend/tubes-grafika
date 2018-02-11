@@ -37,10 +37,12 @@ void drawLine(FrameBuffer *fb, int x0, int y0, int x1, int y1, Color color) {
     int x;
     int y = y0;
     for (x = x0; x <= x1; x++) {
-        if (steep) {
-            addPixelToBuffer(fb, y, x, color.r, color.g, color.b, color.a);
-        } else {
-            addPixelToBuffer(fb, x, y, color.r, color.g, color.b, color.a);
+        if (x >= 0 && x <= fb->screen_width && y >= 0 && y <= fb->screen_width) {
+            if (steep) {
+                addPixelToBuffer(fb, y, x, color.r, color.g, color.b, color.a);
+            } else {
+                addPixelToBuffer(fb, x, y, color.r, color.g, color.b, color.a);
+            }
         }
 
         error -= dy;
