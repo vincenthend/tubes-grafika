@@ -1,6 +1,7 @@
 #ifndef _SHAPE_H
 #define _SHAPE_H
 
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -32,8 +33,6 @@ void initPolygon(Polygon *polygon, int vertexCount);
 
 void initShape(Shape *shape, int polygonCount);
 
-int* findMinMaxShape(Shape *shape);
-
 void cloneShape(const Shape* src, Shape* dest);
 
 void destroyShape(Shape *shape);
@@ -46,11 +45,13 @@ void growShape(Shape *shape, int multiplierScale);
 
 void shrinkShape(Shape *shape, int dividerScale);
 
-void calculateBoundaries(Shape *shape);
+void calculateShapeBoundaries(Shape *shape);
 
-void prepareShapeForRotation(Shape *shape);
+void calculateShapeCenter(Shape* shape);
 
-void rotateShape(Shape *shape, const int degrees);
+void prepareShapeForRotation(Shape *shape, Vertex pivot);
+
+void rotateShape(Shape *shape, const int degrees, Vertex pivot);
 
 int isCritical(Vertex a, Vertex b, Vertex c);
 

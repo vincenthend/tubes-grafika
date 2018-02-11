@@ -28,8 +28,8 @@ int main() {
     openVectorImage("blade_right", &blade_right);
     // Draw and fill
     Vertex v;
-    v.x = 300;
-    v.y = 100;
+    v.x = 0;
+    v.y = 0;
 
     int deg = 5;
     
@@ -37,28 +37,26 @@ int main() {
     clock_t end;
     double renderTime;
 
-    int minMaxBL[4];
-    int minMaxBR[4];
     int correction = 5;
 
     while(1){        
         start = clock();
         
         // clearScreen(&fb);
-        findMinMaxVectorImage(&blade_left, &minMaxBL);
-        minMaxBL[0] += v.x - correction;
-        minMaxBL[1] += v.x + correction;
-        minMaxBL[2] += v.y - correction;
-        minMaxBL[3] += v.y + correction;
+        calculateVectorImageBoundaries(&blade_left);
+        blade_left.upperLeft.x += v.x - correction;
+        blade_left.lowerRight.x += v.x + correction;
+        blade_left.upperLeft.y - correction;
+        blade_left.lowerRight.y += v.y + correction;
 
-        findMinMaxVectorImage(&blade_right, &minMaxBR);
-        minMaxBR[0] += v.x - correction;
-        minMaxBR[1] += v.x + correction;
-        minMaxBR[2] += v.y - correction;
-        minMaxBR[3] += v.y + correction;
+        calculateVectorImageBoundaries(&blade_right);
+        blade_right.upperLeft.x += v.x - correction;
+        blade_right.lowerRight.x += v.x + correction;
+        blade_right.upperLeft.y - correction;
+        blade_right.lowerRight.y += v.y + correction;
 
-        areaClear(&fb, minMaxBL[0], minMaxBL[1], minMaxBL[2], minMaxBL[3]);
-        areaClear(&fb, minMaxBR[0], minMaxBR[1], minMaxBR[2], minMaxBR[3]);
+        clearArea(&fb, blade_left.upperLeft, blade_left.lowerRight);
+        clearArea(&fb, blade_right.upperLeft, blade_right.lowerRight);
 
         fillImage(&fb, &plane, v);
         fillImage(&fb, &blade_left, v);

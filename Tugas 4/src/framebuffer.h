@@ -35,8 +35,6 @@ void updateFrame(FrameBuffer *fb);
 
 void clearScreen(FrameBuffer *fb);
 
-void areaClear(FrameBuffer *fb, int x_min, int x_max, int y_min, int y_max);
-
 Color getColor(const FrameBuffer *fb, int x, int y);
 
 #endif
