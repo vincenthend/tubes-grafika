@@ -28,4 +28,6 @@ void getImageCenter(VectorImage *image, Vertex *center);
 
 void rotateVectorImage(VectorImage *image, int degrees);
 
+void findMinMaxVectorImage(VectorImage *image, int *minMax);
+
 #endif

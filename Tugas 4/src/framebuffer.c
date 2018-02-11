@@ -67,8 +67,22 @@ void setBackground(FrameBuffer *fb, int r, int g, int b, int a) {
     }
 }
 
+void setAreaBackground(FrameBuffer *fb, int x_min, int x_max, int y_min, int y_max, int r, int g, int b, int a) {
+    int i, j;
+    for (i = x_min; i <= x_max; i++) {
+        for (j = y_min; j < y_max; j++) {
+            addPixelToBuffer(fb, i, j, r, g, b, a);
+        }
+    }
+}
+
 void clearScreen(FrameBuffer *fb) {
     setBackground(fb, 0, 0, 0, 0);
+}
+
+
+void areaClear(FrameBuffer *fb, int x_min, int x_max, int y_min, int y_max) {
+    setAreaBackground(fb, x_min, x_max, y_min, y_max, 0, 0, 0, 0);
 }
 
 Color getColor(const FrameBuffer *fb, int x, int y) {

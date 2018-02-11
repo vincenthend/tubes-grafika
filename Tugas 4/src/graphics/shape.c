@@ -11,6 +11,40 @@ void initShape(Shape *shape, int polygonCount) {
     shape->polygonCount = polygonCount;
 }
 
+int* findMinMaxShape(Shape *shape) {
+    static int minMaxXY[4];
+    /**
+     * Index 0: minX
+     * Index 1: maxX
+     * Index 2: minY
+     * Index 3: maxY
+     */
+    minMaxXY[0] = 9999;
+    minMaxXY[1] = -1;
+    minMaxXY[2] = 9999;
+    minMaxXY[3] = -1;
+
+    for (int i = 0; i < shape->polygonCount; ++i) {
+        Polygon *polygon = &(shape->polygons[i]);
+        for (int j = 0; j < polygon->vertexCount; ++j) {
+            if (polygon->vertices[j].x < minMaxXY[0]) {
+                minMaxXY[0] = polygon->vertices[j].x;
+            }
+            if (polygon->vertices[j].x > minMaxXY[1]) {
+                minMaxXY[1] = polygon->vertices[j].x;
+            }
+            if (polygon->vertices[j].y < minMaxXY[2]) {
+                minMaxXY[2] = polygon->vertices[j].y;
+            }
+            if (polygon->vertices[j].y > minMaxXY[3]) {
+                minMaxXY[3] = polygon->vertices[j].y;
+            }
+        }
+    }
+
+    return minMaxXY;
+}
+
 void cloneShape(const Shape* src, Shape* dest) {
     initShape(dest, src->polygonCount);
     for (int i = 0; i < src->polygonCount; ++i) {

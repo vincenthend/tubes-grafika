@@ -131,7 +131,7 @@ void fillShape(FrameBuffer *fb, Shape *s, Color color) {
     }
 
     // Boundary fill
-    //boundaryFill(fb, s, color);
+    // boundaryFill(fb, s, color);
 
     // Scanline fill
     //scanlineFill(fb, s, color);

@@ -32,6 +32,8 @@ void initPolygon(Polygon *polygon, int vertexCount);
 
 void initShape(Shape *shape, int polygonCount);
 
+int* findMinMaxShape(Shape *shape);
+
 void cloneShape(const Shape* src, Shape* dest);
 
 void destroyShape(Shape *shape);

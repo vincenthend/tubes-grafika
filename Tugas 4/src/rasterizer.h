@@ -7,7 +7,7 @@
 #include "graphics/shape.h"
 
 /**
- * File Drawer
+ * File Rasterizer
  * Digunakan untuk melakukan fill
  */
 

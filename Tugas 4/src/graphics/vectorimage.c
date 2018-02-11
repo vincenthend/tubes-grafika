@@ -106,3 +106,35 @@ void getImageCenter(VectorImage *image, Vertex *center) {
     center->x = round((xMin + xMax) / 2);
     center->y = round((yMin + yMax) / 2);
 }
+
+void findMinMaxVectorImage(VectorImage *image, int *minMax) {
+    /**
+     * Index 0: minX
+     * Index 1: maxX
+     * Index 2: minY
+     * Index 3: maxY
+     */
+    minMax[0] = 9999;
+    minMax[1] = -1;
+    minMax[2] = 9999;
+    minMax[3] = -1;
+
+    for(int n = 0; n < image->n_component; n++){
+        Shape *shape = &(image->shape[n]);
+        for (int i = 0; i < shape->polygonCount; ++i) {
+            Polygon *polygon = &(shape->polygons[i]);
+            for (int j = 0; j < polygon->vertexCount; ++j) {
+                Vertex *v =  &(polygon->vertices[j]);
+
+                if (v->x < minMax[0])
+                    minMax[0] = v->x;
+                else if (v->x > minMax[1])
+                    minMax[1] = v->x;
+                if (v->y < minMax[2])
+                    minMax[2] = v->y;
+                else if (v->y > minMax[3])
+                    minMax[3] = v->y;
+            }
+        }
+    }
+}

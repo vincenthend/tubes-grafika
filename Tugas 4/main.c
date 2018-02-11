@@ -37,10 +37,28 @@ int main() {
     clock_t end;
     double renderTime;
 
+    int minMaxBL[4];
+    int minMaxBR[4];
+
     while(1){        
         start = clock();
-        //Nguli clear
-        clearScreen(&fb);
+        
+        // clearScreen(&fb);
+        findMinMaxVectorImage(&blade_left, &minMaxBL);
+        minMaxBL[0] += v.x;
+        minMaxBL[1] += v.x;
+        minMaxBL[2] += v.y;
+        minMaxBL[3] += v.y;
+
+        findMinMaxVectorImage(&blade_right, &minMaxBR);
+        minMaxBR[0] += v.x;
+        minMaxBR[1] += v.x;
+        minMaxBR[2] += v.y;
+        minMaxBR[3] += v.y;
+
+        areaClear(&fb, minMaxBL[0], minMaxBL[1], minMaxBL[2], minMaxBL[3]);
+        areaClear(&fb, minMaxBR[0], minMaxBR[1], minMaxBR[2], minMaxBR[3]);
+
         fillImage(&fb, &plane, v);
         fillImage(&fb, &blade_left, v);
         fillImage(&fb, &blade_right, v);
@@ -50,12 +68,11 @@ int main() {
 
         deg += 5;
         //66000 for 30fps
-        renderTime = 16500 - ((double)(end-start))/CLOCKS_PER_SEC;
+        renderTime = 33000 - ((double)(end-start))/CLOCKS_PER_SEC;
         if(renderTime > 0){
             usleep(renderTime);
         }
     }
-
 
     updateFrame(&fb);
 
