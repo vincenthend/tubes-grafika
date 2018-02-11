@@ -24,6 +24,9 @@ void drawLine(FrameBuffer *fb, int x0, int y0, int x1, int y1, Color color) {
         swap(&y0, &y1);
     }
 
+    if ((x0 < 0 && x1 < 0 && y0 < 0 && y1 < 0) || (x0 > fb->screen_width && x1 > fb->screen_width && y0 > fb->screen_height && y1 > fb->screen_height))
+        return;
+
     int dx = x1 - x0;
     int dy = abs(y1 - y0);
     int error = dx / 2;
@@ -34,10 +37,16 @@ void drawLine(FrameBuffer *fb, int x0, int y0, int x1, int y1, Color color) {
         ystep = -1;
     }
 
-    int x;
+    int x = x0;
     int y = y0;
-    for (x = x0; x <= x1; x++) {
-        if (x >= 0 && x <= fb->screen_width && y >= 0 && y <= fb->screen_width) {
+    char inRange = (x <= fb->screen_width);
+    if (ystep == 1)
+        inRange &= (y <= fb->screen_height);
+    else
+        inRange &= (y >= 0);
+
+    for (; x <= x1 && inRange; x++) {
+        if (x >= 0 && y >= 0 && y <= fb->screen_height) {
             if (steep) {
                 addPixelToBuffer(fb, y, x, color.r, color.g, color.b, color.a);
             } else {
@@ -45,13 +54,19 @@ void drawLine(FrameBuffer *fb, int x0, int y0, int x1, int y1, Color color) {
             }
         }
 
+
         error -= dy;
 
         if (error < 0) {
             y += ystep;
             error += dx;
         }
-    }
+        inRange = (x <= fb->screen_width);
+        if (ystep == 1)
+            inRange &= (y <= fb->screen_height);
+        else
+            inRange &= (y >= 0);
+        }
 }
 
 void drawThickLine(FrameBuffer *fb, int x0, int y0, int x1, int y1, int width,
