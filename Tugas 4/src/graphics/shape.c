@@ -1,4 +1,3 @@
-#include <math.h>
 #include "shape.h"
 
 void initPolygon(Polygon *polygon, int vertexCount) {

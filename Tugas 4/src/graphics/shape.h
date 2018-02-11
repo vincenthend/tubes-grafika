@@ -1,6 +1,7 @@
 #ifndef _SHAPE_H
 #define _SHAPE_H
 
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -51,6 +52,8 @@ void calculateBoundaries(Shape *shape);
 void prepareShapeForRotation(Shape *shape);
 
 void rotateShape(Shape *shape, const int degrees);
+
+void rotateShapewithPivot(Shape *shape, const int degrees, Vertex pivot);
 
 int isCritical(Vertex a, Vertex b, Vertex c);
 
