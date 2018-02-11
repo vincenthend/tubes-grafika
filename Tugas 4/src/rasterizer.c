@@ -2,27 +2,26 @@
 
 #include "rasterizer.h"
 
-void boundaryFillHelper(FrameBuffer *fb, int x, int y, Color color) {
-    // Check screen boundaries
-    if ((x < 0) || (x >= fb->screen_width) || (y < 0) ||
-        (y >= fb->screen_height))
+void boundaryFillHelper(FrameBuffer *fb, int x, int y, int xMin, int xMax, int yMin, int yMax, Color color) {
+    // Check image boundaries
+    if ((x < xMin) || (x >= xMax) || (y < yMin) || (y >= yMax))
         return;
 
     // Output to screen
     Color curr = getColor(fb, x, y);
     if (!isSameColor(curr, color)) {
         addPixelToBuffer(fb, x, y, color.r, color.g, color.b, color.a);
-        boundaryFillHelper(fb, x, y - 1, color);
-        boundaryFillHelper(fb, x, y + 1, color);
-        boundaryFillHelper(fb, x - 1, y, color);
-        boundaryFillHelper(fb, x + 1, y, color);
+        boundaryFillHelper(fb, x, y - 1, xMin, xMax, yMin, yMax, color);
+        boundaryFillHelper(fb, x, y + 1, xMin, xMax, yMin, yMax, color);
+        boundaryFillHelper(fb, x - 1, y, xMin, xMax, yMin, yMax, color);
+        boundaryFillHelper(fb, x + 1, y, xMin, xMax, yMin, yMax, color);
     }
 }
 
 void boundaryFill(FrameBuffer *fb, Shape *s, Color color) {
     calculateBoundaries(s);
     int x = s->upperLeft.x;
-    int y = s->upperLeft.y + 3;
+    int y = s->upperLeft.y;
     // int x = findMinXInShape(s->polygons, s->polygonCount);
     // int y = findMinYInShape(s->polygons, s->polygonCount) + 3;
 
@@ -31,13 +30,16 @@ void boundaryFill(FrameBuffer *fb, Shape *s, Color color) {
     while (!isSameColor(curr, color)) {
         x++;
         curr = getColor(fb, x, y);
+        if (x >= s->lowerRight.x) {
+            x = s->upperLeft.x;
+            y++;
+        }
+
+        if (y >= s->lowerRight.y)
+            return;
     }
 
-    Vertex vertex;
-    vertex.x = x + 2;
-    vertex.y = y + 2;
-
-    boundaryFillHelper(fb, vertex.x, vertex.y, color);
+    boundaryFillHelper(fb, x, y, s->upperLeft.x, s->upperLeft.y, s->lowerRight.x, s->lowerRight.y, color);
 }
 
 int inCriticalList(int x, int y, Vertex *vertices, int vertexCount) {
@@ -131,7 +133,7 @@ void fillShape(FrameBuffer *fb, Shape *s, Color color) {
     }
 
     // Boundary fill
-    // boundaryFill(fb, s, color);
+    boundaryFill(fb, s, color);
 
     // Scanline fill
     //scanlineFill(fb, s, color);
