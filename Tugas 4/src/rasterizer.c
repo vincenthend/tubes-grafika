@@ -4,17 +4,21 @@
 
 void boundaryFillHelper(FrameBuffer *fb, int x, int y, int xMin, int xMax, int yMin, int yMax, Color color) {
     // Check image boundaries
-    if ((x < xMin) || (x >= xMax) || (y < yMin) || (y >= yMax))
+    if ((x < xMin) || (x >= xMax) || (y < yMin) || (y >= yMax)) {
         return;
-
+    }
     // Output to screen
     Color curr = getColor(fb, x, y);
     if (!isSameColor(curr, color)) {
         addPixelToBuffer(fb, x, y, color.r, color.g, color.b, color.a);
+        // boundaryFillHelper(fb, x - 1, y - 1, xMin, xMax, yMin, yMax, color);
+        boundaryFillHelper(fb, x - 1, y, xMin, xMax, yMin, yMax, color);
+        // boundaryFillHelper(fb, x - 1, y + 1, xMin, xMax, yMin, yMax, color);
         boundaryFillHelper(fb, x, y - 1, xMin, xMax, yMin, yMax, color);
         boundaryFillHelper(fb, x, y + 1, xMin, xMax, yMin, yMax, color);
-        boundaryFillHelper(fb, x - 1, y, xMin, xMax, yMin, yMax, color);
+        // boundaryFillHelper(fb, x + 1, y - 1, xMin, xMax, yMin, yMax, color);
         boundaryFillHelper(fb, x + 1, y, xMin, xMax, yMin, yMax, color);
+        // boundaryFillHelper(fb, x + 1, y + 1, xMin, xMax, yMin, yMax, color);
     }
 }
 
@@ -22,24 +26,33 @@ void boundaryFill(FrameBuffer *fb, Shape *s, Color color) {
     calculateShapeBoundaries(s);
     int x = s->upperLeft.x;
     int y = s->upperLeft.y;
-    // int x = findMinXInShape(s->polygons, s->polygonCount);
-    // int y = findMinYInShape(s->polygons, s->polygonCount) + 3;
 
     Color curr = getColor(fb, x, y);
 
     while (!isSameColor(curr, color)) {
         x++;
-        curr = getColor(fb, x, y);
+        // curr = getColor(fb, x, y);
         if (x >= s->lowerRight.x) {
             x = s->upperLeft.x;
             y++;
         }
 
-        if (y >= s->lowerRight.y)
+        if (y >= s->lowerRight.y) {
             return;
+        }
     }
+    // printf("Bound x: %d %d\nBound y: %d %d\n", s->upperLeft.x, s->lowerRight.x, s->upperLeft.y, s->lowerRight.y);
+    // addPixelToBuffer(fb, x-1, y-1, 255, 0, 0, 0);
+    // addPixelToBuffer(fb, x-1, y, 255, 0, 0, 0);
+    // addPixelToBuffer(fb, x-1, y+1, 255, 0, 0, 0);
+    // addPixelToBuffer(fb, x, y-1, 255, 0, 0, 0);
+    // addPixelToBuffer(fb, x, y, 255, 0, 0, 0);
+    // addPixelToBuffer(fb, x+1, y-1, 255, 0, 0, 0);
+    // addPixelToBuffer(fb, x+1, y, 255, 0, 0, 0);
+    // addPixelToBuffer(fb, x+1, y+1, 255, 0, 0, 0);
+    // printf("Start point at %d %d\n", x+2, y+2);
 
-    boundaryFillHelper(fb, x, y, s->upperLeft.x, s->upperLeft.y, s->lowerRight.x, s->lowerRight.y, color);
+    boundaryFillHelper(fb, x+2, y+2, s->upperLeft.x, s->lowerRight.x, s->upperLeft.y, s->lowerRight.y, color);
 }
 
 int inCriticalList(int x, int y, Vertex *vertices, int vertexCount) {
