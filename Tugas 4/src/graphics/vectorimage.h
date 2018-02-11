@@ -19,15 +19,17 @@ typedef struct {
     int height;
     int width;
     int n_component;
+    Vertex upperLeft;
+    Vertex lowerRight;
     Vertex center;
 } VectorImage;
 
 void openVectorImage(char *imageName, VectorImage *image);
 
-void getImageCenter(VectorImage *image, Vertex *center);
-
 void rotateVectorImage(VectorImage *image, int degrees);
 
-void findMinMaxVectorImage(VectorImage *image, int *minMax);
+void calculateVectorImageCenter(VectorImage *image);
+
+void calculateVectorImageBoundaries(VectorImage *image);
 
 #endif

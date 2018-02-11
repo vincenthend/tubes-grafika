@@ -30,4 +30,6 @@ void fillRainbow(FrameBuffer *fb, int x, int y);
 
 void fillImage(FrameBuffer *fb, VectorImage *image, Vertex offset);
 
+void clearArea(FrameBuffer *fb, Vertex v0, Vertex v1);
+
 #endif

@@ -20,7 +20,7 @@ void boundaryFillHelper(FrameBuffer *fb, int x, int y, Color color) {
 }
 
 void boundaryFill(FrameBuffer *fb, Shape *s, Color color) {
-    calculateBoundaries(s);
+    calculateShapeBoundaries(s);
     int x = s->upperLeft.x;
     int y = s->upperLeft.y + 3;
     // int x = findMinXInShape(s->polygons, s->polygonCount);
@@ -60,7 +60,7 @@ void scanlineFill(FrameBuffer *fb, Shape *s, Color c) {
     Vertex vertices[999];
     int vertexCount = 0;
 
-    calculateBoundaries(s);
+    calculateShapeBoundaries(s);
     int minX = s->upperLeft.x;
     int minY = s->upperLeft.y;
     int maxX = s->lowerRight.x;
@@ -205,4 +205,8 @@ void fillImage(FrameBuffer *fb, VectorImage *image, Vertex offset){
         fillShape(fb, s, c);
         normalizeShapeOffset(s, offset);
     }
+}
+
+void clearArea(FrameBuffer *fb, Vertex v0, Vertex v1) {
+    fillSquareArea(fb, v0.x, v0.y, v1.x, v1.y, (Color) {0, 0, 0, 0});
 }

@@ -27,7 +27,7 @@ void openVectorImage(char *imageName, VectorImage *image){
         image->shape = (Shape *)malloc(n_comp * sizeof(Shape));
         image->color = (Color *)malloc(n_comp * sizeof(Color));
 
-        for(int i = 0; i < n_comp; i++){
+        for (int i = 0; i < n_comp; i++){
             initShape(&(image->shape[i]), MAX_POLYGONS);
             for (int j = 0; j < MAX_POLYGONS; j++) {
                 initPolygon(&(image->shape[i].polygons[j]), MAX_VERTICES);
@@ -40,29 +40,28 @@ void openVectorImage(char *imageName, VectorImage *image){
 
         char polyColor[7];
         int x, y;
-        for(int n = 0; n < image->n_component; n++){            
+        for (int n = 0; n < image->n_component; n++) {
+            Shape* s = &(image->shape[n]);
             fscanf(file, "%s", polyColor);
             int polygonIndex = 0;
             int vertexIndex = 0;
-            do{
+            do {
                 fscanf(file, "%d, %d", &x, &y);
-                if(x == -1 && y == -1) {
-                    image->shape[n].polygons[polygonIndex].vertexCount = vertexIndex;
+                if (x == -1 && y == -1) {
+                    s->polygons[polygonIndex].vertexCount = vertexIndex;
                     polygonIndex++;
                     vertexIndex = 0;
-                }
-                else if (x >= 0 && y >= 0) {
-                    image->shape[n].polygons[polygonIndex].vertices[vertexIndex].x = x;
-                    image->shape[n].polygons[polygonIndex].vertices[vertexIndex].y = y;
+                } else if (x >= 0 && y >= 0) {
+                    s->polygons[polygonIndex].vertices[vertexIndex] = (Vertex) {x, y};
                     vertexIndex++;
                 }
-                
-            }while(x != -9 && y != -9);
-            image->shape[n].polygons[polygonIndex].vertexCount = vertexIndex;
-            image->shape[n].polygonCount = polygonIndex + 1;
+            } while(x != -9 && y != -9);
+            s->polygons[polygonIndex].vertexCount = vertexIndex;
+            s->polygonCount = polygonIndex + 1;
             initColor(&(image->color[n]), polyColor);
         }
-        getImageCenter(image, &(image->center));
+        calculateVectorImageBoundaries(image);
+        calculateVectorImageCenter(image);
         fclose(file);
     } else {
         printf("Image does not exist\n");
@@ -72,19 +71,19 @@ void openVectorImage(char *imageName, VectorImage *image){
 
 void rotateVectorImage(VectorImage *image, int degrees){
     int i;
-    for(i=0; i<image->n_component; i++) {        
-        rotateShapewithPivot(&(image->shape[i]), degrees, image->center);
+    for (i = 0; i < image->n_component; i++) {
+        rotateShape(&(image->shape[i]), degrees, image->center);
     }
 }
 
-void getImageCenter(VectorImage *image, Vertex *center) {
-    Shape *shape;
-    shape = &(image->shape[0]);
+void calculateVectorImageBoundaries(VectorImage *image) {
+    Shape *shape = &(image->shape[0]);
     int xMin = shape->polygons[0].vertices[0].x;
     int yMin = shape->polygons[0].vertices[0].y;
     int xMax = xMin;
     int yMax = yMin;
-    for(int i = 0; i< image->n_component; i++){
+
+    for (int i = 0; i< image->n_component; i++){
         shape = &(image->shape[i]);
 
         for (int i = 0; i < shape->polygonCount; ++i) {
@@ -102,39 +101,15 @@ void getImageCenter(VectorImage *image, Vertex *center) {
                     yMax = v->y;
             }
         }
-    }    
-    center->x = round((xMin + xMax) / 2);
-    center->y = round((yMin + yMax) / 2);
+    }
+
+    image->upperLeft = (Vertex) { xMin, yMin };
+    image->lowerRight = (Vertex) { xMax, yMax };
 }
 
-void findMinMaxVectorImage(VectorImage *image, int *minMax) {
-    /**
-     * Index 0: minX
-     * Index 1: maxX
-     * Index 2: minY
-     * Index 3: maxY
-     */
-    minMax[0] = 9999;
-    minMax[1] = -1;
-    minMax[2] = 9999;
-    minMax[3] = -1;
-
-    for(int n = 0; n < image->n_component; n++){
-        Shape *shape = &(image->shape[n]);
-        for (int i = 0; i < shape->polygonCount; ++i) {
-            Polygon *polygon = &(shape->polygons[i]);
-            for (int j = 0; j < polygon->vertexCount; ++j) {
-                Vertex *v =  &(polygon->vertices[j]);
-
-                if (v->x < minMax[0])
-                    minMax[0] = v->x;
-                else if (v->x > minMax[1])
-                    minMax[1] = v->x;
-                if (v->y < minMax[2])
-                    minMax[2] = v->y;
-                else if (v->y > minMax[3])
-                    minMax[3] = v->y;
-            }
-        }
-    }
+void calculateVectorImageCenter(VectorImage *image) {
+    image->center = (Vertex) {
+        round((image->upperLeft.x + image->lowerRight.x) / 2),
+        round((image->upperLeft.y + image->lowerRight.y) / 2)
+    };
 }

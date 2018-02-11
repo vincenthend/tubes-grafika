@@ -80,11 +80,6 @@ void clearScreen(FrameBuffer *fb) {
     setBackground(fb, 0, 0, 0, 0);
 }
 
-
-void areaClear(FrameBuffer *fb, int x_min, int x_max, int y_min, int y_max) {
-    setAreaBackground(fb, x_min, x_max, y_min, y_max, 0, 0, 0, 0);
-}
-
 Color getColor(const FrameBuffer *fb, int x, int y) {
     long int location =
         (x + fb->vinfo.xoffset) * (fb->vinfo.bits_per_pixel / 8) +

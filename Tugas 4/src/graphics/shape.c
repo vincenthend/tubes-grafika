@@ -1,5 +1,10 @@
 #include "shape.h"
 
+ #define max(a,b) \
+   ({ __typeof__ (a) _a = (a); \
+       __typeof__ (b) _b = (b); \
+     _a > _b ? _a : _b; })
+
 void initPolygon(Polygon *polygon, int vertexCount) {
     polygon->vertices = (Vertex *)malloc(vertexCount * sizeof(Vertex));
     polygon->vertexCount = vertexCount;
@@ -8,40 +13,6 @@ void initPolygon(Polygon *polygon, int vertexCount) {
 void initShape(Shape *shape, int polygonCount) {
     shape->polygons = (Polygon *)malloc(polygonCount * sizeof(Polygon));
     shape->polygonCount = polygonCount;
-}
-
-int* findMinMaxShape(Shape *shape) {
-    static int minMaxXY[4];
-    /**
-     * Index 0: minX
-     * Index 1: maxX
-     * Index 2: minY
-     * Index 3: maxY
-     */
-    minMaxXY[0] = 9999;
-    minMaxXY[1] = -1;
-    minMaxXY[2] = 9999;
-    minMaxXY[3] = -1;
-
-    for (int i = 0; i < shape->polygonCount; ++i) {
-        Polygon *polygon = &(shape->polygons[i]);
-        for (int j = 0; j < polygon->vertexCount; ++j) {
-            if (polygon->vertices[j].x < minMaxXY[0]) {
-                minMaxXY[0] = polygon->vertices[j].x;
-            }
-            if (polygon->vertices[j].x > minMaxXY[1]) {
-                minMaxXY[1] = polygon->vertices[j].x;
-            }
-            if (polygon->vertices[j].y < minMaxXY[2]) {
-                minMaxXY[2] = polygon->vertices[j].y;
-            }
-            if (polygon->vertices[j].y > minMaxXY[3]) {
-                minMaxXY[3] = polygon->vertices[j].y;
-            }
-        }
-    }
-
-    return minMaxXY;
 }
 
 void cloneShape(const Shape* src, Shape* dest) {
@@ -73,6 +44,13 @@ void offsetShape(Shape *shape, const Vertex vertex) {
             polygon->vertices[j].y += vertex.y;
         }
     }
+
+    shape->upperLeft.x += vertex.x;
+    shape->upperLeft.y += vertex.y;
+    shape->lowerRight.x += vertex.x;
+    shape->lowerRight.y += vertex.y;
+    shape->center.x += vertex.x;
+    shape->center.y += vertex.y;
 }
 
 void normalizeShapeOffset(Shape *shape, const Vertex vertex) {
@@ -83,6 +61,13 @@ void normalizeShapeOffset(Shape *shape, const Vertex vertex) {
             polygon->vertices[j].y -= vertex.y;
         }
     }
+
+    shape->upperLeft.x -= vertex.x;
+    shape->upperLeft.y -= vertex.y;
+    shape->lowerRight.x -= vertex.x;
+    shape->lowerRight.y -= vertex.y;
+    shape->center.x -= vertex.x;
+    shape->center.y -= vertex.y;
 }
 
 void growShape(Shape *shape, int multiplierScale) {
@@ -93,6 +78,13 @@ void growShape(Shape *shape, int multiplierScale) {
             polygon->vertices[j].y *= multiplierScale;
         }
     }
+
+    shape->upperLeft.x *= multiplierScale;
+    shape->upperLeft.y *= multiplierScale;
+    shape->lowerRight.x *= multiplierScale;
+    shape->lowerRight.y *= multiplierScale;
+    shape->center.x *= multiplierScale;
+    shape->center.y *= multiplierScale;
 }
 
 void shrinkShape(Shape *shape, int dividerScale) {
@@ -103,9 +95,16 @@ void shrinkShape(Shape *shape, int dividerScale) {
             polygon->vertices[j].y /= dividerScale;
         }
     }
+
+    shape->upperLeft.x /= dividerScale;
+    shape->upperLeft.y /= dividerScale;
+    shape->lowerRight.x /= dividerScale;
+    shape->lowerRight.y /= dividerScale;
+    shape->center.x /= dividerScale;
+    shape->center.y /= dividerScale;
 }
 
-void calculateBoundaries(Shape *shape) {
+void calculateShapeBoundaries(Shape *shape) {
     int xMin = shape->polygons[0].vertices[0].x;
     int yMin = shape->polygons[0].vertices[0].y;
     int xMax = xMin;
@@ -129,30 +128,48 @@ void calculateBoundaries(Shape *shape) {
 
     shape->upperLeft = (Vertex) { xMin, yMin };
     shape->lowerRight = (Vertex) { xMax, yMax };
+}
+
+void calculateShapeCenter(Shape* shape) {
     shape->center = (Vertex) {
-        round((xMin + xMax) / 2),
-        round((yMin + yMax) / 2)
+        round((shape->upperLeft.x + shape->lowerRight.x) / 2),
+        round((shape->upperLeft.y + shape->lowerRight.y) / 2)
     };
 }
 
-void prepareShapeForRotation(Shape *shape) {
-    calculateBoundaries(shape);
+void prepareShapeForRotation(Shape *shape, Vertex pivot) {
+    calculateShapeBoundaries(shape);
+    calculateShapeCenter(shape);
 
-    int radius = round(distance(shape->upperLeft, shape->center));
+    int radius = max(
+        max(
+            round(distance(shape->upperLeft, pivot)),
+            round(distance(
+                (Vertex) {shape->upperLeft.x, shape->lowerRight.y },
+                pivot
+            ))),
+        max(
+            round(distance(shape->lowerRight, pivot)),
+            round(distance(
+                (Vertex) {shape->lowerRight.x, shape->upperLeft.y},
+                pivot
+            )))
+    );
+    
     Vertex offset = (Vertex) {
-        radius - shape->center.x + shape->upperLeft.x,
-        radius - shape->center.y + shape->upperLeft.y
+        radius - pivot.x + shape->upperLeft.x,
+        radius - pivot.y + shape->upperLeft.y
     };
 
     offsetShape(shape, offset);
-    calculateBoundaries(shape);
+    calculateShapeBoundaries(shape);
 }
 
-void rotateShape(Shape *shape, const int degrees) {
+void rotateShape(Shape *shape, const int degrees, Vertex pivot) {
     const float radians = degrees * M_PI / 180;
     const float sin = sinf(radians);
     const float cos = cosf(radians);
-    const Vertex *offset = &(shape->center);
+    const Vertex *offset = &pivot;
 
     for (int i = 0; i < shape->polygonCount; ++i) {
         Polygon *p = &(shape->polygons[i]);
@@ -166,28 +183,7 @@ void rotateShape(Shape *shape, const int degrees) {
             v->y = round(y2 + offset->y);
         }
     }
-    calculateBoundaries(shape);
-}
-
-void rotateShapewithPivot(Shape *shape, const int degrees, Vertex pivot) {
-    const float radians = degrees * M_PI / 180;
-    const float sin = sinf(radians);
-    const float cos = cosf(radians);
-    const Vertex *offset = &(pivot);
-
-    for (int i = 0; i < shape->polygonCount; ++i) {
-        Polygon *p = &(shape->polygons[i]);
-        for (int j = 0; j < p->vertexCount; ++j) {
-            Vertex *v = &(p->vertices[j]);
-
-            float x2 = cos * (v->x - offset->x) - sin * (v->y - offset->y);
-            float y2 = sin * (v->x - offset->x) + cos * (v->y - offset->y);
-
-            v->x = round(x2 + offset->x);
-            v->y = round(y2 + offset->y);
-        }
-    }
-    calculateBoundaries(shape);
+    calculateShapeBoundaries(shape);
 }
 
 int isCritical(Vertex a, Vertex b, Vertex c) {
