@@ -5,8 +5,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "shape.h"
 #include "../color.h"
+#include "shape.h"
 
 /**
  * File VectorImage

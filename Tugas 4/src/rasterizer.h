@@ -3,8 +3,8 @@
 
 #include "drawer.h"
 #include "graphics/rasterfont.h"
-#include "graphics/vectorimage.h"
 #include "graphics/shape.h"
+#include "graphics/vectorimage.h"
 
 /**
  * File Rasterizer

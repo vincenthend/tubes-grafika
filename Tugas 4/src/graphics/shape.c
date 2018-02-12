@@ -1,9 +1,11 @@
 #include "shape.h"
 
- #define max(a,b) \
-   ({ __typeof__ (a) _a = (a); \
-       __typeof__ (b) _b = (b); \
-     _a > _b ? _a : _b; })
+#define max(a, b)                                                              \
+    ({                                                                         \
+        __typeof__(a) _a = (a);                                                \
+        __typeof__(b) _b = (b);                                                \
+        _a > _b ? _a : _b;                                                     \
+    })
 
 void initPolygon(Polygon *polygon, int vertexCount) {
     polygon->vertices = (Vertex *)malloc(vertexCount * sizeof(Vertex));
@@ -15,7 +17,7 @@ void initShape(Shape *shape, int polygonCount) {
     shape->polygonCount = polygonCount;
 }
 
-void cloneShape(const Shape* src, Shape* dest) {
+void cloneShape(const Shape *src, Shape *dest) {
     initShape(dest, src->polygonCount);
     for (int i = 0; i < src->polygonCount; ++i) {
         Polygon *srcPolygon = &(src->polygons[i]);
@@ -71,11 +73,9 @@ void normalizeShapeOffset(Shape *shape, const Vertex vertex) {
 }
 
 void scaleVertex(Vertex *v, float scale, Vertex pivot) {
-    Vertex temp = (Vertex) {
-        round((v->x - pivot.x) * scale + pivot.x),
-        round((v->y - pivot.y) * scale + pivot.y)
-    };
-    *v = (Vertex) { temp.x, temp.y };
+    Vertex temp = (Vertex){round((v->x - pivot.x) * scale + pivot.x),
+                           round((v->y - pivot.y) * scale + pivot.y)};
+    *v = (Vertex){temp.x, temp.y};
 }
 
 void scaleShape(Shape *shape, float scale, Vertex pivot) {
@@ -103,7 +103,7 @@ void calculateShapeBoundaries(Shape *shape) {
     for (int i = 0; i < shape->polygonCount; ++i) {
         Polygon *p = &(shape->polygons[i]);
         for (int j = 0; j < p->vertexCount; ++j) {
-            Vertex *v =  &(p->vertices[j]);
+            Vertex *v = &(p->vertices[j]);
 
             if (v->x < xMin)
                 xMin = v->x;
@@ -116,15 +116,14 @@ void calculateShapeBoundaries(Shape *shape) {
         }
     }
 
-    shape->upperLeft = (Vertex) { xMin, yMin };
-    shape->lowerRight = (Vertex) { xMax, yMax };
+    shape->upperLeft = (Vertex){xMin, yMin};
+    shape->lowerRight = (Vertex){xMax, yMax};
 }
 
-void calculateShapeCenter(Shape* shape) {
-    shape->center = (Vertex) {
-        round((shape->upperLeft.x + shape->lowerRight.x) / 2),
-        round((shape->upperLeft.y + shape->lowerRight.y) / 2)
-    };
+void calculateShapeCenter(Shape *shape) {
+    shape->center =
+        (Vertex){round((shape->upperLeft.x + shape->lowerRight.x) / 2),
+                 round((shape->upperLeft.y + shape->lowerRight.y) / 2)};
 }
 
 void prepareShapeForRotation(Shape *shape, Vertex pivot) {
@@ -132,24 +131,15 @@ void prepareShapeForRotation(Shape *shape, Vertex pivot) {
     calculateShapeCenter(shape);
 
     int radius = max(
-        max(
-            round(distance(shape->upperLeft, pivot)),
-            round(distance(
-                (Vertex) {shape->upperLeft.x, shape->lowerRight.y },
-                pivot
-            ))),
-        max(
-            round(distance(shape->lowerRight, pivot)),
-            round(distance(
-                (Vertex) {shape->lowerRight.x, shape->upperLeft.y},
-                pivot
-            )))
-    );
-    
-    Vertex offset = (Vertex) {
-        radius - pivot.x + shape->upperLeft.x,
-        radius - pivot.y + shape->upperLeft.y
-    };
+        max(round(distance(shape->upperLeft, pivot)),
+            round(distance((Vertex){shape->upperLeft.x, shape->lowerRight.y},
+                           pivot))),
+        max(round(distance(shape->lowerRight, pivot)),
+            round(distance((Vertex){shape->lowerRight.x, shape->upperLeft.y},
+                           pivot))));
+
+    Vertex offset = (Vertex){radius - pivot.x + shape->upperLeft.x,
+                             radius - pivot.y + shape->upperLeft.y};
 
     offsetShape(shape, offset);
     calculateShapeBoundaries(shape);

@@ -1,5 +1,5 @@
-#include <stdint.h>
 #include "framebuffer.h"
+#include <stdint.h>
 
 FrameBuffer initFrameBuffer() {
     FrameBuffer fb;
@@ -28,7 +28,7 @@ FrameBuffer initFrameBuffer() {
 
     fb.buffer = (char *)mmap(0, fb.screen_size, PROT_READ | PROT_WRITE,
                              MAP_SHARED, fb.fbfd, 0);
-    if ((int)(uintptr_t) fb.buffer == -1) {
+    if ((int)(uintptr_t)fb.buffer == -1) {
         perror("Error: failed to map framebuffer device to memory");
         exit(4);
     }
@@ -69,7 +69,8 @@ void setBackground(FrameBuffer *fb, int r, int g, int b, int a) {
     }
 }
 
-void setAreaBackground(FrameBuffer *fb, int x_min, int x_max, int y_min, int y_max, int r, int g, int b, int a) {
+void setAreaBackground(FrameBuffer *fb, int x_min, int x_max, int y_min,
+                       int y_max, int r, int g, int b, int a) {
     int i, j;
     for (i = x_min; i <= x_max; i++) {
         for (j = y_min; j < y_max; j++) {
@@ -87,12 +88,10 @@ Color getColor(const FrameBuffer *fb, int x, int y) {
         (x + fb->vinfo.xoffset) * (fb->vinfo.bits_per_pixel / 8) +
         (y + fb->vinfo.yoffset) * (fb->finfo.line_length);
     if (location > fb->finfo.smem_len - 3)
-        return (Color) { 0, 0, 0, 255 };
+        return (Color){0, 0, 0, 255};
 
-    return (Color) {
-        .r = (*(fb->buffer + location + 2) + 256) % 256,
-        .g = (*(fb->buffer + location + 1) + 256) % 256,
-        .b = (*(fb->buffer + location) + 256) % 256,
-        .a = (*(fb->buffer + location + 3) + 256) % 256
-    };
+    return (Color){.r = (*(fb->buffer + location + 2) + 256) % 256,
+                   .g = (*(fb->buffer + location + 1) + 256) % 256,
+                   .b = (*(fb->buffer + location) + 256) % 256,
+                   .a = (*(fb->buffer + location + 3) + 256) % 256};
 }

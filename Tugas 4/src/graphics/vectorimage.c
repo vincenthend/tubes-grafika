@@ -1,11 +1,9 @@
 #include "vectorimage.h"
 
-
-
 #define MAX_POLYGONS 10
 #define MAX_VERTICES 30
 
-void openVectorImage(char *imageName, VectorImage *image){
+void openVectorImage(char *imageName, VectorImage *image) {
     char filename[30];
     Color *c;
 
@@ -27,7 +25,7 @@ void openVectorImage(char *imageName, VectorImage *image){
         image->shape = (Shape *)malloc(n_comp * sizeof(Shape));
         image->color = (Color *)malloc(n_comp * sizeof(Color));
 
-        for (int i = 0; i < n_comp; i++){
+        for (int i = 0; i < n_comp; i++) {
             initShape(&(image->shape[i]), MAX_POLYGONS);
             for (int j = 0; j < MAX_POLYGONS; j++) {
                 initPolygon(&(image->shape[i].polygons[j]), MAX_VERTICES);
@@ -41,7 +39,7 @@ void openVectorImage(char *imageName, VectorImage *image){
         char polyColor[7];
         int x, y;
         for (int n = 0; n < image->n_component; n++) {
-            Shape* s = &(image->shape[n]);
+            Shape *s = &(image->shape[n]);
             fscanf(file, "%s", polyColor);
             int polygonIndex = 0;
             int vertexIndex = 0;
@@ -52,10 +50,11 @@ void openVectorImage(char *imageName, VectorImage *image){
                     polygonIndex++;
                     vertexIndex = 0;
                 } else if (x >= 0 && y >= 0) {
-                    s->polygons[polygonIndex].vertices[vertexIndex] = (Vertex) {x, y};
+                    s->polygons[polygonIndex].vertices[vertexIndex] =
+                        (Vertex){x, y};
                     vertexIndex++;
                 }
-            } while(x != -9 && y != -9);
+            } while (x != -9 && y != -9);
             s->polygons[polygonIndex].vertexCount = vertexIndex;
             s->polygonCount = polygonIndex + 1;
             initColor(&(image->color[n]), polyColor);
@@ -71,8 +70,8 @@ void openVectorImage(char *imageName, VectorImage *image){
 
 void cloneVectorImage(VectorImage *src, VectorImage *dest) {
     dest->n_component = src->n_component;
-    dest->shape = (Shape*) malloc(dest->n_component * sizeof(Shape));
-    dest->color = (Color*) malloc(dest->n_component * sizeof(Color));
+    dest->shape = (Shape *)malloc(dest->n_component * sizeof(Shape));
+    dest->color = (Color *)malloc(dest->n_component * sizeof(Color));
 
     for (int i = 0; i < dest->n_component; ++i) {
         cloneShape(&(src->shape[i]), &(dest->shape[i]));
@@ -94,7 +93,7 @@ void destroyVectorImage(VectorImage *vi) {
     free(&(vi->color));
 }
 
-void rotateVectorImage(VectorImage *image, int degrees){
+void rotateVectorImage(VectorImage *image, int degrees) {
     int i;
     for (i = 0; i < image->n_component; i++) {
         rotateShape(&(image->shape[i]), degrees, image->center);
@@ -119,13 +118,13 @@ void calculateVectorImageBoundaries(VectorImage *image) {
     int xMax = xMin;
     int yMax = yMin;
 
-    for (int i = 0; i< image->n_component; i++){
+    for (int i = 0; i < image->n_component; i++) {
         shape = &(image->shape[i]);
 
         for (int i = 0; i < shape->polygonCount; ++i) {
             Polygon *p = &(shape->polygons[i]);
             for (int j = 0; j < p->vertexCount; ++j) {
-                Vertex *v =  &(p->vertices[j]);
+                Vertex *v = &(p->vertices[j]);
 
                 if (v->x < xMin)
                     xMin = v->x;
@@ -139,13 +138,12 @@ void calculateVectorImageBoundaries(VectorImage *image) {
         }
     }
 
-    image->upperLeft = (Vertex) { xMin, yMin };
-    image->lowerRight = (Vertex) { xMax, yMax };
+    image->upperLeft = (Vertex){xMin, yMin};
+    image->lowerRight = (Vertex){xMax, yMax};
 }
 
 void calculateVectorImageCenter(VectorImage *image) {
-    image->center = (Vertex) {
-        round((image->upperLeft.x + image->lowerRight.x) / 2),
-        round((image->upperLeft.y + image->lowerRight.y) / 2)
-    };
+    image->center =
+        (Vertex){round((image->upperLeft.x + image->lowerRight.x) / 2),
+                 round((image->upperLeft.y + image->lowerRight.y) / 2)};
 }

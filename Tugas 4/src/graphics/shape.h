@@ -33,7 +33,7 @@ void initPolygon(Polygon *polygon, int vertexCount);
 
 void initShape(Shape *shape, int polygonCount);
 
-void cloneShape(const Shape* src, Shape* dest);
+void cloneShape(const Shape *src, Shape *dest);
 
 void destroyShape(Shape *shape);
 
@@ -47,7 +47,7 @@ void scaleShape(Shape *shape, float scale, Vertex pivot);
 
 void calculateShapeBoundaries(Shape *shape);
 
-void calculateShapeCenter(Shape* shape);
+void calculateShapeCenter(Shape *shape);
 
 void prepareShapeForRotation(Shape *shape, Vertex pivot);
 

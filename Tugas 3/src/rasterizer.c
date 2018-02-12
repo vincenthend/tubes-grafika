@@ -112,8 +112,7 @@ void scanlineFill(FrameBuffer *fb, Shape *s, Color c) {
             } else if (colorize) {
                 if (adj_pixel_counter > threshold) {
                     colorize = !colorize;
-                }
-                else {
+                } else {
                     addPixelToBuffer(fb, x, y, c.r, c.g, c.b, c.a);
                 }
             }
@@ -149,8 +148,7 @@ void fillString(FrameBuffer *fb, char *s, RasterFont *rf, Vertex offset,
     for (i = 0; i < len; ++i) {
         if (s[i] == ' ') {
 
-        }
-        else {
+        } else {
             fillChar(fb, s[i], rf, offset, color);
         }
 

@@ -2,7 +2,8 @@
 
 #include "rasterizer.h"
 
-void boundaryFillHelper(FrameBuffer *fb, int x, int y, int xMin, int xMax, int yMin, int yMax, Color color) {
+void boundaryFillHelper(FrameBuffer *fb, int x, int y, int xMin, int xMax,
+                        int yMin, int yMax, Color color) {
     // Check image boundaries
     if ((x < xMin) || (x >= xMax) || (y < yMin) || (y >= yMax)) {
         return;
@@ -52,7 +53,8 @@ void boundaryFill(FrameBuffer *fb, Shape *s, Color color) {
     // addPixelToBuffer(fb, x+1, y+1, 255, 0, 0, 0);
     // printf("Start point at %d %d\n", x+2, y+2);
 
-    boundaryFillHelper(fb, x+2, y+2, s->upperLeft.x, s->lowerRight.x, s->upperLeft.y, s->lowerRight.y, color);
+    boundaryFillHelper(fb, x + 2, y + 2, s->upperLeft.x, s->lowerRight.x,
+                       s->upperLeft.y, s->lowerRight.y, color);
 }
 
 int inCriticalList(int x, int y, Vertex *vertices, int vertexCount) {
@@ -131,8 +133,7 @@ void scanlineFill(FrameBuffer *fb, Shape *s, Color c) {
             } else if (colorize) {
                 if (adj_pixel_counter > threshold) {
                     colorize = !colorize;
-                }
-                else {
+                } else {
                     addPixelToBuffer(fb, x, y, c.r, c.g, c.b, c.a);
                 }
             }
@@ -142,7 +143,7 @@ void scanlineFill(FrameBuffer *fb, Shape *s, Color c) {
 
 void fillShape(FrameBuffer *fb, Shape *s, Color color) {
     for (int i = 0; i < s->polygonCount; ++i) {
-        drawPolygon(fb, &(s->polygons[i]), color);        
+        drawPolygon(fb, &(s->polygons[i]), color);
     }
 
     // Boundary fill
@@ -212,8 +213,8 @@ void fillRainbow(FrameBuffer *fb, int x, int y) {
     fillSquareArea(fb, x - 8, y + 19, x + 20, y + 21, purple);
 }
 
-void fillImage(FrameBuffer *fb, VectorImage *image, Vertex offset){
-    for(int i = 0; i < image->n_component; i++){
+void fillImage(FrameBuffer *fb, VectorImage *image, Vertex offset) {
+    for (int i = 0; i < image->n_component; i++) {
         Shape *s = &(image->shape[i]);
         Color c = image->color[i];
         offsetShape(s, offset);
@@ -223,5 +224,5 @@ void fillImage(FrameBuffer *fb, VectorImage *image, Vertex offset){
 }
 
 void clearArea(FrameBuffer *fb, Vertex v0, Vertex v1) {
-    fillSquareArea(fb, v0.x, v0.y, v1.x, v1.y, (Color) {0, 0, 0, 255});
+    fillSquareArea(fb, v0.x, v0.y, v1.x, v1.y, (Color){0, 0, 0, 255});
 }

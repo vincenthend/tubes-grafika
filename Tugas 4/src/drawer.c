@@ -24,7 +24,9 @@ void drawLine(FrameBuffer *fb, int x0, int y0, int x1, int y1, Color color) {
         swap(&y0, &y1);
     }
 
-    if ((x0 < 0 && x1 < 0 && y0 < 0 && y1 < 0) || (x0 > fb->screen_width && x1 > fb->screen_width && y0 > fb->screen_height && y1 > fb->screen_height))
+    if ((x0 < 0 && x1 < 0 && y0 < 0 && y1 < 0) ||
+        (x0 > fb->screen_width && x1 > fb->screen_width &&
+         y0 > fb->screen_height && y1 > fb->screen_height))
         return;
 
     int dx = x1 - x0;
@@ -54,7 +56,6 @@ void drawLine(FrameBuffer *fb, int x0, int y0, int x1, int y1, Color color) {
             }
         }
 
-
         error -= dy;
 
         if (error < 0) {
@@ -66,7 +67,7 @@ void drawLine(FrameBuffer *fb, int x0, int y0, int x1, int y1, Color color) {
             inRange &= (y <= fb->screen_height);
         else
             inRange &= (y >= 0);
-        }
+    }
 }
 
 void drawThickLine(FrameBuffer *fb, int x0, int y0, int x1, int y1, int width,

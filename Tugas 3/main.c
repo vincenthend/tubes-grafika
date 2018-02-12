@@ -58,7 +58,7 @@ int main() {
     printf("%s\n", input);
 
     // Convert to lowercase
-    for (int i=0; input[i]; i++) {
+    for (int i = 0; input[i]; i++) {
         input[i] = tolower((char)input[i]);
     }
 

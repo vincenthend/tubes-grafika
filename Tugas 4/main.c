@@ -2,23 +2,23 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
 #include <time.h>
+#include <unistd.h>
 
 #include "src/color.h"
 #include "src/drawer.h"
 #include "src/framebuffer.h"
 #include "src/graphics/font.h"
 #include "src/graphics/image.h"
-#include "src/graphics/vectorimage.h"
 #include "src/graphics/rasterfont.h"
 #include "src/graphics/shape.h"
+#include "src/graphics/vectorimage.h"
 #include "src/printer.h"
 #include "src/rasterizer.h"
 
 int main() {
     FrameBuffer fb = initFrameBuffer();
-    
+
     // Load Image
     VectorImage plane;
     VectorImage blade_left;
@@ -32,7 +32,7 @@ int main() {
     v.y = 0;
 
     int deg = 5;
-    
+
     clock_t start;
     clock_t end;
     double renderTime;
@@ -51,7 +51,7 @@ int main() {
 
     float scale = 1;
     system("clear");
-    while (1) {        
+    while (1) {
         start = clock();
 
         VectorImage plane2, blade_left2, blade_right2;
@@ -88,8 +88,8 @@ int main() {
         end = clock();
 
         //66000 for 30fps
-        renderTime = 66000 - ((double)(end-start))/CLOCKS_PER_SEC;
-        if (renderTime > 0){
+        renderTime = 66000 - ((double)(end - start)) / CLOCKS_PER_SEC;
+        if (renderTime > 0) {
             usleep(renderTime);
         }
 
