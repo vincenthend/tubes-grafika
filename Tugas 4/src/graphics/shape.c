@@ -79,10 +79,7 @@ void scaleShape(Shape *shape, float scale, Vertex pivot) {
 
     // TODO: investigate why removing duplicate lines make code stop working
     scaleVertex(&(shape->upperLeft), scale, pivot);
-    scaleVertex(&(shape->upperLeft), scale, pivot);
     scaleVertex(&(shape->lowerRight), scale, pivot);
-    scaleVertex(&(shape->lowerRight), scale, pivot);
-    scaleVertex(&(shape->center), scale, pivot);
     scaleVertex(&(shape->center), scale, pivot);
 }
 
