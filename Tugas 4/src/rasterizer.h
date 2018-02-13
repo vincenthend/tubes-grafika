@@ -8,7 +8,7 @@
 
 /**
  * File Rasterizer
- * Digunakan untuk melakukan fill
+ * Digunakan untuk melakukan fill (pewarnaan)
  */
 
 void boundaryFill(FrameBuffer *fb, Shape *s, Color color);

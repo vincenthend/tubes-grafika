@@ -8,18 +8,15 @@ void boundaryFillHelper(FrameBuffer *fb, int x, int y, int xMin, int xMax,
     if ((x < xMin) || (x >= xMax) || (y < yMin) || (y >= yMax)) {
         return;
     }
+
     // Output to screen
     Color curr = getColor(fb, x, y);
     if (!isSameColor(curr, color)) {
         addPixelToBuffer(fb, x, y, color.r, color.g, color.b, color.a);
-        // boundaryFillHelper(fb, x - 1, y - 1, xMin, xMax, yMin, yMax, color);
         boundaryFillHelper(fb, x - 1, y, xMin, xMax, yMin, yMax, color);
-        // boundaryFillHelper(fb, x - 1, y + 1, xMin, xMax, yMin, yMax, color);
         boundaryFillHelper(fb, x, y - 1, xMin, xMax, yMin, yMax, color);
         boundaryFillHelper(fb, x, y + 1, xMin, xMax, yMin, yMax, color);
-        // boundaryFillHelper(fb, x + 1, y - 1, xMin, xMax, yMin, yMax, color);
         boundaryFillHelper(fb, x + 1, y, xMin, xMax, yMin, yMax, color);
-        // boundaryFillHelper(fb, x + 1, y + 1, xMin, xMax, yMin, yMax, color);
     }
 }
 
@@ -32,7 +29,6 @@ void boundaryFill(FrameBuffer *fb, Shape *s, Color color) {
 
     while (!isSameColor(curr, color)) {
         x++;
-        // curr = getColor(fb, x, y);
         if (x >= s->lowerRight.x) {
             x = s->upperLeft.x;
             y++;
@@ -42,6 +38,7 @@ void boundaryFill(FrameBuffer *fb, Shape *s, Color color) {
             return;
         }
     }
+
     // printf("Bound x: %d %d\nBound y: %d %d\n", s->upperLeft.x, s->lowerRight.x, s->upperLeft.y, s->lowerRight.y);
     // addPixelToBuffer(fb, x-1, y-1, 255, 0, 0, 0);
     // addPixelToBuffer(fb, x-1, y, 255, 0, 0, 0);
@@ -86,7 +83,7 @@ void scanlineFill(FrameBuffer *fb, Shape *s, Color c) {
     for (int i = 0; i < s->polygonCount; ++i) {
         drawPolygon(fb, &(s->polygons[i]), c);
 
-        //Find critical vertex
+        // Find critical vertex
         if (isCritical(
                 (*s).polygons[i].vertices[(*s).polygons[i].vertexCount - 1],
                 (*s).polygons[i].vertices[0],
@@ -150,7 +147,7 @@ void fillShape(FrameBuffer *fb, Shape *s, Color color) {
     boundaryFill(fb, s, color);
 
     // Scanline fill
-    //scanlineFill(fb, s, color);
+    // scanlineFill(fb, s, color);
 }
 
 void fillChar(FrameBuffer *fb, char c, RasterFont *rf, Vertex offset,
@@ -217,6 +214,7 @@ void fillImage(FrameBuffer *fb, VectorImage *image, Vertex offset) {
     for (int i = 0; i < image->n_component; i++) {
         Shape *s = &(image->shape[i]);
         Color c = image->color[i];
+
         offsetShape(s, offset);
         fillShape(fb, s, c);
         normalizeShapeOffset(s, offset);
@@ -224,5 +222,7 @@ void fillImage(FrameBuffer *fb, VectorImage *image, Vertex offset) {
 }
 
 void clearArea(FrameBuffer *fb, Vertex v0, Vertex v1) {
-    fillSquareArea(fb, v0.x, v0.y, v1.x, v1.y, (Color){0, 0, 0, 255});
+    Color black = (Color){0, 0, 0, 255};
+
+    fillSquareArea(fb, v0.x, v0.y, v1.x, v1.y, black);
 }

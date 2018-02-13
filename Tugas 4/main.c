@@ -26,6 +26,7 @@ int main() {
     openVectorImage("plane_vector", &plane);
     openVectorImage("blade_left", &blade_left);
     openVectorImage("blade_right", &blade_right);
+
     // Draw and fill
     Vertex v;
     v.x = 0;
@@ -42,15 +43,15 @@ int main() {
     calculateVectorImageBoundaries(&plane);
     calculateVectorImageCenter(&plane);
 
-    // clearScreen(&fb);
     calculateVectorImageBoundaries(&blade_left);
     calculateVectorImageCenter(&blade_left);
 
     calculateVectorImageBoundaries(&blade_right);
     calculateVectorImageCenter(&blade_right);
 
-    float scale = 1;
     system("clear");
+
+    float scale = 1;
     while (1) {
         start = clock();
 
@@ -68,9 +69,6 @@ int main() {
         blade_right2.lowerRight.x += v.x + correction;
         blade_right2.upperLeft.y += v.y - correction;
         blade_right2.lowerRight.y += v.y + correction;
-
-        // clearArea(&fb, blade_left2.upperLeft, blade_left2.lowerRight);
-        // clearArea(&fb, blade_right2.upperLeft, blade_right2.lowerRight);
 
         rotateVectorImage(&blade_left2, deg);
         rotateVectorImage(&blade_right2, deg);
@@ -92,10 +90,6 @@ int main() {
         if (renderTime > 0) {
             sleep(renderTime);
         }
-
-        // scaleVectorImage(plane2, 1/scale, plane2->center);
-        // scaleVectorImage(blade_left2, 1/scale, plane2->center);
-        // scaleVectorImage(blade_right2, 1/scale, plane2->center);
 
         deg += 30;
         scale += 0.1;
