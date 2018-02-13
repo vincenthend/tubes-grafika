@@ -88,7 +88,7 @@ int main() {
         // 66000 for 30fps
         renderTime = 66000 - ((double)(end - start)) / CLOCKS_PER_SEC;
         if (renderTime > 0) {
-            sleep(renderTime);
+            usleep(renderTime);
         }
 
         deg += 30;
