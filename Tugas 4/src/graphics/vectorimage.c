@@ -5,9 +5,8 @@
 
 void openVectorImage(char *imageName, VectorImage *image) {
     char filename[30];
-    Color *c;
 
-    strcpy(filename, "image/");
+    strcpy(filename, "images/");
     strcat(filename, imageName);
     strcat(filename, ".txt");
 
