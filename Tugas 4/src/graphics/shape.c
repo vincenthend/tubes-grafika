@@ -9,11 +9,6 @@
 
 #define M_PI 3.14159265358979323846
 
-void initPolygon(Polygon *polygon, int vertexCount) {
-    polygon->vertices = (Vertex *)malloc(vertexCount * sizeof(Vertex));
-    polygon->vertexCount = vertexCount;
-}
-
 void initShape(Shape *shape, int polygonCount) {
     shape->polygons = (Polygon *)malloc(polygonCount * sizeof(Polygon));
     shape->polygonCount = polygonCount;
@@ -74,12 +69,6 @@ void normalizeShapeOffset(Shape *shape, const Vertex vertex) {
     shape->center.y -= vertex.y;
 }
 
-void scaleVertex(Vertex *v, float scale, Vertex pivot) {
-    Vertex temp = (Vertex){round((v->x - pivot.x) * scale + pivot.x),
-                           round((v->y - pivot.y) * scale + pivot.y)};
-    *v = (Vertex){temp.x, temp.y};
-}
-
 void scaleShape(Shape *shape, float scale, Vertex pivot) {
     for (int i = 0; i < shape->polygonCount; ++i) {
         Polygon *polygon = &(shape->polygons[i]);
@@ -130,12 +119,12 @@ void prepareShapeForRotation(Shape *shape, Vertex pivot) {
     calculateShapeCenter(shape);
 
     int radius = max(
-        max(round(distance(shape->upperLeft, pivot)),
-            round(distance((Vertex){shape->upperLeft.x, shape->lowerRight.y},
-                           pivot))),
-        max(round(distance(shape->lowerRight, pivot)),
-            round(distance((Vertex){shape->lowerRight.x, shape->upperLeft.y},
-                           pivot))));
+        max(round(vertexDistance(shape->upperLeft, pivot)),
+            round(vertexDistance(
+                (Vertex){shape->upperLeft.x, shape->lowerRight.y}, pivot))),
+        max(round(vertexDistance(shape->lowerRight, pivot)),
+            round(vertexDistance(
+                (Vertex){shape->lowerRight.x, shape->upperLeft.y}, pivot))));
 
     Vertex offset = (Vertex){radius - pivot.x + shape->upperLeft.x,
                              radius - pivot.y + shape->upperLeft.y};
@@ -163,14 +152,4 @@ void rotateShape(Shape *shape, const int degrees, Vertex pivot) {
         }
     }
     calculateShapeBoundaries(shape);
-}
-
-int isCritical(Vertex a, Vertex b, Vertex c) {
-    return (a.y < b.y && c.y < b.y) || (a.y > b.y && c.y > b.y);
-}
-
-float distance(Vertex a, Vertex b) {
-    int dx = a.x - b.x;
-    int dy = a.y - b.y;
-    return sqrt(dx * dx + dy * dy);
 }

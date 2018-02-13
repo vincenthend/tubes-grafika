@@ -6,20 +6,13 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "vertex.h"
+#include "polygon.h"
+
 /**
  * File Shape
  * digunakan untuk memanipulasi bentuk
  */
-
-typedef struct {
-    int x;
-    int y;
-} Vertex;
-
-typedef struct {
-    Vertex *vertices;
-    int vertexCount;
-} Polygon;
 
 typedef struct {
     Polygon *polygons;
@@ -28,8 +21,6 @@ typedef struct {
     Vertex lowerRight;
     Vertex center;
 } Shape;
-
-void initPolygon(Polygon *polygon, int vertexCount);
 
 void initShape(Shape *shape, int polygonCount);
 
@@ -52,9 +43,5 @@ void calculateShapeCenter(Shape *shape);
 void prepareShapeForRotation(Shape *shape, Vertex pivot);
 
 void rotateShape(Shape *shape, const int degrees, Vertex pivot);
-
-int isCritical(Vertex a, Vertex b, Vertex c);
-
-float distance(Vertex a, Vertex b);
 
 #endif

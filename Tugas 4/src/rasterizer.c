@@ -84,7 +84,7 @@ void scanlineFill(FrameBuffer *fb, Shape *s, Color c) {
         drawPolygon(fb, &(s->polygons[i]), c);
 
         // Find critical vertex
-        if (isCritical(
+        if (isVertexCritical(
                 (*s).polygons[i].vertices[(*s).polygons[i].vertexCount - 1],
                 (*s).polygons[i].vertices[0],
                 (*s).polygons[i].vertices[1]) == 1) {
@@ -94,7 +94,7 @@ void scanlineFill(FrameBuffer *fb, Shape *s, Color c) {
 
         int j;
         for (j = 1; j < (*s).polygons[i].vertexCount - 1; j++) {
-            if (isCritical((*s).polygons[i].vertices[j - 1],
+            if (isVertexCritical((*s).polygons[i].vertices[j - 1],
                            (*s).polygons[i].vertices[j],
                            (*s).polygons[i].vertices[j + 1]) == 1) {
                 vertices[vertexCount] = (*s).polygons[i].vertices[j];
@@ -102,7 +102,7 @@ void scanlineFill(FrameBuffer *fb, Shape *s, Color c) {
             }
         }
 
-        if (isCritical((*s).polygons[i].vertices[j - 1],
+        if (isVertexCritical((*s).polygons[i].vertices[j - 1],
                        (*s).polygons[i].vertices[j],
                        (*s).polygons[i].vertices[0]) == 1) {
             vertices[vertexCount] = (*s).polygons[i].vertices[j];
