@@ -7,6 +7,8 @@
         _a > _b ? _a : _b;                                                     \
     })
 
+#define M_PI 3.14159265358979323846
+
 void initPolygon(Polygon *polygon, int vertexCount) {
     polygon->vertices = (Vertex *)malloc(vertexCount * sizeof(Vertex));
     polygon->vertexCount = vertexCount;
@@ -87,10 +89,7 @@ void scaleShape(Shape *shape, float scale, Vertex pivot) {
     }
 
     scaleVertex(&(shape->upperLeft), scale, pivot);
-    scaleVertex(&(shape->upperLeft), scale, pivot);
     scaleVertex(&(shape->lowerRight), scale, pivot);
-    scaleVertex(&(shape->lowerRight), scale, pivot);
-    scaleVertex(&(shape->center), scale, pivot);
     scaleVertex(&(shape->center), scale, pivot);
 }
 

@@ -61,12 +61,12 @@ int main() {
 
         blade_left2.upperLeft.x += v.x - correction;
         blade_left2.lowerRight.x += v.x + correction;
-        blade_left2.upperLeft.y - correction;
+        blade_left2.upperLeft.y += v.y - correction;
         blade_left2.lowerRight.y += v.y + correction;
 
         blade_right2.upperLeft.x += v.x - correction;
         blade_right2.lowerRight.x += v.x + correction;
-        blade_right2.upperLeft.y - correction;
+        blade_right2.upperLeft.y += v.y - correction;
         blade_right2.lowerRight.y += v.y + correction;
 
         // clearArea(&fb, blade_left2.upperLeft, blade_left2.lowerRight);
@@ -87,10 +87,10 @@ int main() {
 
         end = clock();
 
-        //66000 for 30fps
+        // 66000 for 30fps
         renderTime = 66000 - ((double)(end - start)) / CLOCKS_PER_SEC;
         if (renderTime > 0) {
-            usleep(renderTime);
+            sleep(renderTime);
         }
 
         // scaleVectorImage(plane2, 1/scale, plane2->center);
