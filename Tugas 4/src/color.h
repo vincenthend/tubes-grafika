@@ -19,4 +19,6 @@ void initColor(Color *color, char *colorHex);
 
 char isSameColor(Color color1, Color color2);
 
+void cloneColor(const Color *src, Color *dest);
+
 #endif
