@@ -4,14 +4,14 @@
 void initSquareClipper(Clipper* clipper) {
 	clipper->clipperSize = 4;
 	clipper->clipperVertex =(Vertex *) malloc(clipper->clipperSize * sizeof(Vertex));
-	clipper->clipperVertex[0].x = 0;
-	clipper->clipperVertex[0].y = 0;
-	clipper->clipperVertex[1].x = 0;
-	clipper->clipperVertex[1].y = 1000;
-	clipper->clipperVertex[2].x = 1000;
-	clipper->clipperVertex[2].y = 1000;
-	clipper->clipperVertex[3].x = 1000;
-	clipper->clipperVertex[3].y = 0;
+	clipper->clipperVertex[0].x = 100;
+	clipper->clipperVertex[0].y = 100;
+	clipper->clipperVertex[1].x = 100;
+	clipper->clipperVertex[1].y = 500;
+	clipper->clipperVertex[2].x = 500;
+	clipper->clipperVertex[2].y = 500;
+	clipper->clipperVertex[3].x = 500;
+	clipper->clipperVertex[3].y = 100;
 }
 
 int countVertexInsideClip (Polygon* polygon, Vertex clip1, Vertex clip2) {
@@ -78,16 +78,21 @@ void clipVectorImageHelper(VectorImage *image, Vertex clip1, Vertex clip2) {
 	int newShapeIterator = 0;
 
 	//iterate all shape
-	printf("Shape Size: %d\n", newVectorImage.n_component);
+	// printf("Shape Size: %d\n", newVectorImage.n_component);
 	for (int shapeIterator = 0; shapeIterator < image->n_component; shapeIterator++) {
 		
 		int newPolygonSize = countPolygonInsideClip(&(image->shape[shapeIterator]), clip1, clip2);
-		printf("Polygon Size: %d\n", newPolygonSize);
+		// printf("Polygon Size: %d\n", newPolygonSize);
 		if (newPolygonSize == 0) {
 			//do nothing
 		} else {
 			initShape(&(newVectorImage.shape[newShapeIterator]), newPolygonSize);
-			cloneColor(&(image->color[shapeIterator]), &(newVectorImage.color[newShapeIterator]));
+
+			// cloneColor(&(image->color[shapeIterator]), (newVectorImage.color[newShapeIterator]));
+			newVectorImage.color[newShapeIterator].r = image->color[shapeIterator].r;
+			newVectorImage.color[newShapeIterator].g = image->color[shapeIterator].g;
+			newVectorImage.color[newShapeIterator].b = image->color[shapeIterator].b;
+			newVectorImage.color[newShapeIterator].a = image->color[shapeIterator].a;
 
 			int newPolygonIterator = 0;
 
@@ -98,7 +103,7 @@ void clipVectorImageHelper(VectorImage *image, Vertex clip1, Vertex clip2) {
 				
 				Polygon* polygons = image->shape[shapeIterator].polygons;
 				int newVertexSize = countVertexInsideClip(&(polygons[i]), clip1, clip2); 
-				printf("Vertex Size: %d\n", newVertexSize);
+				// printf("Vertex Size: %d\n", newVertexSize);
 
 				if (newVertexSize == 0) {
 					// do nothing
@@ -145,7 +150,7 @@ void clipVectorImageHelper(VectorImage *image, Vertex clip1, Vertex clip2) {
 				}
 			}
 
-			newShapeIterator++;						
+			newShapeIterator++;			
 		}	
 	}
 
@@ -158,7 +163,21 @@ void clipVectorImage(VectorImage *image, Clipper clipper) {
 		int secondEndPoint = (i + 1) % clipper.clipperSize;
 
 		clipVectorImageHelper(image, clipper.clipperVertex[i], clipper.clipperVertex[secondEndPoint]);
+		// printf("Next Clip Orientation\n");
 	}
+	printf("HAHAHAH\n");
+	for (int i = 0; i < image->n_component; i++) {
+		printf("Shape %d:\n", i);
+		for (int j = 0; j < image->shape[i].polygonCount; j++) {
+			printf("Polygon %d:\n", j);
+			for (int k = 0; k < image->shape[i].polygons[j].vertexCount; k++) {
+				printf("Vertex %d:\n", k);
+				printf("%d %d\n", image->shape[i].polygons[j].vertices[k].x, image->shape[i].polygons[j].vertices[k].y);
+				printf("%d %d %d\n", image->color[i].r, image->color[i].g, image->color[i].b);
+			}
+		}
+	}
+	printf("YEYEYE\n");
 }
 
 Vertex findIntersect(Vertex line1, Vertex line2, Vertex line3, Vertex line4) {
@@ -174,7 +193,7 @@ Vertex findIntersect(Vertex line1, Vertex line2, Vertex line3, Vertex line4) {
 
 	//Find intersection point y
 	numeratorY = (line1.x * line2.y - line1.y * line2.x) * (line3.y - line4.y) - (line1.y - line2.y) * (line3.x * line4.y - line3.y * line4.x);
-	denumeratorY = (line1.x * line2.x) * (line3.y - line4.y) - (line1.y - line2.y) * (line3.x - line4.x);
+	denumeratorY = (line1.x - line2.x) * (line3.y - line4.y) - (line1.y - line2.y) * (line3.x - line4.x);
 	y = numeratorY / denumeratorY;
 
 	result.x = x;

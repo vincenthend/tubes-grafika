@@ -57,6 +57,9 @@ int main() {
     Clipper clipper;
     initSquareClipper(&clipper);
 
+    Color white;
+    initColor(&white, "FFFFFF");
+
     while (1) {
         start = clock();
 
@@ -82,20 +85,22 @@ int main() {
         scaleVectorImage(&blade_left2, scale, plane2.center);
         scaleVectorImage(&blade_right2, scale, plane2.center);
 
-        clearArea(&fb, plane2.upperLeft, plane2.lowerRight);
+        // clearArea(&fb, plane2.upperLeft, plane2.lowerRight);
+        system("clear");
 
         clipVectorImage(&plane2, clipper);
-        // clipVectorImage(&blade_left2, clipper);
-        // clipVectorImage(&blade_right2, clipper);
+        clipVectorImage(&blade_left2, clipper);
+        clipVectorImage(&blade_right2, clipper);
 
-        // fillImage(&fb, &plane2, v);
-        // fillImage(&fb, &blade_left2, v);
-        // fillImage(&fb, &blade_right2, v);
+        drawSquare(&fb, 100, 100, 500, 500, white);
+        fillImage(&fb, &plane2, v);
+        fillImage(&fb, &blade_left2, v);
+        fillImage(&fb, &blade_right2, v);
 
         
         end = clock();
 
-        sleep(100);
+        // sleep(50);
         // 66000 for 30fps
         renderTime = 66000 - ((double)(end - start)) / CLOCKS_PER_SEC;
         if (renderTime > 0) {
