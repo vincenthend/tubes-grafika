@@ -84,18 +84,17 @@ int main() {
 
         clearArea(&fb, plane2.upperLeft, plane2.lowerRight);
 
-        clipVectorImage(&plane2, clipper);
-        clipVectorImage(&blade_left2, clipper);
-        clipVectorImage(&blade_right2, clipper);
+        // clipVectorImage(&plane2, clipper);
+        // clipVectorImage(&blade_left2, clipper);
+        // clipVectorImage(&blade_right2, clipper);
 
-        // fillImage(&fb, &plane2, v);
-        // fillImage(&fb, &blade_left2, v);
-        // fillImage(&fb, &blade_right2, v);
+        fillImage(&fb, &plane2, v);
+        fillImage(&fb, &blade_left2, v);
+        fillImage(&fb, &blade_right2, v);
 
         
         end = clock();
 
-        sleep(100);
         // 66000 for 30fps
         renderTime = 66000 - ((double)(end - start)) / CLOCKS_PER_SEC;
         if (renderTime > 0) {
