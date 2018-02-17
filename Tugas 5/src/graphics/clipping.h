@@ -8,7 +8,7 @@ typedef struct {
 	int clipperSize;
 } Clipper;
 
-void initSquareClipper(Clipper* clipper);
+void initSquareClipper(Clipper* clipper, int x0, int y0, int x1, int y1);
 
 int countVertexInsideClip (Polygon* polygon, Vertex clip1, Vertex clip2);
 

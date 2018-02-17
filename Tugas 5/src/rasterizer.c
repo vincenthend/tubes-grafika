@@ -22,21 +22,23 @@ void boundaryFillHelper(FrameBuffer *fb, int x, int y, int xMin, int xMax,
 
 void boundaryFill(FrameBuffer *fb, Shape *s, Color color) {
     calculateShapeBoundaries(s);
-    int x = s->upperLeft.x;
-    int y = s->upperLeft.y;
+    int x = s->lowerRight.x;
+    int y = s->lowerRight.y;
 
     Color curr = getColor(fb, x, y);
 
     while (!isSameColor(curr, color)) {
-        x++;
-        if (x >= s->lowerRight.x) {
-            x = s->upperLeft.x;
-            y++;
+        x--;
+        if (x <= s->upperLeft.x) {
+            x = s->lowerRight.x;
+            y--;
         }
 
-        if (y >= s->lowerRight.y) {
-            return;
+        if (y <= s->upperLeft.y) {
+            y = s->lowerRight.y;
         }
+
+        curr = getColor(fb, x, y);
     }
 
     // printf("Bound x: %d %d\nBound y: %d %d\n", s->upperLeft.x, s->lowerRight.x, s->upperLeft.y, s->lowerRight.y);
@@ -50,7 +52,7 @@ void boundaryFill(FrameBuffer *fb, Shape *s, Color color) {
     // addPixelToBuffer(fb, x+1, y+1, 255, 0, 0, 0);
     // printf("Start point at %d %d\n", x+2, y+2);
 
-    boundaryFillHelper(fb, x + 2, y + 2, s->upperLeft.x, s->lowerRight.x,
+    boundaryFillHelper(fb, x - 1, y - 1, s->upperLeft.x, s->lowerRight.x,
                        s->upperLeft.y, s->lowerRight.y, color);
 }
 

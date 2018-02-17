@@ -1,17 +1,17 @@
 #include "clipping.h"
 
 
-void initSquareClipper(Clipper* clipper) {
+void initSquareClipper(Clipper* clipper, int x0, int y0, int x1, int y1) {
 	clipper->clipperSize = 4;
 	clipper->clipperVertex =(Vertex *) malloc(clipper->clipperSize * sizeof(Vertex));
-	clipper->clipperVertex[0].x = 100;
-	clipper->clipperVertex[0].y = 100;
-	clipper->clipperVertex[1].x = 100;
-	clipper->clipperVertex[1].y = 500;
-	clipper->clipperVertex[2].x = 500;
-	clipper->clipperVertex[2].y = 500;
-	clipper->clipperVertex[3].x = 500;
-	clipper->clipperVertex[3].y = 100;
+	clipper->clipperVertex[0].x = x0;
+	clipper->clipperVertex[0].y = y0;
+	clipper->clipperVertex[1].x = x0;
+	clipper->clipperVertex[1].y = y1;
+	clipper->clipperVertex[2].x = x1;
+	clipper->clipperVertex[2].y = y1;
+	clipper->clipperVertex[3].x = x1;
+	clipper->clipperVertex[3].y = y0;
 }
 
 int countVertexInsideClip (Polygon* polygon, Vertex clip1, Vertex clip2) {
@@ -189,12 +189,20 @@ Vertex findIntersect(Vertex line1, Vertex line2, Vertex line3, Vertex line4) {
     //Find intersection point x
     numeratorX = (line1.x * line2.y - line1.y * line2.x) * (line3.x - line4.x) - (line1.x - line2.x) * (line3.x * line4.y - line3.y * line4.x);
 	denumeratorX = (line1.x - line2.x) * (line3.y - line4.y) - (line1.y - line2.y) * (line3.x - line4.x);
-	x = numeratorX / denumeratorX;
+	if(denumeratorX == 0 || numeratorX == 0) {
+		x = 0;
+	} else {
+		x = numeratorX / denumeratorX;
+	}
 
 	//Find intersection point y
 	numeratorY = (line1.x * line2.y - line1.y * line2.x) * (line3.y - line4.y) - (line1.y - line2.y) * (line3.x * line4.y - line3.y * line4.x);
 	denumeratorY = (line1.x - line2.x) * (line3.y - line4.y) - (line1.y - line2.y) * (line3.x - line4.x);
-	y = numeratorY / denumeratorY;
+	if(denumeratorY == 0 || numeratorY == 0) {
+		y = 0;
+	} else {
+		y = numeratorY / denumeratorY;
+	}
 
 	result.x = x;
 	result.y = y;

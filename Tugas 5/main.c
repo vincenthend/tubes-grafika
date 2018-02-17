@@ -55,10 +55,15 @@ int main() {
     float scale = 1;
 
     Clipper clipper;
-    initSquareClipper(&clipper);
+    Vertex startingVertex, endingVertex;
+    startingVertex.x = 100;
+    startingVertex.y = 100;
+    endingVertex.x = 700;
+    endingVertex.y = 700;
+    initSquareClipper(&clipper, startingVertex.x, startingVertex.y, endingVertex.x, endingVertex.y);
 
-    Color white;
-    initColor(&white, "FFFFFF");
+    Color yellow;
+    initColor(&yellow, "FFF000");
 
     while (1) {
         start = clock();
@@ -92,7 +97,7 @@ int main() {
         clipVectorImage(&blade_left2, clipper);
         clipVectorImage(&blade_right2, clipper);
 
-        drawSquare(&fb, 100, 100, 500, 500, white);
+        drawSquare(&fb, startingVertex.x, startingVertex.y, endingVertex.x, endingVertex.y, yellow);
         fillImage(&fb, &plane2, v);
         fillImage(&fb, &blade_left2, v);
         fillImage(&fb, &blade_right2, v);
