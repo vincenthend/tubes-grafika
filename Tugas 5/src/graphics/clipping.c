@@ -198,7 +198,6 @@ void clipVectorImage(VectorImage *image, Clipper clipper) {
                               clipper.clipperVertex[secondEndPoint]);
         // printf("Next Clip Orientation\n");
     }
-    printf("HAHAHAH\n");
     for (int i = 0; i < image->n_component; i++) {
         printf("Shape %d:\n", i);
         for (int j = 0; j < image->shape[i].polygonCount; j++) {
@@ -212,7 +211,6 @@ void clipVectorImage(VectorImage *image, Clipper clipper) {
             }
         }
     }
-    printf("YEYEYE\n");
 }
 
 Vertex findIntersect(Vertex line1, Vertex line2, Vertex line3, Vertex line4) {
