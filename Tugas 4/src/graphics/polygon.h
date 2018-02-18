@@ -20,6 +20,4 @@ typedef struct {
 
 void initPolygon(Polygon *polygon, int vertexCount);
 
-void clonePolygon(const Polygon *src, Polygon *dest);
-
 #endif
