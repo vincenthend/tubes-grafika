@@ -95,16 +95,16 @@ void scanlineFill(FrameBuffer *fb, Shape *s, Color c) {
         int j;
         for (j = 1; j < (*s).polygons[i].vertexCount - 1; j++) {
             if (isVertexCritical((*s).polygons[i].vertices[j - 1],
-                           (*s).polygons[i].vertices[j],
-                           (*s).polygons[i].vertices[j + 1]) == 1) {
+                                 (*s).polygons[i].vertices[j],
+                                 (*s).polygons[i].vertices[j + 1]) == 1) {
                 vertices[vertexCount] = (*s).polygons[i].vertices[j];
                 vertexCount++;
             }
         }
 
         if (isVertexCritical((*s).polygons[i].vertices[j - 1],
-                       (*s).polygons[i].vertices[j],
-                       (*s).polygons[i].vertices[0]) == 1) {
+                             (*s).polygons[i].vertices[j],
+                             (*s).polygons[i].vertices[0]) == 1) {
             vertices[vertexCount] = (*s).polygons[i].vertices[j];
             vertexCount++;
         }

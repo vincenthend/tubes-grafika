@@ -6,8 +6,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "vertex.h"
 #include "polygon.h"
+#include "vertex.h"
 
 /**
  * File Shape

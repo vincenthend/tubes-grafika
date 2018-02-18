@@ -8,6 +8,7 @@
 #include "src/color.h"
 #include "src/drawer.h"
 #include "src/framebuffer.h"
+#include "src/graphics/clipping.h"
 #include "src/graphics/font.h"
 #include "src/graphics/image.h"
 #include "src/graphics/rasterfont.h"
@@ -15,7 +16,6 @@
 #include "src/graphics/vectorimage.h"
 #include "src/printer.h"
 #include "src/rasterizer.h"
-#include "src/graphics/clipping.h"
 
 int main() {
     FrameBuffer fb = initFrameBuffer();
@@ -60,7 +60,8 @@ int main() {
     startingVertex.y = 100;
     endingVertex.x = 700;
     endingVertex.y = 700;
-    initSquareClipper(&clipper, startingVertex.x, startingVertex.y, endingVertex.x, endingVertex.y);
+    initSquareClipper(&clipper, startingVertex.x, startingVertex.y,
+                      endingVertex.x, endingVertex.y);
 
     Color yellow;
     initColor(&yellow, "FFF000");
@@ -97,12 +98,12 @@ int main() {
         clipVectorImage(&blade_left2, clipper);
         clipVectorImage(&blade_right2, clipper);
 
-        drawSquare(&fb, startingVertex.x, startingVertex.y, endingVertex.x, endingVertex.y, yellow);
+        drawSquare(&fb, startingVertex.x, startingVertex.y, endingVertex.x,
+                   endingVertex.y, yellow);
         fillImage(&fb, &plane2, v);
         fillImage(&fb, &blade_left2, v);
         fillImage(&fb, &blade_right2, v);
 
-        
         end = clock();
 
         // sleep(50);

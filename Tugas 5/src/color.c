@@ -15,10 +15,10 @@ char isSameColor(Color color1, Color color2) {
 }
 
 void cloneColor(const Color *src, Color *dest) {
-	dest = (Color *) malloc(sizeof(Color));
+    dest = (Color *)malloc(sizeof(Color));
 
     dest->r = src->r;
-	dest->g = src->g;
-	dest->b = src->b;
-	dest->a = src->a;
+    dest->g = src->g;
+    dest->b = src->b;
+    dest->a = src->a;
 }
