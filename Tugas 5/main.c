@@ -56,10 +56,10 @@ int main() {
 
     Clipper clipper;
     Vertex startingVertex, endingVertex;
-    startingVertex.x = 100;
-    startingVertex.y = 100;
-    endingVertex.x = 700;
-    endingVertex.y = 700;
+    startingVertex.x = 200;
+    startingVertex.y = 200;
+    endingVertex.x = 800;
+    endingVertex.y = 800;
     initSquareClipper(&clipper, startingVertex.x, startingVertex.y,
                       endingVertex.x, endingVertex.y);
 
@@ -91,8 +91,8 @@ int main() {
         scaleVectorImage(&blade_left2, scale, plane2.center);
         scaleVectorImage(&blade_right2, scale, plane2.center);
 
-        // clearArea(&fb, plane2.upperLeft, plane2.lowerRight);
-        system("clear");
+        clearArea(&fb, startingVertex, endingVertex);
+        //system("clear");
 
         clipVectorImage(&plane2, clipper);
         clipVectorImage(&blade_left2, clipper);
@@ -108,8 +108,10 @@ int main() {
 
         // sleep(50);
         // 66000 for 30fps
-        renderTime = 66000 - ((double)(end - start)) / CLOCKS_PER_SEC;
+        renderTime = 33000 - (((double)(end - start)) / CLOCKS_PER_SEC)*1000000;
+        
         if (renderTime > 0) {
+            
             usleep(renderTime);
         }
 

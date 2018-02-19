@@ -198,19 +198,19 @@ void clipVectorImage(VectorImage *image, Clipper clipper) {
                               clipper.clipperVertex[secondEndPoint]);
         // printf("Next Clip Orientation\n");
     }
-    for (int i = 0; i < image->n_component; i++) {
-        printf("Shape %d:\n", i);
-        for (int j = 0; j < image->shape[i].polygonCount; j++) {
-            printf("Polygon %d:\n", j);
-            for (int k = 0; k < image->shape[i].polygons[j].vertexCount; k++) {
-                printf("Vertex %d:\n", k);
-                printf("%d %d\n", image->shape[i].polygons[j].vertices[k].x,
-                       image->shape[i].polygons[j].vertices[k].y);
-                printf("%d %d %d\n", image->color[i].r, image->color[i].g,
-                       image->color[i].b);
-            }
-        }
-    }
+    // for (int i = 0; i < image->n_component; i++) {
+    //     printf("Shape %d:\n", i);
+    //     for (int j = 0; j < image->shape[i].polygonCount; j++) {
+    //         printf("Polygon %d:\n", j);
+    //         for (int k = 0; k < image->shape[i].polygons[j].vertexCount; k++) {
+    //             printf("Vertex %d:\n", k);
+    //             printf("%d %d\n", image->shape[i].polygons[j].vertices[k].x,
+    //                    image->shape[i].polygons[j].vertices[k].y);
+    //             printf("%d %d %d\n", image->color[i].r, image->color[i].g,
+    //                    image->color[i].b);
+    //         }
+    //     }
+    // }
 }
 
 Vertex findIntersect(Vertex line1, Vertex line2, Vertex line3, Vertex line4) {
