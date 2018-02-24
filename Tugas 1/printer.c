@@ -12,9 +12,9 @@ void printChar(FrameBuffer *fb, char c, Font f, int x, int y, Color col) {
                 addPixelToBuffer(fb, (x) + j, (y) + i, col.r, col.g, col.b,
                                  col.a);
             }
-            printf("%c", dict[i * f.width + j]);
+            // printf("%c", dict[i * f.width + j]);
         }
-        printf("\n");
+        // printf("\n");
     }
 }
 

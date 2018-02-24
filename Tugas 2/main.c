@@ -48,10 +48,10 @@ int main() {
 
     openImage("nyancat", &nyanCat);
     openImage("nyancat_a", &nyanCat_a);
-    topLeftX = fb.screen_width - 810;
-    topLeftY = fb.screen_height - 410;
-    botRightX = fb.screen_width - 10;
-    botRightY = fb.screen_height - 10;
+    topLeftX = fb.screen_width - 900;
+    topLeftY = fb.screen_height - 800;
+    botRightX = fb.screen_width - 100;
+    botRightY = fb.screen_height - 400;
     nyanX = botRightX - 60;
     nyanY = botRightY - 350;
     x = nyanX;

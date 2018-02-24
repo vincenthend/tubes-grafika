@@ -40,6 +40,9 @@ void addPixelToBuffer(FrameBuffer *fb, int x, int y, int r, int g, int b,
     long int location =
         (x + fb->vinfo.xoffset) * (fb->vinfo.bits_per_pixel / 8) +
         (y + fb->vinfo.yoffset) * (fb->finfo.line_length);
+    if (location >= fb->finfo.smem_len) {
+        return;
+    }
 
     if (fb->screen_density == 32) {
         *(buffer + location) = b;

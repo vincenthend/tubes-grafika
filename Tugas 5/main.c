@@ -56,10 +56,10 @@ int main() {
 
     Clipper clipper;
     Vertex startingVertex, endingVertex;
-    startingVertex.x = 200;
-    startingVertex.y = 200;
-    endingVertex.x = 800;
-    endingVertex.y = 800;
+    startingVertex.x = 0;
+    startingVertex.y = 0;
+    endingVertex.x = 600;
+    endingVertex.y = 600;
     initSquareClipper(&clipper, startingVertex.x, startingVertex.y,
                       endingVertex.x, endingVertex.y);
 

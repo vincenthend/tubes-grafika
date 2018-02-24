@@ -8,8 +8,7 @@
 #include "framebuffer.h"
 #include "printer.h"
 
-/** 
- * 
+/**
  * BUG:
  * 1. Characters missing the bottom part
 */
@@ -34,10 +33,7 @@ int main() {
     char in[1000];
     printf("Input: ");
     scanf("%999[0-9a-zA-Z ]", in);
-    printString(&fb, in, f, 500, 500, c);
-
-    //drawLine(&fb, 400, 600, 400, 800, 255, 255, 255, 0);
-    //drawCircle(&fb, 400, 600, 200, 255, 255, 255, 0);
+    printString(&fb, in, f, 200, 200, c);
 
     updateFrame(&fb);
     return 0;
