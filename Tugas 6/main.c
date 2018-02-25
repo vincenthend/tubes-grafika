@@ -58,13 +58,15 @@ char getch(void)
 int main() {
     FrameBuffer fb = initFrameBuffer();
 
+    printf("Hi\n");
     // Load Image
-    VectorImage plane;
-    VectorImage blade_left;
-    VectorImage blade_right;
-    openVectorImage("plane_vector", &plane);
-    openVectorImage("blade_left", &blade_left);
-    openVectorImage("blade_right", &blade_right);
+    VectorImage itb_gedung;
+    VectorImage itb_jalan;
+
+    openVectorImage("petaITB", &itb_gedung);
+    printf("Gedung OK\n");
+    openVectorImage("jalan", &itb_jalan);
+    printf("Jalan\n");
 
     // Draw and fill
     Vertex v;
@@ -79,14 +81,11 @@ int main() {
 
     int correction = 5;
 
-    calculateVectorImageBoundaries(&plane);
-    calculateVectorImageCenter(&plane);
+    calculateVectorImageBoundaries(&itb_gedung);
+    calculateVectorImageCenter(&itb_gedung);
 
-    calculateVectorImageBoundaries(&blade_left);
-    calculateVectorImageCenter(&blade_left);
-
-    calculateVectorImageBoundaries(&blade_right);
-    calculateVectorImageCenter(&blade_right);
+    calculateVectorImageBoundaries(&itb_jalan);
+    calculateVectorImageCenter(&itb_jalan);
 
     system("clear");
 
@@ -103,12 +102,10 @@ int main() {
     initColor(&yellow, "FFF000");
 
     while (1) {
-        VectorImage plane2, blade_left2, blade_right2;
-        cloneVectorImage(&plane, &plane2);
-        cloneVectorImage(&blade_left, &blade_left2);
-        cloneVectorImage(&blade_right, &blade_right2);
+        VectorImage itb_gedung2, itb_jalan2;
+        cloneVectorImage(&itb_gedung, &itb_gedung2);
+        cloneVectorImage(&itb_jalan, &itb_jalan2);
 
-        // clearArea(&fb, startingVertex, endingVertex);
         system("clear");
 
         initSquareClipper(&clipper, startingVertex.x, startingVertex.y,
@@ -116,13 +113,11 @@ int main() {
         drawSquare(&fb, startingVertex.x, startingVertex.y, endingVertex.x,
                    endingVertex.y, yellow);
 
-        clipVectorImage(&plane2, clipper);
-        clipVectorImage(&blade_left2, clipper);
-        clipVectorImage(&blade_right2, clipper);
+        clipVectorImage(&itb_gedung2, clipper);
+        clipVectorImage(&itb_jalan2, clipper);
 
-        fillImage(&fb, &plane2, v);
-        fillImage(&fb, &blade_left2, v);
-        fillImage(&fb, &blade_right2, v);
+        fillImage(&fb, &itb_gedung2, v);
+        fillImage(&fb, &itb_jalan2, v);
 
         if (getch() == '\033') {
             getch();

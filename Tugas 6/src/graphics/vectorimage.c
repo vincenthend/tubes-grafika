@@ -33,44 +33,29 @@ void openVectorImage(char *imageName, VectorImage *image) {
 
         // Format : color, polygon, separator, polygon etc.
         // -1, -1 means separator for new polygon
-        // -8, -8 means new circle
         // -9, -9 means new shape
 
         char polyColor[7];
-        int x, y, r;
-        int isCircle = 0;
+        int x, y;
         for (int n = 0; n < image->n_component; n++) {
             Shape *s = &(image->shape[n]);
             fscanf(file, "%s", polyColor);
             int polygonIndex = 0;
             int vertexIndex = 0;
             do {
-                if (isCircle == 1) {
-                    fscanf(file, "%d, %d, %d", &x, &y, &r);
-                    
-                    // Assume no extra component(s) for circle
-                    // TODO: Add circle to s->polygon[polygonIndex]
+                fscanf(file, "%d, %d", &x, &y);
+                if (x == -1 && y == -1) {
+                    s->polygons[polygonIndex].vertexCount = vertexIndex;
+                    polygonIndex++;
+                    vertexIndex = 0;
+                } else if (x >= 0 && y >= 0) {
+                    s->polygons[polygonIndex].vertices[vertexIndex] =
+                        (Vertex){x, y};
+                    vertexIndex++;
                 }
-                else {
-                    fscanf(file, "%d, %d", &x, &y);
-                    if (x == -1 && y == -1) {
-                        s->polygons[polygonIndex].vertexCount = vertexIndex;
-                        polygonIndex++;
-                        vertexIndex = 0;
-                    } else if (x >= 0 && y >= 0) {
-                        s->polygons[polygonIndex].vertices[vertexIndex] =
-                            (Vertex){x, y};
-                        vertexIndex++;
-                    }
-                }
-            } while ((x != -9 && y != -9) || (x != -8 && y != -8));
+            } while (x != -9 && y != -9);
             s->polygons[polygonIndex].vertexCount = vertexIndex;
             s->polygonCount = polygonIndex + 1;
-            if (x == -8 && y == -8) {
-                isCircle = 1;
-            } else {
-                isCircle = 0;
-            }
             initColor(&(image->color[n]), polyColor);
         }
         calculateVectorImageBoundaries(image);
