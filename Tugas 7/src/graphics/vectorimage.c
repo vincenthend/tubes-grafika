@@ -146,3 +146,9 @@ void calculateVectorImageCenter(VectorImage *image) {
         (Vertex){round((image->upperLeft.x + image->lowerRight.x) / 2),
                  round((image->upperLeft.y + image->lowerRight.y) / 2)};
 }
+
+void translateVectorImage(VectorImage *image, Vertex vertex){
+    for (int i = 0; i < image->n_component; i++) {
+        offsetShape(&(image->shape[i]), vertex);
+    }
+}

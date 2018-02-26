@@ -69,31 +69,61 @@ int initMouse(){
 
 
 int main() {
+    time_t start, end;
+    long renderTime;
+
     FrameBuffer fb = initFrameBuffer();
+
     int bytes;
     int mouse = initMouse();
     unsigned char mouseState[3];
+
+    VectorImage cursor;
+    openVectorImage("cursor", &cursor);
+    
     int8_t x = 0;
     int8_t y = 0;
-    int posX = 854;
-    int posY = 384;
+    Vertex position;
+    Vertex distance;
+    Vertex clearLocationSt, clearLocationEn;
+    position.x = 854;
+    position.y = 384;
+
+    distance.x = 0;
+    distance.y = 0;
 
     while(1){
         bytes = read(mouse, mouseState, sizeof(mouseState));
         if(bytes > 0){
+            start = clock();
             // left = data[0] & 0x1;
             // right = data[0] & 0x2;
             // middle = data[0] & 0x4;
             // x = data[1];
             // y = data[2];
-
             x = mouseState[1];
             y = mouseState[2];
-            posX += x;
-            posY -= y;
-            // printf("%d, %d\n",posY, posY);
+            distance.x = x;
+            distance.y = -y;
 
-            addPixelToBuffer(&fb, posX, posY, 255, 255, 255, 0);
+            translateVectorImage(&cursor, distance);
+            fillImage(&fb, &cursor, position);
+
+            end = clock();
+
+            // 66000 for 30fps
+            renderTime = 33000 - (((double)(end - start)) / CLOCKS_PER_SEC)*1000000;
+            if (renderTime > 0) {
+                usleep(renderTime);
+            }
+
+            calculateVectorImageBoundaries(&cursor);
+            clearLocationSt.x = cursor.upperLeft.x + position.x;
+            clearLocationSt.y = cursor.upperLeft.y + position.y;
+
+            clearLocationEn.x = cursor.lowerRight.x + position.x;
+            clearLocationEn.y = cursor.lowerRight.y + position.y;
+            clearArea(&fb, clearLocationSt, clearLocationEn);
         }
     }
 
