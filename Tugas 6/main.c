@@ -73,6 +73,10 @@ int main() {
     v.x = 0;
     v.y = 0;
 
+    Vertex offset;
+    offset.x = 0;
+    offset.y = 0;
+
     int deg = 5;
 
     clock_t start;
@@ -101,12 +105,19 @@ int main() {
     Color yellow;
     initColor(&yellow, "FFF000");
 
+    VectorImage itb_gedung2, itb_jalan2;
+    
     while (1) {
-        VectorImage itb_gedung2, itb_jalan2;
         cloneVectorImage(&itb_gedung, &itb_gedung2);
         cloneVectorImage(&itb_jalan, &itb_jalan2);
-
         system("clear");
+
+        for (int i = 0; i < itb_gedung2.n_component; i++) {
+            offsetShape(&(itb_gedung2.shape[i]), offset);
+        }
+        for (int i = 0; i < itb_jalan2.n_component; i++) {
+            offsetShape(&(itb_jalan2.shape[i]), offset);
+        }
 
         initSquareClipper(&clipper, startingVertex.x, startingVertex.y,
                       endingVertex.x, endingVertex.y);
@@ -124,23 +135,19 @@ int main() {
             switch(getch()) {
                 case 'A':
                     // code for arrow up
-                    startingVertex.y -= 10;
-                    endingVertex.y -= 10;
+                    offset.y -= 10;
                     break;
                 case 'B':
                     // code for arrow down
-                    startingVertex.y += 10;
-                    endingVertex.y += 10;
+                    offset.y += 10;
                     break;
                 case 'C':
                     // code for arrow right
-                    startingVertex.x += 10;
-                    endingVertex.x += 10;
+                    offset.x += 10;
                     break;
                 case 'D':
                     // code for arrow left
-                    startingVertex.x -= 10;
-                    endingVertex.x -= 10;
+                    offset.x -= 10;
                     break;
             }
         }
