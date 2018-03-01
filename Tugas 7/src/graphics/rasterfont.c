@@ -15,7 +15,7 @@ void openRasterFont(char *ch, RasterFont *rf) {
     }
 
     char filename[30];
-    strcpy(filename, "fonts/");
+    strcpy(filename, "data/fonts/");
     strcat(filename, ch);
     strcat(filename, ".txt");
 

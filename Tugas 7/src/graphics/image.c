@@ -2,7 +2,7 @@
 
 void openImage(char *imageName, Image *image) {
     char filename[30];
-    strcpy(filename, "images/");
+    strcpy(filename, "data/images/");
     strcat(filename, imageName);
     strcat(filename, ".txt");
 

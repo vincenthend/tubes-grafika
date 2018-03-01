@@ -58,7 +58,6 @@ char getch(void)
 int main() {
     FrameBuffer fb = initFrameBuffer();
 
-    printf("Hi\n");
     // Load Image
     VectorImage itb_gedung;
     VectorImage itb_jalan;
@@ -91,8 +90,6 @@ int main() {
     calculateVectorImageBoundaries(&itb_jalan);
     calculateVectorImageCenter(&itb_jalan);
 
-    system("clear");
-
     float scale = 1;
 
     Clipper clipper;
@@ -106,6 +103,8 @@ int main() {
     initColor(&yellow, "FFF000");
 
     VectorImage itb_gedung2, itb_jalan2;
+
+    // scaleVectorImage(VectorImage &itb_gedung2, scale, Vertex pivot);
     
     while (1) {
         cloneVectorImage(&itb_gedung, &itb_gedung2);
@@ -135,19 +134,19 @@ int main() {
             switch(getch()) {
                 case 'A':
                     // code for arrow up
-                    offset.y -= 10;
+                    offset.y += 10;
                     break;
                 case 'B':
                     // code for arrow down
-                    offset.y += 10;
+                    offset.y -= 10;
                     break;
                 case 'C':
+                    offset.x -= 10;
                     // code for arrow right
-                    offset.x += 10;
                     break;
                 case 'D':
                     // code for arrow left
-                    offset.x -= 10;
+                    offset.x += 10;
                     break;
             }
         }

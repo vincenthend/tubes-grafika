@@ -7,7 +7,7 @@ void openFont(char *ch, Font *font) {
 
     int c = 'a';
     char filename[30];
-    strcpy(filename, "fonts/");
+    strcpy(filename, "data/fonts/");
     strcat(filename, ch);
     strcat(filename, ".txt");
 
