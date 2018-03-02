@@ -93,7 +93,6 @@ int main() {
     scanf("%c", &command);
 
     while (command != 'q') {
-        printf("Loop\n");
         if (command == '1') {
             system("clear");
             Font f;
@@ -108,6 +107,7 @@ int main() {
             char in[1000];
             printf("Input: ");
             scanf("%s", in);
+            getchar();
             printString(&fb, in, f, 200, 200, c);
         } else if (command == '2') {
             system("clear");
@@ -263,6 +263,7 @@ int main() {
             printf("Input string: ");
             // scanf("%999[0-9a-zA-Z ]", input);
             scanf("%s", input);
+            getchar();
 
             // Convert to lowercase
             for (int i = 0; input[i]; i++) {
@@ -272,10 +273,13 @@ int main() {
             fillString(&fb, input, &rasterFont, v, pink);
         } else if (command == '4') {
             system("clear");
-            // Load Image
             VectorImage plane;
             VectorImage blade_left;
             VectorImage blade_right;
+
+            int screen_width = fb.vinfo.xres;
+            int screen_height = fb.vinfo.yres;
+
             openVectorImage("plane_vector", &plane);
             openVectorImage("blade_left", &blade_left);
             openVectorImage("blade_right", &blade_right);
@@ -305,7 +309,22 @@ int main() {
             system("clear");
 
             float scale = 1;
+
+            Clipper clipper;
+            Vertex startingVertex, endingVertex;
+            startingVertex.x = 0;
+            startingVertex.y = 0;
+            endingVertex.x = screen_width;
+            endingVertex.y = screen_height;
+            initSquareClipper(&clipper, startingVertex.x, startingVertex.y,
+                              endingVertex.x, endingVertex.y);
+
+            Color yellow;
+            initColor(&yellow, "FFF000");
+
+            printf("hehehe\n");
             while (1) {
+                // printf("HEHEHE\n");
                 start = clock();
 
                 VectorImage plane2, blade_left2, blade_right2;
@@ -330,17 +349,29 @@ int main() {
                 scaleVectorImage(&blade_left2, scale, plane2.center);
                 scaleVectorImage(&blade_right2, scale, plane2.center);
 
-                clearArea(&fb, plane2.upperLeft, plane2.lowerRight);
+                clearArea(&fb, startingVertex, endingVertex);
+                //system("clear");
 
+                clipVectorImage(&plane2, clipper);
+                clipVectorImage(&blade_left2, clipper);
+                clipVectorImage(&blade_right2, clipper);
+
+                drawSquare(&fb, startingVertex.x, startingVertex.y,
+                           endingVertex.x, endingVertex.y, yellow);
                 fillImage(&fb, &plane2, v);
                 fillImage(&fb, &blade_left2, v);
                 fillImage(&fb, &blade_right2, v);
 
                 end = clock();
 
+                // sleep(50);
                 // 66000 for 30fps
-                renderTime = 66000 - ((double)(end - start)) / CLOCKS_PER_SEC;
+                renderTime =
+                    33000 -
+                    (((double)(end - start)) / CLOCKS_PER_SEC) * 1000000;
+
                 if (renderTime > 0) {
+
                     usleep(renderTime);
                 }
 
