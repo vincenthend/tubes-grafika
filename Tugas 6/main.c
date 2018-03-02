@@ -2,10 +2,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <termios.h>
 #include <time.h>
 #include <unistd.h>
-#include <termios.h>
-
 
 #include "src/color.h"
 #include "src/drawer.h"
@@ -19,41 +18,35 @@
 #include "src/printer.h"
 #include "src/rasterizer.h"
 
-
 static struct termios old, new;
 
 /* Initialize new terminal i/o settings */
-void initTermios(int echo) 
-{
-  tcgetattr(0, &old); 
-  new = old;
-  new.c_lflag &= ~ICANON;
-  new.c_lflag &= echo ? ECHO : ~ECHO;
-  tcsetattr(0, TCSANOW, &new);
+void initTermios(int echo) {
+    tcgetattr(0, &old);
+    new = old;
+    new.c_lflag &= ~ICANON;
+    new.c_lflag &= echo ? ECHO : ~ECHO;
+    tcsetattr(0, TCSANOW, &new);
 }
 
 /* Restore old terminal i/o settings */
-void resetTermios(void) 
-{
-  tcsetattr(0, TCSANOW, &old);
+void resetTermios(void) {
+    tcsetattr(0, TCSANOW, &old);
 }
 
 /* Read 1 character - echo defines echo mode */
-char getch_(int echo) 
-{
-  char ch;
-  initTermios(echo);
-  ch = getchar();
-  resetTermios();
-  return ch;
+char getch_(int echo) {
+    char ch;
+    initTermios(echo);
+    ch = getchar();
+    resetTermios();
+    return ch;
 }
 
 /* Read 1 character without echo */
-char getch(void) 
-{
-  return getch_(0);
+char getch(void) {
+    return getch_(0);
 }
-
 
 int main() {
     FrameBuffer fb = initFrameBuffer();
@@ -98,14 +91,14 @@ int main() {
     startingVertex.y = 300;
     endingVertex.x = 1000;
     endingVertex.y = 1000;
-    
+
     Color yellow;
     initColor(&yellow, "FFF000");
 
     VectorImage itb_gedung2, itb_jalan2;
 
     // scaleVectorImage(VectorImage &itb_gedung2, scale, Vertex pivot);
-    
+
     while (1) {
         cloneVectorImage(&itb_gedung, &itb_gedung2);
         cloneVectorImage(&itb_jalan, &itb_jalan2);
@@ -119,7 +112,7 @@ int main() {
         }
 
         initSquareClipper(&clipper, startingVertex.x, startingVertex.y,
-                      endingVertex.x, endingVertex.y);
+                          endingVertex.x, endingVertex.y);
         drawSquare(&fb, startingVertex.x, startingVertex.y, endingVertex.x,
                    endingVertex.y, yellow);
 
@@ -131,23 +124,23 @@ int main() {
 
         if (getch() == '\033') {
             getch();
-            switch(getch()) {
-                case 'A':
-                    // code for arrow up
-                    offset.y += 10;
-                    break;
-                case 'B':
-                    // code for arrow down
-                    offset.y -= 10;
-                    break;
-                case 'C':
-                    offset.x -= 10;
-                    // code for arrow right
-                    break;
-                case 'D':
-                    // code for arrow left
-                    offset.x += 10;
-                    break;
+            switch (getch()) {
+            case 'A':
+                // code for arrow up
+                offset.y += 10;
+                break;
+            case 'B':
+                // code for arrow down
+                offset.y -= 10;
+                break;
+            case 'C':
+                offset.x -= 10;
+                // code for arrow right
+                break;
+            case 'D':
+                // code for arrow left
+                offset.x += 10;
+                break;
             }
         }
     }

@@ -108,10 +108,11 @@ int main() {
 
         // sleep(50);
         // 66000 for 30fps
-        renderTime = 33000 - (((double)(end - start)) / CLOCKS_PER_SEC)*1000000;
-        
+        renderTime =
+            33000 - (((double)(end - start)) / CLOCKS_PER_SEC) * 1000000;
+
         if (renderTime > 0) {
-            
+
             usleep(renderTime);
         }
 
