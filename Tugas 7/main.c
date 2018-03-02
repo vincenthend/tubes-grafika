@@ -92,10 +92,10 @@ int main() {
     printf("\nCommand: ");
     scanf("%c", &command);
 
-    char input;
     while (command != 'q') {
         printf("Loop\n");
         if (command == '1') {
+            system("clear");
             Font f;
             Color c;
 
@@ -107,9 +107,10 @@ int main() {
 
             char in[1000];
             printf("Input: ");
-            scanf("%999[0-9a-zA-Z ]", in);
+            scanf("%s", in);
             printString(&fb, in, f, 200, 200, c);
         } else if (command == '2') {
+            system("clear");
             int nyanX, nyanY, topLeftX, topLeftY, botRightX, botRightY;
             int x, y;
 
@@ -221,6 +222,7 @@ int main() {
                 }
             }
         } else if (command == '3') {
+            system("clear");
             // Color initialization
             Color white, black, grey, pink, background;
             Color orange, yellow, green;
@@ -259,8 +261,8 @@ int main() {
             char input[1000];
 
             printf("Input string: ");
-            scanf("%999[0-9a-zA-Z ]", input);
-            printf("%s\n", input);
+            // scanf("%999[0-9a-zA-Z ]", input);
+            scanf("%s", input);
 
             // Convert to lowercase
             for (int i = 0; input[i]; i++) {
@@ -269,6 +271,7 @@ int main() {
 
             fillString(&fb, input, &rasterFont, v, pink);
         } else if (command == '4') {
+            system("clear");
             // Load Image
             VectorImage plane;
             VectorImage blade_left;
@@ -345,6 +348,7 @@ int main() {
                 scale += 0.1;
             }
         } else if (command == '5') {
+            system("clear");
             VectorImage plane;
             VectorImage blade_left;
             VectorImage blade_right;
@@ -390,7 +394,9 @@ int main() {
             Color yellow;
             initColor(&yellow, "FFF000");
 
+            printf("hehehe\n");
             while (1) {
+                // printf("HEHEHE\n");
                 start = clock();
 
                 VectorImage plane2, blade_left2, blade_right2;
@@ -445,6 +451,7 @@ int main() {
                 scale += 0.1;
             }
         } else if (command == '6') {
+            system("clear");
             VectorImage itb_gedung;
             VectorImage itb_jalan;
 
@@ -608,7 +615,7 @@ int main() {
         printf("6. Task 6 - ITB 2D\n");
         printf("7. Task 7 - Mouse\n");
         printf("\nCommand: ");
-        scanf("%c", command);
+        scanf("%c", &command);
     }
 
     printf("End of program\n");
