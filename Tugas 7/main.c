@@ -2,66 +2,59 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <termios.h>
 #include <time.h>
 #include <unistd.h>
-#include <termios.h>
 
-
-#include "../src/color.h"
-#include "../src/drawer.h"
-#include "../src/framebuffer.h"
-#include "../src/graphics/clipping.h"
-#include "../src/graphics/font.h"
-#include "../src/graphics/image.h"
-#include "../src/graphics/rasterfont.h"
-#include "../src/graphics/shape.h"
-#include "../src/graphics/vectorimage.h"
-#include "../src/printer.h"
-#include "../src/rasterizer.h"
-
+#include "src/color.h"
+#include "src/drawer.h"
+#include "src/framebuffer.h"
+#include "src/graphics/clipping.h"
+#include "src/graphics/font.h"
+#include "src/graphics/image.h"
+#include "src/graphics/rasterfont.h"
+#include "src/graphics/shape.h"
+#include "src/graphics/vectorimage.h"
+#include "src/printer.h"
+#include "src/rasterizer.h"
 
 static struct termios old, new;
 
 /* Initialize new terminal i/o settings */
-void initTermios(int echo) 
-{
-  tcgetattr(0, &old); 
-  new = old;
-  new.c_lflag &= ~ICANON;
-  new.c_lflag &= echo ? ECHO : ~ECHO;
-  tcsetattr(0, TCSANOW, &new);
+void initTermios(int echo) {
+    tcgetattr(0, &old);
+    new = old;
+    new.c_lflag &= ~ICANON;
+    new.c_lflag &= echo ? ECHO : ~ECHO;
+    tcsetattr(0, TCSANOW, &new);
 }
 
 /* Restore old terminal i/o settings */
-void resetTermios(void) 
-{
-  tcsetattr(0, TCSANOW, &old);
+void resetTermios(void) {
+    tcsetattr(0, TCSANOW, &old);
 }
 
 /* Read 1 character - echo defines echo mode */
-char getch_(int echo) 
-{
-  char ch;
-  initTermios(echo);
-  ch = getchar();
-  resetTermios();
-  return ch;
+char getch_(int echo) {
+    char ch;
+    initTermios(echo);
+    ch = getchar();
+    resetTermios();
+    return ch;
 }
 
 /* Read 1 character without echo */
-char getch(void) 
-{
-  return getch_(0);
+char getch(void) {
+    return getch_(0);
 }
 
-int initMouse(){
-  int bytes; 
+int initMouse() {
+    int bytes;
     const char *pDevice = "/dev/input/mice";
- 
+
     // Open Mouse
     int mouse = open(pDevice, O_RDWR);
-    if(mouse == -1)
-    {
+    if (mouse == -1) {
         printf("ERROR Opening %s\n", pDevice);
         return -1;
     }
@@ -116,11 +109,10 @@ int main() {
             printf("Input: ");
             scanf("%999[0-9a-zA-Z ]", in);
             printString(&fb, in, f, 200, 200, c);
-        }
-        else if (command == '2') {
+        } else if (command == '2') {
             int nyanX, nyanY, topLeftX, topLeftY, botRightX, botRightY;
             int x, y;
-            
+
             Color white, black, grey, pink, background;
             Color orange, yellow, green;
             Image nyanCat, nyanCat_a;
@@ -164,8 +156,9 @@ int main() {
             //Loop
             while (1) {
                 fillSquareArea(&fb, topLeftX, topLeftY, botRightX, botRightY,
-                            background);
-                drawSquare(&fb, topLeftX, topLeftY, botRightX, botRightY, white);
+                               background);
+                drawSquare(&fb, topLeftX, topLeftY, botRightX, botRightY,
+                           white);
                 drawRainbow(&fb, nyanCat.width + x, y);
                 if (x % 50 > 25) {
                     drawNyanImage(&fb, nyanCat, x, y, black, pink, grey);
@@ -189,13 +182,15 @@ int main() {
                 line1y0 -= 5;
                 line1x1 -= 5;
                 line1y1 -= 5;
-                drawThickLine(&fb, line1x0, line1y0, line1x1, line1y1, 2, orange);
+                drawThickLine(&fb, line1x0, line1y0, line1x1, line1y1, 2,
+                              orange);
 
                 laser2 = (line1x1 <= lineInitX - 30) ? 1 : 0;
                 if (laser2) {
                     line2y0 -= 5;
                     line2y1 -= 5;
-                    drawThickLine(&fb, line2x0, line2y0, line2x1, line2y1, 3, yellow);
+                    drawThickLine(&fb, line2x0, line2y0, line2x1, line2y1, 3,
+                                  yellow);
                 }
 
                 laser3 = (line2y1 <= lineInitY - 40) ? 1 : 0;
@@ -204,7 +199,8 @@ int main() {
                     line3y0 -= 5;
                     line3x1 += 5;
                     line3y1 -= 5;
-                    drawThickLine(&fb, line3x0, line3y0, line3x1, line3y1, 4, green);
+                    drawThickLine(&fb, line3x0, line3y0, line3x1, line3y1, 4,
+                                  green);
                 }
 
                 if (line1x1 <= topLeftX || line1y1 <= topLeftY + 6) {
@@ -224,8 +220,7 @@ int main() {
                     line3y1 = lineInitY - 10;
                 }
             }
-        }
-        else if (command == '3') {
+        } else if (command == '3') {
             // Color initialization
             Color white, black, grey, pink, background;
             Color orange, yellow, green;
@@ -273,8 +268,7 @@ int main() {
             }
 
             fillString(&fb, input, &rasterFont, v, pink);
-        }
-        else if (command == '4') {
+        } else if (command == '4') {
             // Load Image
             VectorImage plane;
             VectorImage blade_left;
@@ -350,8 +344,7 @@ int main() {
                 deg += 30;
                 scale += 0.1;
             }
-        }
-        else if (command == '5') {
+        } else if (command == '5') {
             VectorImage plane;
             VectorImage blade_left;
             VectorImage blade_right;
@@ -392,7 +385,7 @@ int main() {
             endingVertex.x = 600;
             endingVertex.y = 600;
             initSquareClipper(&clipper, startingVertex.x, startingVertex.y,
-                            endingVertex.x, endingVertex.y);
+                              endingVertex.x, endingVertex.y);
 
             Color yellow;
             initColor(&yellow, "FFF000");
@@ -429,8 +422,8 @@ int main() {
                 clipVectorImage(&blade_left2, clipper);
                 clipVectorImage(&blade_right2, clipper);
 
-                drawSquare(&fb, startingVertex.x, startingVertex.y, endingVertex.x,
-                        endingVertex.y, yellow);
+                drawSquare(&fb, startingVertex.x, startingVertex.y,
+                           endingVertex.x, endingVertex.y, yellow);
                 fillImage(&fb, &plane2, v);
                 fillImage(&fb, &blade_left2, v);
                 fillImage(&fb, &blade_right2, v);
@@ -439,18 +432,19 @@ int main() {
 
                 // sleep(50);
                 // 66000 for 30fps
-                renderTime = 33000 - (((double)(end - start)) / CLOCKS_PER_SEC)*1000000;
-                
+                renderTime =
+                    33000 -
+                    (((double)(end - start)) / CLOCKS_PER_SEC) * 1000000;
+
                 if (renderTime > 0) {
-                    
+
                     usleep(renderTime);
                 }
 
                 deg += 30;
                 scale += 0.1;
             }
-        }
-        else if (command == '6') {
+        } else if (command == '6') {
             VectorImage itb_gedung;
             VectorImage itb_jalan;
 
@@ -490,14 +484,14 @@ int main() {
             startingVertex.y = 300;
             endingVertex.x = 1000;
             endingVertex.y = 1000;
-            
+
             Color yellow;
             initColor(&yellow, "FFF000");
 
             VectorImage itb_gedung2, itb_jalan2;
 
             // scaleVectorImage(VectorImage &itb_gedung2, scale, Vertex pivot);
-            
+
             while (1) {
                 cloneVectorImage(&itb_gedung, &itb_gedung2);
                 cloneVectorImage(&itb_jalan, &itb_jalan2);
@@ -511,9 +505,9 @@ int main() {
                 }
 
                 initSquareClipper(&clipper, startingVertex.x, startingVertex.y,
-                            endingVertex.x, endingVertex.y);
-                drawSquare(&fb, startingVertex.x, startingVertex.y, endingVertex.x,
-                        endingVertex.y, yellow);
+                                  endingVertex.x, endingVertex.y);
+                drawSquare(&fb, startingVertex.x, startingVertex.y,
+                           endingVertex.x, endingVertex.y, yellow);
 
                 clipVectorImage(&itb_gedung2, clipper);
                 clipVectorImage(&itb_jalan2, clipper);
@@ -523,32 +517,30 @@ int main() {
 
                 if (getch() == '\033') {
                     getch();
-                    switch(getch()) {
-                        case 'A':
-                            // code for arrow up
-                            offset.y += 10;
-                            break;
-                        case 'B':
-                            // code for arrow down
-                            offset.y -= 10;
-                            break;
-                        case 'C':
-                            offset.x -= 10;
-                            // code for arrow right
-                            break;
-                        case 'D':
-                            // code for arrow left
-                            offset.x += 10;
-                            break;
+                    switch (getch()) {
+                    case 'A':
+                        // code for arrow up
+                        offset.y += 10;
+                        break;
+                    case 'B':
+                        // code for arrow down
+                        offset.y -= 10;
+                        break;
+                    case 'C':
+                        offset.x -= 10;
+                        // code for arrow right
+                        break;
+                    case 'D':
+                        // code for arrow left
+                        offset.x += 10;
+                        break;
                     }
                 }
             }
-        }
-        else if (command == '7') {
+        } else if (command == '7') {
             system("clear");
             time_t start, end;
             long renderTime;
-
 
             int bytes;
             int mouse = initMouse();
@@ -556,7 +548,7 @@ int main() {
 
             VectorImage cursor;
             openVectorImage("cursor", &cursor);
-            
+
             int8_t x = 0;
             int8_t y = 0;
             Vertex position;
@@ -568,9 +560,9 @@ int main() {
             distance.x = 0;
             distance.y = 0;
 
-            while(1){
+            while (1) {
                 bytes = read(mouse, mouseState, sizeof(mouseState));
-                if(bytes > 0){
+                if (bytes > 0) {
                     start = clock();
                     // left = data[0] & 0x1;
                     // right = data[0] & 0x2;
@@ -588,7 +580,9 @@ int main() {
                     end = clock();
 
                     // 66000 for 30fps
-                    renderTime = 33000 - (((double)(end - start)) / CLOCKS_PER_SEC)*1000000;
+                    renderTime =
+                        33000 -
+                        (((double)(end - start)) / CLOCKS_PER_SEC) * 1000000;
                     if (renderTime > 0) {
                         usleep(renderTime);
                     }
@@ -602,8 +596,7 @@ int main() {
                     clearArea(&fb, clearLocationSt, clearLocationEn);
                 }
             }
-        }
-        else {
+        } else {
             printf("Invalid command\n");
         }
         printf("\n\n== Menu ==\n");
@@ -619,7 +612,6 @@ int main() {
     }
 
     printf("End of program\n");
-
 
     return 0;
 }
