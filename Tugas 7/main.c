@@ -92,13 +92,14 @@ int main() {
     printf("\nCommand: ");
     scanf("%c", &command);
 
+    Font f;
+    openFont("archaic", &f);
+
     while (command != 'q') {
         if (command == '1') {
             system("clear");
-            Font f;
             Color c;
 
-            openFont("archaic", &f);
             c.r = 255;
             c.g = 255;
             c.b = 255;
@@ -577,8 +578,55 @@ int main() {
             }
         } else if (command == '7') {
             system("clear");
-            time_t start, end;
-            long renderTime;
+
+            VectorImage itb_gedung;
+            VectorImage itb_jalan;
+
+            openVectorImage("petaITB", &itb_gedung);
+            printf("Gedung OK\n");
+            openVectorImage("jalan", &itb_jalan);
+            printf("Jalan\n");
+
+            // Draw and fill
+            Vertex v;
+            v.x = 0;
+            v.y = 0;
+
+            Vertex offset;
+            offset.x = 0;
+            offset.y = 0;
+
+            int deg = 5;
+
+            clock_t start;
+            clock_t end;
+            double renderTime;
+
+            int correction = 5;
+
+            calculateVectorImageBoundaries(&itb_gedung);
+            calculateVectorImageCenter(&itb_gedung);
+
+            calculateVectorImageBoundaries(&itb_jalan);
+            calculateVectorImageCenter(&itb_jalan);
+
+            float scale = 1;
+
+            Clipper clipper;
+            Vertex startingVertex, endingVertex;
+            startingVertex.x = 300;
+            startingVertex.y = 300;
+            endingVertex.x = 1000;
+            endingVertex.y = 1000;
+
+            Color yellow, green, white;
+            initColor(&yellow, "FFF000");
+            initColor(&green, "00ff00");
+            initColor(&white, "FFFFFF");
+
+            VectorImage itb_gedung2, itb_jalan2;
+
+            // Mouse
 
             int bytes;
             int mouse = initMouse();
@@ -598,19 +646,81 @@ int main() {
             distance.x = 0;
             distance.y = 0;
 
+            int clicked = 0;
+            int jalan = 1, bangunan = 1;
+
+            Vertex startVertexButtonJalan, endVertexButtonJalan;
+            Vertex startVertexButtonBangunan, endVertexButtonBangunan;
+
+            startVertexButtonJalan.x = 900;
+            startVertexButtonJalan.y = 200;
+            endVertexButtonJalan.x = 1000;
+            endVertexButtonJalan.y = 250;
+
+
+            startVertexButtonBangunan.x = 700;
+            startVertexButtonBangunan.y = 200;
+            endVertexButtonBangunan.x = 800;
+            endVertexButtonBangunan.y = 250;
+
+
+            // In-Square Font
+            char stringJalan[6] = "jalan\0";
+            char stringBangunan[9] = "bangunan\0";
             while (1) {
+                
+                cloneVectorImage(&itb_gedung, &itb_gedung2);
+                cloneVectorImage(&itb_jalan, &itb_jalan2);
+                system("clear");
+
+                printString(&fb, stringJalan, f, 925, 220, green);
+                printString(&fb, stringBangunan, f, 715, 220, white);
+
+                drawSquare(&fb, startVertexButtonJalan.x, startVertexButtonJalan.y, 
+                        endVertexButtonJalan.x, endVertexButtonJalan.y, green);
+
+                drawSquare(&fb, startVertexButtonBangunan.x, startVertexButtonBangunan.y,
+                    endVertexButtonBangunan.x, endVertexButtonBangunan.y, white);
+        
+                for (int i = 0; i < itb_gedung2.n_component; i++) {
+                    offsetShape(&(itb_gedung2.shape[i]), offset);
+                }
+                for (int i = 0; i < itb_jalan2.n_component; i++) {
+                    offsetShape(&(itb_jalan2.shape[i]), offset);
+                }
+
+                initSquareClipper(&clipper, startingVertex.x, startingVertex.y,
+                                  endingVertex.x, endingVertex.y);
+                drawSquare(&fb, startingVertex.x, startingVertex.y,
+                           endingVertex.x, endingVertex.y, yellow);
+
+                clipVectorImage(&itb_gedung2, clipper);
+                clipVectorImage(&itb_jalan2, clipper);
+
+                if (bangunan == 1) {
+                    fillImage(&fb, &itb_gedung2, v);    
+                }
+                if (jalan == 1) {
+                    fillImage(&fb, &itb_jalan2, v);
+                }
+                
+
+                //Mouse
                 bytes = read(mouse, mouseState, sizeof(mouseState));
                 if (bytes > 0) {
                     start = clock();
-                    // left = data[0] & 0x1;
-                    // right = data[0] & 0x2;
-                    // middle = data[0] & 0x4;
-                    // x = data[1];
-                    // y = data[2];
+                    
+                    clicked = mouseState[0] & 0x1;
+                    
                     x = mouseState[1];
                     y = mouseState[2];
+                    
                     distance.x = x;
                     distance.y = -y;
+
+                    position.x = position.x + x;
+                    position.y = position.y + (-y);
+                    printf("%d %d %d\n", clicked, position.x, position.y);
 
                     translateVectorImage(&cursor, distance);
                     fillImage(&fb, &cursor, position);
@@ -632,7 +742,26 @@ int main() {
                     clearLocationEn.x = cursor.lowerRight.x + position.x;
                     clearLocationEn.y = cursor.lowerRight.y + position.y;
                     clearArea(&fb, clearLocationSt, clearLocationEn);
+                
+                    //Mechanism for Jalan & Bangunan
+                    if (clicked == 1) {
+                        if (position.x >= 775 && position.x <= 825 && position.y >= 290 && position.y <= 340) {
+                            if (bangunan == 0) {
+                                bangunan = 1;
+                            } else {
+                                bangunan = 0;
+                            }
+                        }
+                        if (position.x >= 875 && position.x <= 925 && position.y >= 290 && position.y <= 340) {
+                            if (jalan == 0) {
+                                jalan = 1;
+                            } else {
+                                jalan = 0;
+                            }
+                        }
+                    }
                 }
+            
             }
         } else {
             printf("Invalid command\n");
