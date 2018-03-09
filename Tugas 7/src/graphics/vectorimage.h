@@ -38,4 +38,6 @@ void calculateVectorImageCenter(VectorImage *image);
 
 void calculateVectorImageBoundaries(VectorImage *image);
 
+void translateVectorImage(VectorImage *image, Vertex vertex);
+
 #endif
