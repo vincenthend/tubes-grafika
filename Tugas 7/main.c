@@ -97,6 +97,7 @@ int main() {
 
     while (command != 'q') {
         if (command == '1') {
+            // [BITMAP FONT]
             system("clear");
             Color c;
 
@@ -111,6 +112,7 @@ int main() {
             getchar();
             printString(&fb, in, f, 200, 200, c);
         } else if (command == '2') {
+            // [NYAN CAT]
             system("clear");
             int nyanX, nyanY, topLeftX, topLeftY, botRightX, botRightY;
             int x, y;
@@ -223,6 +225,7 @@ int main() {
                 }
             }
         } else if (command == '3') {
+            // [VECTOR FONT]
             system("clear");
             // Color initialization
             Color white, black, grey, pink, background;
@@ -273,6 +276,7 @@ int main() {
 
             fillString(&fb, input, &rasterFont, v, pink);
         } else if (command == '4') {
+            // [AIRPLANE]
             system("clear");
             VectorImage plane;
             VectorImage blade_left;
@@ -323,9 +327,7 @@ int main() {
             Color yellow;
             initColor(&yellow, "FFF000");
 
-            printf("hehehe\n");
             while (1) {
-                // printf("HEHEHE\n");
                 start = clock();
 
                 VectorImage plane2, blade_left2, blade_right2;
@@ -380,6 +382,7 @@ int main() {
                 scale += 0.1;
             }
         } else if (command == '5') {
+            // [CLIPPING]
             system("clear");
             VectorImage plane;
             VectorImage blade_left;
@@ -426,9 +429,7 @@ int main() {
             Color yellow;
             initColor(&yellow, "FFF000");
 
-            printf("hehehe\n");
             while (1) {
-                // printf("HEHEHE\n");
                 start = clock();
 
                 VectorImage plane2, blade_left2, blade_right2;
@@ -483,100 +484,7 @@ int main() {
                 scale += 0.1;
             }
         } else if (command == '6') {
-            system("clear");
-            VectorImage itb_gedung;
-            VectorImage itb_jalan;
-
-            openVectorImage("petaITB", &itb_gedung);
-            printf("Gedung OK\n");
-            openVectorImage("jalan", &itb_jalan);
-            printf("Jalan\n");
-
-            // Draw and fill
-            Vertex v;
-            v.x = 0;
-            v.y = 0;
-
-            Vertex offset;
-            offset.x = 0;
-            offset.y = 0;
-
-            int deg = 5;
-
-            clock_t start;
-            clock_t end;
-            double renderTime;
-
-            int correction = 5;
-
-            calculateVectorImageBoundaries(&itb_gedung);
-            calculateVectorImageCenter(&itb_gedung);
-
-            calculateVectorImageBoundaries(&itb_jalan);
-            calculateVectorImageCenter(&itb_jalan);
-
-            float scale = 1;
-
-            Clipper clipper;
-            Vertex startingVertex, endingVertex;
-            startingVertex.x = 300;
-            startingVertex.y = 300;
-            endingVertex.x = 1000;
-            endingVertex.y = 1000;
-
-            Color yellow;
-            initColor(&yellow, "FFF000");
-
-            VectorImage itb_gedung2, itb_jalan2;
-
-            // scaleVectorImage(VectorImage &itb_gedung2, scale, Vertex pivot);
-
-            while (1) {
-                cloneVectorImage(&itb_gedung, &itb_gedung2);
-                cloneVectorImage(&itb_jalan, &itb_jalan2);
-                system("clear");
-
-                for (int i = 0; i < itb_gedung2.n_component; i++) {
-                    offsetShape(&(itb_gedung2.shape[i]), offset);
-                }
-                for (int i = 0; i < itb_jalan2.n_component; i++) {
-                    offsetShape(&(itb_jalan2.shape[i]), offset);
-                }
-
-                initSquareClipper(&clipper, startingVertex.x, startingVertex.y,
-                                  endingVertex.x, endingVertex.y);
-                drawSquare(&fb, startingVertex.x, startingVertex.y,
-                           endingVertex.x, endingVertex.y, yellow);
-
-                clipVectorImage(&itb_gedung2, clipper);
-                clipVectorImage(&itb_jalan2, clipper);
-
-                fillImage(&fb, &itb_gedung2, v);
-                fillImage(&fb, &itb_jalan2, v);
-
-                if (getch() == '\033') {
-                    getch();
-                    switch (getch()) {
-                    case 'A':
-                        // code for arrow up
-                        offset.y += 10;
-                        break;
-                    case 'B':
-                        // code for arrow down
-                        offset.y -= 10;
-                        break;
-                    case 'C':
-                        offset.x -= 10;
-                        // code for arrow right
-                        break;
-                    case 'D':
-                        // code for arrow left
-                        offset.x += 10;
-                        break;
-                    }
-                }
-            }
-        } else if (command == '7') {
+            // [MOUSE]
             system("clear");
 
             VectorImage itb_gedung;
@@ -759,6 +667,95 @@ int main() {
                                 jalan = 0;
                             }
                         }
+                    }
+                }
+            }
+        } else if (command == '7') {
+            // [MOUSE]
+            system("clear");
+
+            // Draw and fill
+            Vertex v;
+            v.x = 0;
+            v.y = 0;
+
+            Vertex offset;
+            offset.x = 0;
+            offset.y = 0;
+
+            int deg = 5;
+
+            clock_t start;
+            clock_t end;
+            double renderTime;
+
+            int correction = 5;
+
+            float scale = 1;
+
+            // Mouse
+            int clicked = 0;
+
+            int bytes;
+            int mouse = initMouse();
+            unsigned char mouseState[3];
+
+            VectorImage cursor;
+            openVectorImage("cursor", &cursor);
+
+            int8_t x = 0;
+            int8_t y = 0;
+            Vertex position;
+            Vertex distance;
+            Vertex clearLocationSt, clearLocationEn;
+            position.x = 854;
+            position.y = 384;
+
+            distance.x = 0;
+            distance.y = 0;
+
+            while (1) {
+                
+                //Mouse
+                bytes = read(mouse, mouseState, sizeof(mouseState));
+                if (bytes > 0) {
+                    start = clock();
+                    
+                    clicked = mouseState[0] & 0x1;
+                    
+                    x = mouseState[1];
+                    y = mouseState[2];
+                    
+                    distance.x = x;
+                    distance.y = -y;
+
+                    position.x = position.x + x;
+                    position.y = position.y + (-y);
+                    printf("%d %d %d\n", clicked, position.x, position.y);
+
+                    translateVectorImage(&cursor, distance);
+                    fillImage(&fb, &cursor, position);
+
+                    end = clock();
+
+                    // 66000 for 30fps
+                    renderTime =
+                        33000 -
+                        (((double)(end - start)) / CLOCKS_PER_SEC) * 1000000;
+                    if (renderTime > 0) {
+                        usleep(renderTime);
+                    }
+
+                    calculateVectorImageBoundaries(&cursor);
+                    clearLocationSt.x = cursor.upperLeft.x + position.x;
+                    clearLocationSt.y = cursor.upperLeft.y + position.y;
+
+                    clearLocationEn.x = cursor.lowerRight.x + position.x;
+                    clearLocationEn.y = cursor.lowerRight.y + position.y;
+                    clearArea(&fb, clearLocationSt, clearLocationEn);
+                
+                    if (clicked == 1) {
+                        addPixelToBuffer(&fb, clearLocationSt.x, clearLocationSt.y, 255, 255, 255, 0);
                     }
                 }
             
