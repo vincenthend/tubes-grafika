@@ -738,6 +738,14 @@ int main() {
             endVertexButtonFill.x = 300;
             endVertexButtonFill.y = 300;
 
+            Vertex topLeftDrawArea, bottomRightDrawArea;
+
+            topLeftDrawArea.x = 600;
+            topLeftDrawArea.y = 100;
+
+            bottomRightDrawArea.x = 1200;
+            bottomRightDrawArea.y = 700;
+
             // In-Square Font
             char stringDraw[5] = "draw\0";
             char stringLine[5] = "line\0";
@@ -833,7 +841,7 @@ int main() {
                     clearArea(&fb, clearLocationSt, clearLocationEn);
                 
                     if (clicked == 1) {
-                        if (position.x <= 580 && position.y <= 345) {
+                        if (position.x <= 580) {
                             printf("[MENU AREA] ");
                             if (position.x >= 527 && position.x <= 577) {
                                 if (position.y >= 243 && position.y <= 268) {
@@ -877,7 +885,7 @@ int main() {
                                 }
                             }
                             else if (fill == 1) {
-
+                                floodFill(&fb, clearLocationSt.x, clearLocationSt.y, topLeftDrawArea, bottomRightDrawArea, white)
                             }
                             else {
                                 printf("Incorrect state!");

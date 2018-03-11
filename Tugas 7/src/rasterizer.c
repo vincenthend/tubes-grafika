@@ -2,6 +2,23 @@
 
 #include "rasterizer.h"
 
+void floodFill(FrameBuffer *fb, int x, int y, Vertex topLeft, Vertex bottomRight, Color color) {
+    if ((x < topLeft.x) || (x > bottomRight.x) || (y < topLeft.y) || (y > bottomRight.y)) {
+        return;
+    }
+    else {
+        // Output to screen
+        Color curr = getColor(fb, x, y);
+        if (!isSameColor(curr, color)) {
+            addPixelToBuffer(fb, x, y, color.r, color.g, color.b, color.a);
+            floodFill(fb, x - 1, y, topLeft, bottomRight, color);
+            floodFill(fb, x, y - 1, topLeft, bottomRight, color);
+            floodFill(fb, x, y + 1, topLeft, bottomRight, color);
+            floodFill(fb, x + 1, y, topLeft, bottomRight, color);
+        }
+    }
+}
+
 void boundaryFillHelper(FrameBuffer *fb, int x, int y, int xMin, int xMax,
                         int yMin, int yMax, Color color) {
     // Check image boundaries
