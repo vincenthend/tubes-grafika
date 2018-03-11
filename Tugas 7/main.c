@@ -885,7 +885,7 @@ int main() {
                                 }
                             }
                             else if (fill == 1) {
-                                floodFill(&fb, clearLocationSt.x, clearLocationSt.y, topLeftDrawArea, bottomRightDrawArea, white)
+                                floodFill(&fb, clearLocationSt.x, clearLocationSt.y, topLeftDrawArea, bottomRightDrawArea, white);
                             }
                             else {
                                 printf("Incorrect state!");
