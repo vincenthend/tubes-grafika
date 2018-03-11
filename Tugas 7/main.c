@@ -687,10 +687,28 @@ int main() {
         } else if (command == '7') {
             // [MOUSE]
             system("clear");
-            Color white, green, red;
-            initColor(&white, "FFFFFF");
-            initColor(&green, "00FF00");
-            initColor(&red, "FF0000");
+
+            /**
+            * 0 = white
+            * 1 = red
+            * 2 = orange
+            * 3 = gold
+            * 4 = green
+            * 5 = cyan
+            * 6 = blue
+            * 7 = purple
+            */
+            Color colors[8];
+            initColor(&colors[0], "FFFFFF");
+            initColor(&colors[1], "FF0000");
+            initColor(&colors[2], "FF6600");
+            initColor(&colors[3], "FFD700");
+            initColor(&colors[4], "00FF00");
+            initColor(&colors[5], "00EEEE");
+            initColor(&colors[6], "0000FF");
+            initColor(&colors[7], "BE29EC");
+
+            int selectedColor = 0;
 
             // Draw and fill
             Vertex v;
@@ -707,11 +725,6 @@ int main() {
             clock_t end;
             double renderTime;
 
-            int correction = 5;
-
-            float scale = 1;
-
-            // Mouse
             int clicked = 0;
             int draw = 1, line = 0, fill = 0;
 
@@ -769,40 +782,63 @@ int main() {
             Vertex lineStartPoint;
             Vertex lineEndPoint;
 
+
+            Vertex swabStartPoint, swabEndPoint;
+            swabStartPoint.x = 230;
+            swabStartPoint.y = 350;
+            swabEndPoint.x = 270;
+            swabEndPoint.y = 370;
+            
+
             while (1) {
-                //Mouse
+                // Draw command boxes
                 if (draw == 1) {
-                    printString(&fb, stringDraw, f, 220, 120, green);
+                    printString(&fb, stringDraw, f, 220, 120, colors[4]);
                     drawSquare(&fb, startVertexButtonDraw.x, startVertexButtonDraw.y,
-                        endVertexButtonDraw.x, endVertexButtonDraw.y, green);  
+                        endVertexButtonDraw.x, endVertexButtonDraw.y, colors[4]);  
                 } else {
-                    printString(&fb, stringDraw, f, 220, 120, red);
+                    printString(&fb, stringDraw, f, 220, 120, colors[1]);
                     drawSquare(&fb, startVertexButtonDraw.x, startVertexButtonDraw.y,
-                        endVertexButtonDraw.x, endVertexButtonDraw.y, red);  
+                        endVertexButtonDraw.x, endVertexButtonDraw.y, colors[1]);  
                 }
 
                 if (line == 1) {
-                    printString(&fb, stringLine, f, 220, 195, green);
+                    printString(&fb, stringLine, f, 220, 195, colors[4]);
                     drawSquare(&fb, startVertexButtonLine.x, startVertexButtonLine.y, 
-                        endVertexButtonLine.x, endVertexButtonLine.y, green);
+                        endVertexButtonLine.x, endVertexButtonLine.y, colors[4]);
                 }
                 else {
-                    printString(&fb, stringLine, f, 220, 195, red);
+                    printString(&fb, stringLine, f, 220, 195, colors[1]);
                     drawSquare(&fb, startVertexButtonLine.x, startVertexButtonLine.y, 
-                        endVertexButtonLine.x, endVertexButtonLine.y, red);
+                        endVertexButtonLine.x, endVertexButtonLine.y, colors[1]);
                 }
 
                 if (fill == 1) {
-                    printString(&fb, stringFill, f, 220, 270, green);
+                    printString(&fb, stringFill, f, 220, 270, colors[4]);
                     drawSquare(&fb, startVertexButtonFill.x, startVertexButtonFill.y, 
-                        endVertexButtonFill.x, endVertexButtonFill.y, green);
+                        endVertexButtonFill.x, endVertexButtonFill.y, colors[4]);
                 }
                 else {
-                    printString(&fb, stringFill, f, 220, 270, red);
+                    printString(&fb, stringFill, f, 220, 270, colors[1]);
                     drawSquare(&fb, startVertexButtonFill.x, startVertexButtonFill.y, 
-                        endVertexButtonFill.x, endVertexButtonFill.y, red);
+                        endVertexButtonFill.x, endVertexButtonFill.y, colors[1]);
                 }
 
+                // Draw color swabs
+                swabStartPoint.x = 230;
+                swabStartPoint.y = 350;
+                swabEndPoint.x = 270;
+                swabEndPoint.y = 370;
+                
+                for (int box_id = 0; box_id < 8; box_id++) {
+                    fillSquareArea(&fb, swabStartPoint.x, swabStartPoint.y,
+                        swabEndPoint.x, swabEndPoint.y, colors[box_id]);
+
+                    swabStartPoint.y += 30;
+                    swabEndPoint.y += 30;
+                }
+
+                // Mouse    
                 bytes = read(mouse, mouseState, sizeof(mouseState));
                 if (bytes > 0) {
                     start = clock();
@@ -843,37 +879,44 @@ int main() {
                     if (clicked == 1) {
                         if (position.x <= 580) {
                             printf("[MENU AREA] ");
-                            if (position.x >= 527 && position.x <= 577) {
-                                if (position.y >= 243 && position.y <= 268) {
-                                    // DRAW
-                                    draw = 1;
-                                    line = 0;
-                                    fill = 0;
+                            if (position.y < 367) {
+                                if (position.x >= 527 && position.x <= 577) {
+                                    if (position.y >= 243 && position.y <= 268) {
+                                        // DRAW
+                                        draw = 1;
+                                        line = 0;
+                                        fill = 0;
+                                    }
+                                    else if (position.y >= 280 && position.y <= 305) {
+                                        // LINE
+                                        draw = 0;
+                                        line = 1;
+                                        fill = 0;
+                                    }
+                                    else if (position.y >= 317 && position.y <= 342) {
+                                        // FILL
+                                        draw = 0;
+                                        line = 0;
+                                        fill = 1;
+                                    }
                                 }
-                                else if (position.y >= 280 && position.y <= 305) {
-                                    // LINE
-                                    draw = 0;
-                                    line = 1;
-                                    fill = 0;
-                                }
-                                else if (position.y >= 317 && position.y <= 342) {
-                                    // FILL
-                                    draw = 0;
-                                    line = 0;
-                                    fill = 1;
+                            }
+                            else {
+                                if (position.x >= 542 && position.x <= 562) {
+                                    selectedColor = (position.y - 367) / 15;
                                 }
                             }
                         }
                         else {
                             if (draw == 1) {
-                                addPixelToBuffer(&fb, clearLocationSt.x, clearLocationSt.y, 255, 255, 255, 0);
+                                drawCircle(&fb, clearLocationSt.x, clearLocationSt.y, 1, colors[selectedColor]);
                             }
                             else if (line == 1) {
                                 if (lineStartPointDefined == 1) {
                                     lineEndPoint.x = clearLocationSt.x;
                                     lineEndPoint.y = clearLocationSt.y;
 
-                                    drawLine(&fb, lineStartPoint.x, lineStartPoint.y, lineEndPoint.x, lineEndPoint.y, white);
+                                    drawLine(&fb, lineStartPoint.x, lineStartPoint.y, lineEndPoint.x, lineEndPoint.y, colors[selectedColor]);
 
                                     lineStartPointDefined = 0;
                                 }
@@ -885,7 +928,7 @@ int main() {
                                 }
                             }
                             else if (fill == 1) {
-                                floodFill(&fb, clearLocationSt.x, clearLocationSt.y, topLeftDrawArea, bottomRightDrawArea, white);
+                                floodFill(&fb, clearLocationSt.x, clearLocationSt.y, topLeftDrawArea, bottomRightDrawArea, colors[selectedColor]);
                             }
                             else {
                                 printf("Incorrect state!");
