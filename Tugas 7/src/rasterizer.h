@@ -13,6 +13,8 @@
 
 void floodFill(FrameBuffer *fb, int x, int y, Vertex topLeft, Vertex bottomRight, Color color);
 
+void floodFill_recursive(FrameBuffer *fb, int x, int y, Vertex topLeft, Vertex bottomRight, Color color);
+
 void boundaryFill(FrameBuffer *fb, Shape *s, Color color);
 
 void scanlineFill(FrameBuffer *fb, Shape *s, Color color);

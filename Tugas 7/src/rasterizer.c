@@ -1,8 +1,9 @@
 #include <string.h>
+#include "queuelist.h"
 
 #include "rasterizer.h"
 
-void floodFill(FrameBuffer *fb, int x, int y, Vertex topLeft, Vertex bottomRight, Color color) {
+void floodFill_recursive(FrameBuffer *fb, int x, int y, Vertex topLeft, Vertex bottomRight, Color color) {
     if ((x < topLeft.x) || (x > bottomRight.x) || (y < topLeft.y) || (y > bottomRight.y)) {
         return;
     }
@@ -17,6 +18,42 @@ void floodFill(FrameBuffer *fb, int x, int y, Vertex topLeft, Vertex bottomRight
             floodFill(fb, x + 1, y, topLeft, bottomRight, color);
         }
     }
+}
+
+void floodFill(FrameBuffer *fb, int x, int y, Vertex topLeft, Vertex bottomRight, Color color) {
+    // Initialization
+    Queue q;
+    CreateEmpty(&q);
+
+    Vertex v = { x, y };
+    Add(&q, v);
+    int n = 1;
+
+    do {
+        Del(&q, &v);
+        // printf("Fill: %d %d, %d elmt left\n", v.x, v.y, --n);
+
+        if ((v.x < topLeft.x) || (v.x > bottomRight.x) || (v.y < topLeft.y) || (v.y > bottomRight.y)) {
+            continue;
+        }
+
+        // Output to screen
+        Color curr = getColor(fb, v.x, v.y);
+        if (!isSameColor(curr, color)) {
+            addPixelToBuffer(fb, v.x, v.y, color.r, color.g, color.b, color.a);
+            Vertex v1 = { v.x - 1, v.y };
+            Add(&q, v1);
+            Vertex v2 = { v.x, v.y - 1 };
+            Add(&q, v2);
+            Vertex v3 = { v.x + 1, v.y };
+            Add(&q, v3);
+            Vertex v4 = { v.x, v.y + 1 };
+            Add(&q, v4);
+            // printf("Pushed: (%d %d)(%d %d)(%d %d)(%d %d)\n", v1.x, v1.y, v2.x, v2.y, v3.x, v3.y, v4.x, v4.y);
+            n += 4;
+        }
+        // getchar();
+    } while (!IsEmpty(q));
 }
 
 void boundaryFillHelper(FrameBuffer *fb, int x, int y, int xMin, int xMax,
