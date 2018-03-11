@@ -2,7 +2,10 @@
 
 all: main run
 
-main: main.c src/*.c src/graphics/*.c
+bin:
+	mkdir bin
+
+main: bin main.c src/*.c src/graphics/*.c
 	gcc main.c src/*.c src/graphics/*.c -lm -o bin/main -I .
 
 run: bin/main
