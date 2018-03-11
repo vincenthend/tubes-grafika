@@ -484,7 +484,7 @@ int main() {
                 scale += 0.1;
             }
         } else if (command == '6') {
-            // [MOUSE]
+            // [ITB 2D]
             system("clear");
 
             VectorImage itb_gedung;
@@ -527,10 +527,11 @@ int main() {
             endingVertex.x = 1000;
             endingVertex.y = 1000;
 
-            Color yellow, green, white;
+            Color yellow, green, white, red;
             initColor(&yellow, "FFF000");
             initColor(&green, "00ff00");
             initColor(&white, "FFFFFF");
+            initColor(&red, "FF0000");
 
             VectorImage itb_gedung2, itb_jalan2;
 
@@ -581,14 +582,27 @@ int main() {
                 cloneVectorImage(&itb_jalan, &itb_jalan2);
                 system("clear");
 
-                printString(&fb, stringJalan, f, 925, 220, green);
-                printString(&fb, stringBangunan, f, 715, 220, white);
+                if (bangunan == 1) {
+                    printString(&fb, stringBangunan, f, 715, 220, green);
+                    drawSquare(&fb, startVertexButtonBangunan.x, startVertexButtonBangunan.y,
+                        endVertexButtonBangunan.x, endVertexButtonBangunan.y, green);  
+                } else {
+                    printString(&fb, stringBangunan, f, 715, 220, red);
+                    drawSquare(&fb, startVertexButtonBangunan.x, startVertexButtonBangunan.y,
+                        endVertexButtonBangunan.x, endVertexButtonBangunan.y, red);  
+                }
 
-                drawSquare(&fb, startVertexButtonJalan.x, startVertexButtonJalan.y, 
+                if (jalan == 1) {
+                    printString(&fb, stringJalan, f, 925, 220, green);
+                    drawSquare(&fb, startVertexButtonJalan.x, startVertexButtonJalan.y, 
                         endVertexButtonJalan.x, endVertexButtonJalan.y, green);
+                }
+                else {
+                    printString(&fb, stringJalan, f, 925, 220, red);
+                    drawSquare(&fb, startVertexButtonJalan.x, startVertexButtonJalan.y, 
+                        endVertexButtonJalan.x, endVertexButtonJalan.y, red);
+                }
 
-                drawSquare(&fb, startVertexButtonBangunan.x, startVertexButtonBangunan.y,
-                    endVertexButtonBangunan.x, endVertexButtonBangunan.y, white);
         
                 for (int i = 0; i < itb_gedung2.n_component; i++) {
                     offsetShape(&(itb_gedung2.shape[i]), offset);
@@ -673,6 +687,10 @@ int main() {
         } else if (command == '7') {
             // [MOUSE]
             system("clear");
+            Color white, green, red;
+            initColor(&white, "FFFFFF");
+            initColor(&green, "00FF00");
+            initColor(&red, "FF0000");
 
             // Draw and fill
             Vertex v;
@@ -695,10 +713,35 @@ int main() {
 
             // Mouse
             int clicked = 0;
+            int draw = 1, line = 0, fill = 0;
 
             int bytes;
             int mouse = initMouse();
             unsigned char mouseState[3];
+
+            Vertex startVertexButtonDraw, endVertexButtonDraw;
+            Vertex startVertexButtonLine, endVertexButtonLine;
+            Vertex startVertexButtonFill, endVertexButtonFill;
+
+            startVertexButtonDraw.x = 200;
+            startVertexButtonDraw.y = 100;
+            endVertexButtonDraw.x = 300;
+            endVertexButtonDraw.y = 150;
+
+            startVertexButtonLine.x = 200;
+            startVertexButtonLine.y = 175;
+            endVertexButtonLine.x = 300;
+            endVertexButtonLine.y = 225;
+
+            startVertexButtonFill.x = 200;
+            startVertexButtonFill.y = 250;
+            endVertexButtonFill.x = 300;
+            endVertexButtonFill.y = 300;
+
+            // In-Square Font
+            char stringDraw[5] = "draw\0";
+            char stringLine[5] = "line\0";
+            char stringFill[5] = "fill\0";
 
             VectorImage cursor;
             openVectorImage("cursor", &cursor);
@@ -714,9 +757,44 @@ int main() {
             distance.x = 0;
             distance.y = 0;
 
+            int lineStartPointDefined = 0;
+            Vertex lineStartPoint;
+            Vertex lineEndPoint;
+
             while (1) {
-                
                 //Mouse
+                if (draw == 1) {
+                    printString(&fb, stringDraw, f, 220, 120, green);
+                    drawSquare(&fb, startVertexButtonDraw.x, startVertexButtonDraw.y,
+                        endVertexButtonDraw.x, endVertexButtonDraw.y, green);  
+                } else {
+                    printString(&fb, stringDraw, f, 220, 120, red);
+                    drawSquare(&fb, startVertexButtonDraw.x, startVertexButtonDraw.y,
+                        endVertexButtonDraw.x, endVertexButtonDraw.y, red);  
+                }
+
+                if (line == 1) {
+                    printString(&fb, stringLine, f, 220, 195, green);
+                    drawSquare(&fb, startVertexButtonLine.x, startVertexButtonLine.y, 
+                        endVertexButtonLine.x, endVertexButtonLine.y, green);
+                }
+                else {
+                    printString(&fb, stringLine, f, 220, 195, red);
+                    drawSquare(&fb, startVertexButtonLine.x, startVertexButtonLine.y, 
+                        endVertexButtonLine.x, endVertexButtonLine.y, red);
+                }
+
+                if (fill == 1) {
+                    printString(&fb, stringFill, f, 220, 270, green);
+                    drawSquare(&fb, startVertexButtonFill.x, startVertexButtonFill.y, 
+                        endVertexButtonFill.x, endVertexButtonFill.y, green);
+                }
+                else {
+                    printString(&fb, stringFill, f, 220, 270, red);
+                    drawSquare(&fb, startVertexButtonFill.x, startVertexButtonFill.y, 
+                        endVertexButtonFill.x, endVertexButtonFill.y, red);
+                }
+
                 bytes = read(mouse, mouseState, sizeof(mouseState));
                 if (bytes > 0) {
                     start = clock();
@@ -755,7 +833,57 @@ int main() {
                     clearArea(&fb, clearLocationSt, clearLocationEn);
                 
                     if (clicked == 1) {
-                        addPixelToBuffer(&fb, clearLocationSt.x, clearLocationSt.y, 255, 255, 255, 0);
+                        if (position.x <= 580 && position.y <= 345) {
+                            printf("[MENU AREA] ");
+                            if (position.x >= 527 && position.x <= 577) {
+                                if (position.y >= 243 && position.y <= 268) {
+                                    // DRAW
+                                    draw = 1;
+                                    line = 0;
+                                    fill = 0;
+                                }
+                                else if (position.y >= 280 && position.y <= 305) {
+                                    // LINE
+                                    draw = 0;
+                                    line = 1;
+                                    fill = 0;
+                                }
+                                else if (position.y >= 317 && position.y <= 342) {
+                                    // FILL
+                                    draw = 0;
+                                    line = 0;
+                                    fill = 1;
+                                }
+                            }
+                        }
+                        else {
+                            if (draw == 1) {
+                                addPixelToBuffer(&fb, clearLocationSt.x, clearLocationSt.y, 255, 255, 255, 0);
+                            }
+                            else if (line == 1) {
+                                if (lineStartPointDefined == 1) {
+                                    lineEndPoint.x = clearLocationSt.x;
+                                    lineEndPoint.y = clearLocationSt.y;
+
+                                    drawLine(&fb, lineStartPoint.x, lineStartPoint.y, lineEndPoint.x, lineEndPoint.y, white);
+
+                                    lineStartPointDefined = 0;
+                                }
+                                else {
+                                    lineStartPoint.x = clearLocationSt.x;
+                                    lineStartPoint.y = clearLocationSt.y;
+
+                                    lineStartPointDefined = 1;
+                                }
+                            }
+                            else if (fill == 1) {
+
+                            }
+                            else {
+                                printf("Incorrect state!");
+                                break;
+                            }
+                        }
                     }
                 }
             
