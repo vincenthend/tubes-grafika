@@ -735,6 +735,7 @@ int main() {
             Vertex startVertexButtonDraw, endVertexButtonDraw;
             Vertex startVertexButtonLine, endVertexButtonLine;
             Vertex startVertexButtonFill, endVertexButtonFill;
+            Vertex startVertexButtonClear, endVertexButtonClear;
 
             startVertexButtonDraw.x = 200;
             startVertexButtonDraw.y = 100;
@@ -751,6 +752,11 @@ int main() {
             endVertexButtonFill.x = 300;
             endVertexButtonFill.y = 300;
 
+            startVertexButtonClear.x = 200;
+            startVertexButtonClear.y = 650;
+            endVertexButtonClear.x = 300;
+            endVertexButtonClear.y = 700;
+
             Vertex topLeftDrawArea, bottomRightDrawArea;
 
             topLeftDrawArea.x = 600;
@@ -763,6 +769,7 @@ int main() {
             char stringDraw[5] = "draw\0";
             char stringLine[5] = "line\0";
             char stringFill[5] = "fill\0";
+            char stringClear[6] = "clear\0";
 
             VectorImage cursor;
             openVectorImage("cursor", &cursor);
@@ -823,6 +830,10 @@ int main() {
                     drawSquare(&fb, startVertexButtonFill.x, startVertexButtonFill.y, 
                         endVertexButtonFill.x, endVertexButtonFill.y, colors[1]);
                 }
+
+                printString(&fb, stringClear, f, 220, 670, colors[2]);
+                drawSquare(&fb, startVertexButtonClear.x, startVertexButtonClear.y, 
+                        endVertexButtonClear.x, endVertexButtonClear.y, colors[2]);
 
                 // Draw color swabs
                 swabStartPoint.x = 230;
@@ -902,8 +913,15 @@ int main() {
                                 }
                             }
                             else {
-                                if (position.x >= 542 && position.x <= 562) {
-                                    selectedColor = (position.y - 367) / 15;
+                                if (position.y >= 518 && position.y <= 543) {
+                                    if (position.x >= 527 && position.x <= 577) {
+                                        system("clear");
+                                    }
+                                }
+                                else {
+                                    if (position.x >= 542 && position.x <= 562) {
+                                        selectedColor = (position.y - 367) / 15;
+                                    }
                                 }
                             }
                         }
