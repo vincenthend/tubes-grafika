@@ -566,8 +566,8 @@ int main() {
             Vertex position;
             Vertex distance;
             Vertex clearLocationSt, clearLocationEn;
-            position.x = 854;
-            position.y = 384;
+            position.x = fb.screen_width / 2;
+            position.y = fb.screen_height / 2;
 
             distance.x = 0;
             distance.y = 0;
@@ -830,8 +830,8 @@ int main() {
             Vertex position;
             Vertex distance;
             Vertex clearLocationSt, clearLocationEn;
-            position.x = 854;
-            position.y = 384;
+            position.x = fb.screen_width / 2;
+            position.y = fb.screen_height / 2;
 
             distance.x = 0;
             distance.y = 0;
