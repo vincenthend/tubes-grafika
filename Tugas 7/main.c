@@ -54,7 +54,7 @@ int initMouse() {
     const char *pDevice = "/dev/input/mice";
 
     // Open Mouse
-    int mouse = open(pDevice, O_RDWR);
+    int mouse = open(pDevice, O_RDWR | O_NONBLOCK);
     if (mouse == -1) {
         printf("ERROR Opening %s\n", pDevice);
         return -1;
@@ -496,7 +496,7 @@ int main() {
                 scale += 0.1;
 
                 if (kbhit() != 0) {
-                    command = fgetc(stdin);
+                    command = getch();
                     quit = (command == 'q');
                 }
             }
@@ -592,60 +592,64 @@ int main() {
             char stringJalan[6] = "jalan\0";
             char stringBangunan[9] = "bangunan\0";
 
+            char change = 1;
             nonblock(NB_ENABLE);
             while (!quit) {
-                cloneVectorImage(&itb_gedung, &itb_gedung2);
-                cloneVectorImage(&itb_jalan, &itb_jalan2);
-                system("clear");
+                if (change) {
+                    cloneVectorImage(&itb_gedung, &itb_gedung2);
+                    cloneVectorImage(&itb_jalan, &itb_jalan2);
+                    system("clear");
 
-                if (bangunan == 1) {
-                    printString(&fb, stringBangunan, f, 915, 120, green);
-                    drawSquare(&fb, startVertexButtonBangunan.x, startVertexButtonBangunan.y,
-                        endVertexButtonBangunan.x, endVertexButtonBangunan.y, green);  
-                } else {
-                    printString(&fb, stringBangunan, f, 915, 120, red);
-                    drawSquare(&fb, startVertexButtonBangunan.x, startVertexButtonBangunan.y,
-                        endVertexButtonBangunan.x, endVertexButtonBangunan.y, red);  
-                }
+                    if (bangunan == 1) {
+                        printString(&fb, stringBangunan, f, 915, 120, green);
+                        drawSquare(&fb, startVertexButtonBangunan.x, startVertexButtonBangunan.y,
+                            endVertexButtonBangunan.x, endVertexButtonBangunan.y, green);  
+                    } else {
+                        printString(&fb, stringBangunan, f, 915, 120, red);
+                        drawSquare(&fb, startVertexButtonBangunan.x, startVertexButtonBangunan.y,
+                            endVertexButtonBangunan.x, endVertexButtonBangunan.y, red);  
+                    }
 
-                if (jalan == 1) {
-                    printString(&fb, stringJalan, f, 925, 220, green);
-                    drawSquare(&fb, startVertexButtonJalan.x, startVertexButtonJalan.y, 
-                        endVertexButtonJalan.x, endVertexButtonJalan.y, green);
-                }
-                else {
-                    printString(&fb, stringJalan, f, 925, 220, red);
-                    drawSquare(&fb, startVertexButtonJalan.x, startVertexButtonJalan.y, 
-                        endVertexButtonJalan.x, endVertexButtonJalan.y, red);
-                }
+                    if (jalan == 1) {
+                        printString(&fb, stringJalan, f, 925, 220, green);
+                        drawSquare(&fb, startVertexButtonJalan.x, startVertexButtonJalan.y, 
+                            endVertexButtonJalan.x, endVertexButtonJalan.y, green);
+                    }
+                    else {
+                        printString(&fb, stringJalan, f, 925, 220, red);
+                        drawSquare(&fb, startVertexButtonJalan.x, startVertexButtonJalan.y, 
+                            endVertexButtonJalan.x, endVertexButtonJalan.y, red);
+                    }
 
-        
-                for (int i = 0; i < itb_gedung2.n_component; i++) {
-                    offsetShape(&(itb_gedung2.shape[i]), offset);
-                }
-                for (int i = 0; i < itb_jalan2.n_component; i++) {
-                    offsetShape(&(itb_jalan2.shape[i]), offset);
-                }
+                    for (int i = 0; i < itb_gedung2.n_component; i++) {
+                        offsetShape(&(itb_gedung2.shape[i]), offset);
+                    }
+                    for (int i = 0; i < itb_jalan2.n_component; i++) {
+                        offsetShape(&(itb_jalan2.shape[i]), offset);
+                    }
 
-                initSquareClipper(&clipper, startingVertex.x, startingVertex.y,
-                                  endingVertex.x, endingVertex.y);
-                drawSquare(&fb, startingVertex.x, startingVertex.y,
-                           endingVertex.x, endingVertex.y, yellow);
+                    initSquareClipper(&clipper, startingVertex.x, startingVertex.y,
+                                    endingVertex.x, endingVertex.y);
+                    drawSquare(&fb, startingVertex.x, startingVertex.y,
+                            endingVertex.x, endingVertex.y, yellow);
 
-                clipVectorImage(&itb_gedung2, clipper);
-                clipVectorImage(&itb_jalan2, clipper);
+                    clipVectorImage(&itb_gedung2, clipper);
+                    clipVectorImage(&itb_jalan2, clipper);
 
-                if (bangunan == 1) {
-                    fillImage(&fb, &itb_gedung2, v);    
+                    if (bangunan == 1) {
+                        fillImage(&fb, &itb_gedung2, v);    
+                    }
+                    if (jalan == 1) {
+                        fillImage(&fb, &itb_jalan2, v);
+                    }
+
+                    change = 0;
                 }
-                if (jalan == 1) {
-                    fillImage(&fb, &itb_jalan2, v);
-                }
-                
-
+                                
                 //Mouse
                 bytes = read(mouse, mouseState, sizeof(mouseState));
                 if (bytes > 0) {
+                    change = 1;
                     start = clock();
                     
                     clicked = mouseState[0] & 0x1;
@@ -702,8 +706,32 @@ int main() {
 
                 if (kbhit() != 0) {
                     command = fgetc(stdin);
-                    printf("%c\n", command);
                     quit = (command == 'q');
+                    printf("%c %d \033\n", command, quit);
+
+                    if (command == '\033') {
+                        fgetc(stdin);
+                        switch (fgetc(stdin)) {
+                        case 'A':
+                            // code for arrow up
+                            offset.y += 10;
+                            break;
+                        case 'B':
+                            // code for arrow down
+                            offset.y -= 10;
+                            break;
+                        case 'C':
+                            offset.x -= 10;
+                            // code for arrow right
+                            break;
+                        case 'D':
+                            // code for arrow left
+                            offset.x += 10;
+                            break;
+                        }
+                        change = 1;
+                    }
+                    fputc(EOF, stdin);
                 }
             }
             nonblock(NB_DISABLE);
@@ -985,6 +1013,7 @@ int main() {
                 }
             }
             nonblock(NB_DISABLE);
+            system("clear");
         } else {
             printf("Invalid command\n");
         }
