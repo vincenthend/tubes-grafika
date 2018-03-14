@@ -15,6 +15,7 @@
 #include "src/graphics/rasterfont.h"
 #include "src/graphics/shape.h"
 #include "src/graphics/vectorimage.h"
+#include "src/nbinput.h"
 #include "src/printer.h"
 #include "src/rasterizer.h"
 
@@ -81,6 +82,9 @@ int main() {
 
     FrameBuffer fb = initFrameBuffer();
     char command;
+    int quit = 0;
+
+    system("clear");
     printf("== Menu ==\n");
     printf("1. Task 1 - Bitmap Font\n");
     printf("2. Task 2 - Nyan Cat\n");
@@ -95,7 +99,7 @@ int main() {
     Font f;
     openFont("archaic", &f);
 
-    while (command != 'q') {
+    while (!quit) {
         if (command == '1') {
             // [BITMAP FONT]
             system("clear");
@@ -111,6 +115,7 @@ int main() {
             scanf("%s", in);
             getchar();
             printString(&fb, in, f, 200, 200, c);
+            getch();
         } else if (command == '2') {
             // [NYAN CAT]
             system("clear");
@@ -157,8 +162,10 @@ int main() {
 
             int laser2 = 0;
             int laser3 = 0;
+
             //Loop
-            while (1) {
+            nonblock(NB_ENABLE);
+            while (!quit) {
                 fillSquareArea(&fb, topLeftX, topLeftY, botRightX, botRightY,
                                background);
                 drawSquare(&fb, topLeftX, topLeftY, botRightX, botRightY,
@@ -223,10 +230,17 @@ int main() {
                     line3y0 = lineInitY;
                     line3y1 = lineInitY - 10;
                 }
+
+                if (kbhit() != 0) {
+                    command = fgetc(stdin);
+                    quit = (command == 'q');
+                }
             }
+            nonblock(NB_DISABLE);
         } else if (command == '3') {
             // [VECTOR FONT]
             system("clear");
+            
             // Color initialization
             Color white, black, grey, pink, background;
             Color orange, yellow, green;
@@ -245,22 +259,10 @@ int main() {
             initRasterFont(&rasterFont);
             openRasterFont("raster_font", &rasterFont);
 
-            // Clear screen
-            //printf("\e[1;1H\e[2J");
-
             // Draw and fill
             Vertex v;
             v.x = 300;
             v.y = 100;
-
-            // for (int i = (int)'a'; i <= (int)'z'; i++) {
-            //     fillChar(&fb, (char)i, &rasterFont, v, yellow);
-            //     v.x += 100;
-            //     if (v.x > 1000) {
-            //         v.y += 130;
-            //         v.x = 300;
-            //     }
-            // }
 
             char input[1000];
 
@@ -275,6 +277,8 @@ int main() {
             }
 
             fillString(&fb, input, &rasterFont, v, pink);
+
+            getch();
         } else if (command == '4') {
             // [AIRPLANE]
             system("clear");
@@ -327,7 +331,8 @@ int main() {
             Color yellow;
             initColor(&yellow, "FFF000");
 
-            while (1) {
+            nonblock(NB_ENABLE);
+            while (!quit) {
                 start = clock();
 
                 VectorImage plane2, blade_left2, blade_right2;
@@ -380,7 +385,13 @@ int main() {
 
                 deg += 30;
                 scale += 0.1;
+
+                if (kbhit() != 0) {
+                    command = fgetc(stdin);
+                    quit = (command == 'q');
+                }
             }
+            nonblock(NB_DISABLE);
         } else if (command == '5') {
             // [CLIPPING]
             system("clear");
@@ -429,7 +440,8 @@ int main() {
             Color yellow;
             initColor(&yellow, "FFF000");
 
-            while (1) {
+            nonblock(NB_ENABLE);
+            while (!quit) {
                 start = clock();
 
                 VectorImage plane2, blade_left2, blade_right2;
@@ -482,7 +494,13 @@ int main() {
 
                 deg += 30;
                 scale += 0.1;
+
+                if (kbhit() != 0) {
+                    command = fgetc(stdin);
+                    quit = (command == 'q');
+                }
             }
+            nonblock(NB_DISABLE);
         } else if (command == '6') {
             // [ITB 2D]
             system("clear");
@@ -522,10 +540,10 @@ int main() {
 
             Clipper clipper;
             Vertex startingVertex, endingVertex;
-            startingVertex.x = 300;
-            startingVertex.y = 300;
-            endingVertex.x = 1000;
-            endingVertex.y = 1000;
+            startingVertex.x = 50;
+            startingVertex.y = 50;
+            endingVertex.x = 750;
+            endingVertex.y = 750;
 
             Color yellow, green, white, red;
             initColor(&yellow, "FFF000");
@@ -536,7 +554,6 @@ int main() {
             VectorImage itb_gedung2, itb_jalan2;
 
             // Mouse
-
             int bytes;
             int mouse = initMouse();
             unsigned char mouseState[3];
@@ -566,28 +583,27 @@ int main() {
             endVertexButtonJalan.x = 1000;
             endVertexButtonJalan.y = 250;
 
-
-            startVertexButtonBangunan.x = 700;
-            startVertexButtonBangunan.y = 200;
-            endVertexButtonBangunan.x = 800;
-            endVertexButtonBangunan.y = 250;
-
+            startVertexButtonBangunan.x = 900;
+            startVertexButtonBangunan.y = 100;
+            endVertexButtonBangunan.x = 1000;
+            endVertexButtonBangunan.y = 150;
 
             // In-Square Font
             char stringJalan[6] = "jalan\0";
             char stringBangunan[9] = "bangunan\0";
-            while (1) {
-                
+
+            nonblock(NB_ENABLE);
+            while (!quit) {
                 cloneVectorImage(&itb_gedung, &itb_gedung2);
                 cloneVectorImage(&itb_jalan, &itb_jalan2);
                 system("clear");
 
                 if (bangunan == 1) {
-                    printString(&fb, stringBangunan, f, 715, 220, green);
+                    printString(&fb, stringBangunan, f, 915, 120, green);
                     drawSquare(&fb, startVertexButtonBangunan.x, startVertexButtonBangunan.y,
                         endVertexButtonBangunan.x, endVertexButtonBangunan.y, green);  
                 } else {
-                    printString(&fb, stringBangunan, f, 715, 220, red);
+                    printString(&fb, stringBangunan, f, 915, 120, red);
                     drawSquare(&fb, startVertexButtonBangunan.x, startVertexButtonBangunan.y,
                         endVertexButtonBangunan.x, endVertexButtonBangunan.y, red);  
                 }
@@ -667,14 +683,14 @@ int main() {
                 
                     //Mechanism for Jalan & Bangunan
                     if (clicked == 1) {
-                        if (position.x >= 775 && position.x <= 825 && position.y >= 290 && position.y <= 340) {
+                        if (position.x >= 875 && position.x <= 925 && position.y >= 240 && position.y <= 270) {
                             if (bangunan == 0) {
                                 bangunan = 1;
                             } else {
                                 bangunan = 0;
                             }
                         }
-                        if (position.x >= 875 && position.x <= 925 && position.y >= 290 && position.y <= 340) {
+                        if (position.x >= 875 && position.x <= 925 && position.y >= 290 && position.y <= 320) {
                             if (jalan == 0) {
                                 jalan = 1;
                             } else {
@@ -683,7 +699,14 @@ int main() {
                         }
                     }
                 }
+
+                if (kbhit() != 0) {
+                    command = fgetc(stdin);
+                    printf("%c\n", command);
+                    quit = (command == 'q');
+                }
             }
+            nonblock(NB_DISABLE);
         } else if (command == '7') {
             // [MOUSE]
             system("clear");
@@ -759,10 +782,10 @@ int main() {
 
             Vertex topLeftDrawArea, bottomRightDrawArea;
 
-            topLeftDrawArea.x = 600;
+            topLeftDrawArea.x = 500;
             topLeftDrawArea.y = 100;
 
-            bottomRightDrawArea.x = 1200;
+            bottomRightDrawArea.x = 1100;
             bottomRightDrawArea.y = 700;
 
             // In-Square Font
@@ -796,8 +819,8 @@ int main() {
             swabEndPoint.x = 270;
             swabEndPoint.y = 370;
             
-
-            while (1) {
+            nonblock(NB_ENABLE);
+            while (!quit) {
                 // Draw command boxes
                 if (draw == 1) {
                     printString(&fb, stringDraw, f, 220, 120, colors[4]);
@@ -955,12 +978,20 @@ int main() {
                         }
                     }
                 }
-            
+
+                if (kbhit() != 0) {
+                    command = fgetc(stdin);
+                    quit = (command == 'q');
+                }
             }
+            nonblock(NB_DISABLE);
         } else {
             printf("Invalid command\n");
         }
-        printf("\n\n== Menu ==\n");
+
+        system("clear");
+        system("clear");
+        printf("== Menu ==\n");
         printf("1. Task 1 - Bitmap Font\n");
         printf("2. Task 2 - Nyan Cat\n");
         printf("3. Task 3 - Vector Font\n");
@@ -970,6 +1001,8 @@ int main() {
         printf("7. Task 7 - Mouse\n");
         printf("\nCommand: ");
         scanf("%c", &command);
+
+        quit = (command == 'q');
     }
 
     printf("End of program\n");
