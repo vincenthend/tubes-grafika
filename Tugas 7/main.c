@@ -115,7 +115,8 @@ int main() {
             scanf("%s", in);
             getchar();
             printString(&fb, in, f, 200, 200, c);
-            getch();
+
+            while (fgetc(stdin) == 0);
         } else if (command == '2') {
             // [NYAN CAT]
             system("clear");
@@ -278,7 +279,7 @@ int main() {
 
             fillString(&fb, input, &rasterFont, v, pink);
 
-            getch();
+            while (fgetc(stdin) == 0);
         } else if (command == '4') {
             // [AIRPLANE]
             system("clear");
@@ -1018,8 +1019,11 @@ int main() {
             printf("Invalid command\n");
         }
 
-        system("clear");
-        system("clear");
+        if (command != '1' && command != '3') {
+            system("clear");
+            system("clear");
+        }
+        
         printf("== Menu ==\n");
         printf("1. Task 1 - Bitmap Font\n");
         printf("2. Task 2 - Nyan Cat\n");
