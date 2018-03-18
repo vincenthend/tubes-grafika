@@ -688,14 +688,14 @@ int main() {
                 
                     //Mechanism for Jalan & Bangunan
                     if (clicked == 1) {
-                        if (position.x >= 875 && position.x <= 925 && position.y >= 240 && position.y <= 270) {
+                        if (position.x >= 740 && position.x <= 790 && position.y >= 265 && position.y <= 290) {
                             if (bangunan == 0) {
                                 bangunan = 1;
                             } else {
                                 bangunan = 0;
                             }
                         }
-                        if (position.x >= 875 && position.x <= 925 && position.y >= 290 && position.y <= 320) {
+                        if (position.x >= 740 && position.x <= 790 && position.y >= 315 && position.y <= 340) {
                             if (jalan == 0) {
                                 jalan = 1;
                             } else {
