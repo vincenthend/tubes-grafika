@@ -940,23 +940,23 @@ int main() {
                     clearArea(&fb, clearLocationSt, clearLocationEn);
                 
                     if (clicked == 1) {
-                        if (position.x <= 580) {
+                        if (position.x <= 450) {
                             printf("[MENU AREA] ");
                             if (position.y < 367) {
-                                if (position.x >= 527 && position.x <= 577) {
-                                    if (position.y >= 243 && position.y <= 268) {
+                                if (position.x >= 385 && position.x <= 435) {
+                                    if (position.y >= 265 && position.y <= 290) {
                                         // DRAW
                                         draw = 1;
                                         line = 0;
                                         fill = 0;
                                     }
-                                    else if (position.y >= 280 && position.y <= 305) {
+                                    else if (position.y >= 305 && position.y <= 330) {
                                         // LINE
                                         draw = 0;
                                         line = 1;
                                         fill = 0;
                                     }
-                                    else if (position.y >= 317 && position.y <= 342) {
+                                    else if (position.y >= 345 && position.y <= 370) {
                                         // FILL
                                         draw = 0;
                                         line = 0;
@@ -965,14 +965,14 @@ int main() {
                                 }
                             }
                             else {
-                                if (position.y >= 518 && position.y <= 543) {
-                                    if (position.x >= 527 && position.x <= 577) {
+                                if (position.y >= 540 && position.y <= 565) {
+                                    if (position.x >= 385 && position.x <= 435) {
                                         system("clear");
                                     }
                                 }
                                 else {
-                                    if (position.x >= 542 && position.x <= 562) {
-                                        selectedColor = (position.y - 367) / 15;
+                                    if (position.x >= 400 && position.x <= 425) {
+                                        selectedColor = (position.y - 390) / 15;
                                     }
                                 }
                             }
